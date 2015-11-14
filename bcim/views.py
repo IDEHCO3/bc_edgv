@@ -245,12 +245,11 @@ class AldeiaIndigenaListFiltered(generics.ListCreateAPIView):
 
         st_function = self.kwargs.get("spatial_function")
         geom_str = self.kwargs.get('geom')
+        a_key = 'geom__' + st_function
         aGeom = GEOSGeometry(geom_str, 4326)
 
         if st_function is not None:
-            return AldeiaIndigena.objects.filter(geom__contained=aGeom)
-
-
+            return AldeiaIndigena.objects.filter(**({a_key: aGeom}))
         return self.queryset
 
 class AreaEdificadaList(generics.ListCreateAPIView):

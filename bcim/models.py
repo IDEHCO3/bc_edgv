@@ -1387,3 +1387,5 @@ class PontosExibicaoWgs84(models.Model):
         managed = False
         db_table = 'pontos_exibicao_wgs84'
 
+class Blob():
+    name = None

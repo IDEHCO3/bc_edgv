@@ -95,10 +95,10 @@ DATABASES = {
                'options': '-c search_path=bcim,ptcon_base,public',
 
        },
-       'HOST': '172.17.0.1',
-       'NAME': 'ccar_prod',
-       'USER': 'ccar_prod',
-       'PASSWORD': 'zxzxzxzxzxzxzxzxzxzxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
+       'HOST': 'localhost',
+       'NAME': 'idehco3',
+       'USER': 'postgres',
+       'PASSWORD': '',
        'SCHEMA': 'public,bcim, ptcon_base',
 
 
