@@ -98,7 +98,7 @@ DATABASES = {
        'HOST': '172.17.0.2',
        'NAME': 'ccar_prod',
        'USER': 'ccar_prod',
-       'PASSWORD': 'xaxaxaxaxaxaxaxax123',
+       'PASSWORD': 'ccar_prod',
        'SCHEMA': 'public,bcim, ptcon_base',
 
 

@@ -1,3 +1,4 @@
+import httplib2
 from django.contrib.gis.geos import GEOSGeometry
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -118,18 +119,31 @@ def api_root(request, format=None):
 
 class BasicListFiltered(generics.ListCreateAPIView):
 
-
     def get_queryset(self):
 
         st_function = self.kwargs.get("spatial_function")
-        geom_str = self.kwargs.get('geom')
+        geom_str_or_url = self.kwargs.get('geom')
+        url_rest = self.request.query_params.get('url', None)
         a_key = 'geom__' + st_function
-        aGeom = GEOSGeometry(geom_str, 4326)
+        aGeom = self.geos_geometry(geom_str_or_url)
 
         if st_function is not None:
             model_class = self.serializer_class.Meta.model
             return model_class.objects.filter(**({a_key: aGeom}))
+
         return self.queryset
+
+    def geos_geometry(self, geom_str_or_url):
+        a_geom =  geom_str_or_url
+        str1 = str((geom_str_or_url[0:7]).upper())
+        str2 = str('http://'.upper())
+        if (str1 == str2):
+            h = httplib2.Http(".cache")
+            resp, a_geom = h.request(geom_str_or_url, "GET")
+
+        return GEOSGeometry(a_geom, 4326)
+
+
 
 class UnidadeFederacaoList(generics.ListCreateAPIView):
     queryset = UnidadeFederacao.objects.all()

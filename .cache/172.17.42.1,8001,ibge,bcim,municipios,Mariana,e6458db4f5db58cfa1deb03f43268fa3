@@ -1,0 +1,9 @@
+status: 301
+server: WSGIServer/0.2 CPython/3.4.3
+content-type: text/html; charset=utf-8
+-x-permanent-redirect-url: http://172.17.42.1:8001/ibge/bcim/municipios/Mariana/
+content-location: http://172.17.42.1:8001/ibge/bcim/municipios/Mariana
+location: http://172.17.42.1:8001/ibge/bcim/municipios/Mariana/
+date: Thu, 19 Nov 2015 21:47:06 GMT
+x-frame-options: SAMEORIGIN
+
