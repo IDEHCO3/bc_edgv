@@ -116,6 +116,21 @@ def api_root(request, format=None):
 
     })
 
+class BasicListFiltered(generics.ListCreateAPIView):
+
+
+    def get_queryset(self):
+
+        st_function = self.kwargs.get("spatial_function")
+        geom_str = self.kwargs.get('geom')
+        a_key = 'geom__' + st_function
+        aGeom = GEOSGeometry(geom_str, 4326)
+
+        if st_function is not None:
+            model_class = self.serializer_class.Meta.model
+            return model_class.objects.filter(**({a_key: aGeom}))
+        return self.queryset
+
 class UnidadeFederacaoList(generics.ListCreateAPIView):
     queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
@@ -235,22 +250,13 @@ class AldeiaIndigenaList(generics.ListCreateAPIView):
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
 
-class AldeiaIndigenaListFiltered(generics.ListCreateAPIView):
+class AldeiaIndigenaListFiltered(BasicListFiltered):
 
     queryset = AldeiaIndigena.objects.all()
 
     serializer_class = AldeiaIndigenaSerializer
 
-    def get_queryset(self):
 
-        st_function = self.kwargs.get("spatial_function")
-        geom_str = self.kwargs.get('geom')
-        a_key = 'geom__' + st_function
-        aGeom = GEOSGeometry(geom_str, 4326)
-
-        if st_function is not None:
-            return AldeiaIndigena.objects.filter(**({a_key: aGeom}))
-        return self.queryset
 
 class AreaEdificadaList(generics.ListCreateAPIView):
 
