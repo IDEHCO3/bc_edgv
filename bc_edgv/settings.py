@@ -98,7 +98,7 @@ DATABASES = {
        'HOST': 'localhost',
        'NAME': 'idehco3',
        'USER': 'idehco3',
-       'PASSWORD': 'idehco3',
+       'PASSWORD': 'xsxsxsxsxs',
        'SCHEMA': 'public,bcim, ptcon_base',
 
 
