@@ -1,4 +1,5 @@
 import httplib2
+import json as json
 from django.contrib.gis.geos import GEOSGeometry
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -124,7 +125,7 @@ class BasicListFiltered(generics.ListCreateAPIView):
         st_function = self.kwargs.get("spatial_function")
         geom_str_or_url = self.kwargs.get('geom')
         url_rest = self.request.query_params.get('url', None)
-        a_key = 'geom__' + st_function
+        a_key = self.serializer_class.Meta.geo_field + '__' + st_function
         aGeom = self.geos_geometry(geom_str_or_url)
 
         if st_function is not None:
@@ -135,12 +136,13 @@ class BasicListFiltered(generics.ListCreateAPIView):
 
     def geos_geometry(self, geom_str_or_url):
         a_geom =  geom_str_or_url
-        str1 = str((geom_str_or_url[0:7]).upper())
-        str2 = str('http://'.upper())
+        str1 = (geom_str_or_url[0:5]).upper()
+        str2 = 'http:'.upper()
         if (str1 == str2):
             h = httplib2.Http(".cache")
             resp, a_geom = h.request(geom_str_or_url, "GET")
-
+            a_geojson = json.loads(a_geom.decode())
+            a_geom = (a_geojson["features"][0]["geometry"]).__str__()
         return GEOSGeometry(a_geom, 4326)
 
 

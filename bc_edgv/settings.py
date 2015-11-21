@@ -96,9 +96,9 @@ DATABASES = {
 
        },
        'HOST': 'localhost',
-       'NAME': 'ccar_prod',
-       'USER': 'ccar_prod',
-       'PASSWORD': 'zxzxzxzxzxzxzxzxzxz',
+       'NAME': 'idehco3',
+       'USER': 'idehco3',
+       'PASSWORD': 'idehco3',
        'SCHEMA': 'public,bcim, ptcon_base',
 
 
