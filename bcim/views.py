@@ -118,6 +118,30 @@ def api_root(request, format=None):
 
     })
 
+class DefaultsMixin(object):
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+    )
+
+    paginate_by = 250
+
+    # Default settings for view authentication, permissions, filtering and pagination.
+"""
+    authentication_classes = (
+        authentication.BasicAuthentication,
+        authentication.TokenAuthentication,
+    )
+"""
+
+class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
+
+    def get_queryset(self):
+        model_class = self.serializer_class.Meta.model
+        queryset = model_class.objects.all()
+        query_parameters = self.request.query_params
+        queryset = queryset.filter(**query_parameters.dict())
+        return queryset
+
 class BasicListFiltered(generics.ListCreateAPIView):
 
     def get_queryset(self):
@@ -147,12 +171,17 @@ class BasicListFiltered(generics.ListCreateAPIView):
 
 
 
+
 class UnidadeFederacaoList(generics.ListCreateAPIView):
     queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
 
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters):
+    """API endpoint for listing and creating sprints."""
+    serializer_class = UnidadeFederacaoSerializer
 
 
 class UnidadeFederacaoFiltered(generics.ListCreateAPIView):
@@ -167,21 +196,19 @@ class UnidadeFederacaoFiltered(generics.ListCreateAPIView):
 
     def get_queryset(self):
 
+        geocodigo_uf =  self.kwargs.get("geocodigo")
+        if geocodigo_uf is not None:
+            return self.queryset.filter( geocodigo=geocodigo_uf )
+
         sigla_uf = self.kwargs.get("sigla")
-
-        #sigla_uf = self.request.query_params.get('sigla', None)
-
         if sigla_uf is not None:
-
             return self.queryset.filter( sigla=sigla_uf.upper())
 
         siglas =  self.kwargs.get("siglas")
-
         if siglas is not None:
             return self.queryset.filter( sigla__in=siglas.split(",") )
 
         return self.queryset
-
 
 
 
