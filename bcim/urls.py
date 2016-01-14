@@ -10,6 +10,7 @@ urlpatterns = format_suffix_patterns([
     url(r'^estados/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_filtered'),
     url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
+    url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),

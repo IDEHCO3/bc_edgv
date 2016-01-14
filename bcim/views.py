@@ -7,7 +7,7 @@ from rest_framework.reverse import reverse
 
 
 from rest_framework_gis import filters
-
+from rest_framework_gis.filterset import GeoFilterSet
 from .models import UnidadeFederacao,Municipio, OutrasUnidProtegidas, OutrosLimitesOficiais, Pais, TerraIndigena, \
     UnidadeConservacaoNaoSnuc, UnidadeProtecaoIntegral,UnidadeUsoSustentavel, AglomeradoRuralDeExtensaoUrbana, \
     AglomeradoRuralDeExtensaoUrbana, AglomeradoRuralIsolado, AldeiaIndigena, AreaEdificada, Capital, Cidade, Vila, \
@@ -139,8 +139,22 @@ class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
         model_class = self.serializer_class.Meta.model
         queryset = model_class.objects.all()
         query_parameters = self.request.query_params
-        queryset = queryset.filter(**query_parameters.dict())
+        dict = self.get_dict_with_spatialfunction_or_same_dict(query_parameters.dict())
+
+        queryset = queryset.filter(**dict)
         return queryset
+
+    def get_dict_with_spatialfunction_or_same_dict(self, dict):
+        for key, value in dict.items():
+            if key.startswith('*'):
+                new_key = self.serializer_class.Meta.geo_field + '__' + key[1:]
+                dict.pop(key)
+                #a_value = value
+                #a_geom = GEOSGeometry(a_value, 4326)
+                dict[new_key] = value
+        return dict
+
+
 
 class BasicListFiltered(generics.ListCreateAPIView):
 
@@ -184,7 +198,7 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
     serializer_class = UnidadeFederacaoSerializer
 
 
-class UnidadeFederacaoFiltered(generics.ListCreateAPIView):
+class UnidadeFederacaoFiltered(BasicListFiltered):
 
     queryset = UnidadeFederacao.objects.all()
 
@@ -208,7 +222,7 @@ class UnidadeFederacaoFiltered(generics.ListCreateAPIView):
         if siglas is not None:
             return self.queryset.filter( sigla__in=siglas.split(",") )
 
-        return self.queryset
+        return super(UnidadeFederacaoFiltered, self).get_queryset()
 
 
 
