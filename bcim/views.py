@@ -2,10 +2,10 @@ import httplib2
 import json as json
 from django.contrib.gis.geos import GEOSGeometry
 from rest_framework.decorators import api_view
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-
-
+from rest_framework.views import APIView
 from rest_framework_gis import filters
 from rest_framework_gis.filterset import GeoFilterSet
 from .models import UnidadeFederacao,Municipio, OutrasUnidProtegidas, OutrosLimitesOficiais, Pais, TerraIndigena, \
@@ -182,9 +182,118 @@ class BasicListFiltered(generics.ListCreateAPIView):
             a_geojson = json.loads(a_geom.decode())
             a_geom = (a_geojson["features"][0]["geometry"]).__str__()
         return GEOSGeometry(a_geom, 4326)
+class APIViewDetailSpatialFunction(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def model_class(self):
+        return self.serializer_class.Meta.model
+
+    def geometry_field_name(self):
+        return self.serializer_class.Meta.geo_field
+
+    def spatial_function_name_template(self):
+        return 'spatial_function'
+
+    def spatial_function_parameter_template(self):
+        return 'param'
+
+    def get_object(self, a_dict):
+        queryset = self.model_class().objects.all()
+        obj = get_object_or_404(queryset, **a_dict)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def dic_with_only_identitier_field(self):
+        a_dict = {}
+        for key, value in self.kwargs.items():
+            if key != self.spatial_function_name_template() and key != self.spatial_function_parameter_template():
+                a_dict[key] = value
+                break
+        return a_dict
+
+    def get_geometry_object(self, object_model):
+        return getattr(object_model, self.geometry_field_name(), None)
+
+    def get(self, request, *args, **kwargs):
+
+        object_model = self.get_object(self.dic_with_only_identitier_field())
+        st_function = self.kwargs.get(self.spatial_function_name_template())
+        if not st_function:
+           serializer = self.serializer_class(object_model)
+           return Response(serializer.data)
+
+        param = self.kwargs.get(self.spatial_function_parameter_template())
+        if param:
+            res = getattr(self.get_geometry_object(object_model), st_function)(param)
+        else:
+            res = getattr(self.get_geometry_object(object_model), st_function)
+            if callable(res):
+                res = res(param)
+                if type(res) is GEOSGeometry:
+                    return Response(res.geojson)
+        a_dict = {st_function : res}
+
+        return Response(json.dumps(a_dict))
+
+class UnidadeFederacaoDetail(APIViewDetailSpatialFunction):
+    """
+    Retrieve, update or delete a unidades da federação instance.
+    """
+    serializer_class = UnidadeFederacaoSerializer
 
 
+class UnidadeFederacaoDetailOLD1(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self):
+        queryset = UnidadeFederacao.objects.all()
+        filter = {}
+        #for field in self.multiple_lookup_fields:
+        #    filter[field] = self.kwargs[field]
 
+        obj = get_object_or_404(queryset, **self.kwargs)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        uf = self.get_object()
+        serializer = UnidadeFederacaoSerializer(uf)
+        return Response(serializer.data)
+
+
+class UnidadeFederacaoDetailSpatial(APIViewDetailSpatialFunction):
+    serializer_class = UnidadeFederacaoSerializer
+
+class UnidadeFederacaoDetailSpatialOld(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, a_dict):
+        queryset = UnidadeFederacao.objects.all()
+        obj = get_object_or_404(queryset, **a_dict)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        st_function = self.kwargs.get('spatial_function')
+        param = self.kwargs.get('param')
+        a_dict = {}
+        for key, value in self.kwargs.items():
+            if key != 'spatial_function' and key != 'param':
+                a_dict[key] = value
+                break
+        uf = self.get_object(a_dict)
+        if param:
+            res = getattr(uf.geom,st_function)(param)
+        else:
+            res = getattr(uf.geom,st_function)
+            if callable(res):
+                res = res(param)
+        a_dict = {st_function : res}
+
+        return Response(json.dumps(a_dict))
 
 class UnidadeFederacaoList(generics.ListCreateAPIView):
     queryset = UnidadeFederacao.objects.all()
@@ -310,9 +419,12 @@ class AldeiaIndigenaList(generics.ListCreateAPIView):
 class AldeiaIndigenaListFiltered(BasicListFiltered):
 
     queryset = AldeiaIndigena.objects.all()
-
     serializer_class = AldeiaIndigenaSerializer
 
+
+class AldeiaIndigenaDetail(APIViewDetailSpatialFunction):
+
+    serializer_class = AldeiaIndigenaSerializer
 
 
 class AreaEdificadaList(generics.ListCreateAPIView):

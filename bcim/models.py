@@ -700,7 +700,7 @@ class UnidadeProtecaoIntegral(models.Model):
     administracao = models.TextField(blank=True, null=True)
     atolegal = models.CharField(max_length=100, blank=True, null=True)
     tipounidprotinteg = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
+    geom123 = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
     class Meta:
