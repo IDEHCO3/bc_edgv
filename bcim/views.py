@@ -1,6 +1,7 @@
 import httplib2
 import json as json
 from django.contrib.gis.geos import GEOSGeometry
+from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -215,6 +216,27 @@ class APIViewDetailSpatialFunction(APIView):
     def get_geometry_object(self, object_model):
         return getattr(object_model, self.geometry_field_name(), None)
 
+
+    def parametersConverted(self, params_as_comma_string):
+        paramsConveted = []
+        params_as_array = params_as_comma_string.split(',')
+        for value in params_as_array:
+            if value.lower() == 'true':
+                paramsConveted.append(True)
+                continue
+            elif value.lower() == 'false':
+                paramsConveted.append(False)
+                continue
+
+            try:
+                paramsConveted.append(int( value ) )
+            except ValueError:
+                try:
+                    paramsConveted.append( float( value ) )
+                except ValueError:
+                    paramsConveted.append ( value)
+        return paramsConveted
+
     def get(self, request, *args, **kwargs):
 
         object_model = self.get_object(self.dic_with_only_identitier_field())
@@ -225,16 +247,16 @@ class APIViewDetailSpatialFunction(APIView):
 
         param = self.kwargs.get(self.spatial_function_parameter_template())
         if param:
-            res = getattr(self.get_geometry_object(object_model), st_function)(param)
+            params = self.parametersConverted(param)
+            res = getattr(self.get_geometry_object(object_model), st_function)(*params)
         else:
             res = getattr(self.get_geometry_object(object_model), st_function)
-            if callable(res):
-                res = res(param)
-                if type(res) is GEOSGeometry:
-                    return Response(res.geojson)
-        a_dict = {st_function : res}
 
-        return Response(json.dumps(a_dict))
+        if isinstance(res, GEOSGeometry):
+            return HttpResponse(res.geojson)
+
+        a_dict = {st_function : res}
+        return Response(a_dict)
 
 class UnidadeFederacaoDetail(APIViewDetailSpatialFunction):
     """
