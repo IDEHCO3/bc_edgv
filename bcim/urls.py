@@ -6,11 +6,11 @@ from bcim import views
 
 urlpatterns = format_suffix_patterns([
     url(r'^$', views.api_root),
-   # url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
+    #url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
     #url(r'^estados/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
-    #url(r'^estados/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
-    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/$', views.UnidadeFederacaoDetailSpatial.as_view(), name='uf_detail_si'),
-    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/(?P<param>.*)/$', views.UnidadeFederacaoDetailSpatial.as_view(), name='uf_detail_geocodigo'),
+    url(r'^estados/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
+    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
+    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/(?P<param>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
     #url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
     #url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
