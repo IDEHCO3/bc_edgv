@@ -47,15 +47,11 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+
 
 
 
@@ -95,11 +91,12 @@ DATABASES = {
                'options': '-c search_path=bcim,ptcon_base,public',
 
        },
-       'HOST': 'localhost',
-       'NAME': 'idehco3',
-       'USER': 'idehco3',
-       'PASSWORD': 'idehco3',
+       'HOST': 'xposdes01v',
+       'NAME': 'ccar_prod',
+       'USER': 'ccar_prod',
+       'PASSWORD': 'desenv01',
        'SCHEMA': 'public,bcim, ptcon_base',
+
 
    }
 }

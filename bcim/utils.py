@@ -165,7 +165,8 @@ class APIViewDetailSpatialFunction(APIViewBasicSpatialFunction):
         st_function = self.kwargs.get(self.spatial_function_name_template())
         if not st_function:
            serializer = self.serializer_class(object_model)
-           return Response(serializer.data)
+           res = Response(serializer.data)
+           return res
 
         param = self.kwargs.get(self.spatial_function_parameter_template())
         if param:
