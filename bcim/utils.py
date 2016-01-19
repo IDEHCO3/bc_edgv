@@ -97,9 +97,9 @@ class APIViewBasicSpatialFunction(APIView):
     def spatial_function_parameter_template(self):
         return 'param'
 
-    def parametersConverted(self, params_as_comma_string):
+    def parametersConverted(self, params_as_ampersand_string):
         paramsConveted = []
-        params_as_array = params_as_comma_string.split(',')
+        params_as_array = params_as_ampersand_string.split('&')
         for value in params_as_array:
             if value.lower() == 'true':
                 paramsConveted.append(True)

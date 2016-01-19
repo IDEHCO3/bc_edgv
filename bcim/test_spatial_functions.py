@@ -29,14 +29,14 @@ class UnidadeFederacaoDetailSpatialQueryTestCase(SimpleTestCase):
 
     def setUp(self):
         self.json_type = type('str')
-        self.host_base = "http://172.30.10.120:8000"
+        self.host_base = 'http://172.30.10.120:8000'
         self.url_uf_by_sigla = self.host_base + "/ibge/bcim/estados/RJ/"
         self.url_uf_by_geocodigo = self.host_base + "/ibge/bcim/estados/RJ/"
         self.h = httplib2.Http(".cache")
 
     def test_uf_sigla_contains_point(self):
-        url = self.host_base + "/ibge/bcim/estados/RJ/contains/POINT(-42 -21)/"
-        resp, gj = self.h.request(url, "GET")
+        an_url = url = "http://172.30.10.120:8000/ibge/bcim/estados/RJ/contains/POINT(-42%20-21)/"
+        resp, gj = self.h.request(an_url, "GET")
         is_true = json.loads(gj.decode())["contains"]
         self.assertTrue(is_true)
 
