@@ -3,6 +3,7 @@ from django.test import SimpleTestCase
 
 import json
 import httplib2
+
 from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404

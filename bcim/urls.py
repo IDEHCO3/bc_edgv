@@ -6,14 +6,26 @@ from bcim import views
 
 urlpatterns = format_suffix_patterns([
     url(r'^$', views.api_root),
-    #url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
+
+    #Detail estados
     url(r'^estados/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
     url(r'^estados/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
-    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/(?P<param>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
-    #url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
-    #url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
+    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function>[A-Za-z]+)/(?P<param>.+)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
+    #Collection estados
+    url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
+    url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
+    url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
+
+    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_aldeia'),
+    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<spatial_function>[A-Za-z]+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_sf'),
+    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<spatial_function>[A-Za-z]+)/(?P<param>.+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_with_param_sf'),
+    #collection
+    url(r'^aldeias-indigenas/$', views.AldeiaIndigenaListFilteredByQueryParameters.as_view(), name='aldeia_indigena_list'),
+    url(r'^aldeias-indigenas/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.AldeiaIndigenaListFiltered.as_view(), name='aldeia_indigena_list_filtered'),
+
+
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),
@@ -25,11 +37,7 @@ urlpatterns = format_suffix_patterns([
     url(r'^unidades-de-uso-sustentavel/$', views.UnidadeUsoSustentavelList.as_view(), name='unidade_uso_sustentavel_list'),
     url(r'^aglomerados-rurais-de-extensao-urbana/$', views.AglomeradoRuralDeExtensaoUrbanaList.as_view(), name='aglomerado_rural_de_extensao_urbana_list'),
     url(r'^aglomerados-rurais-isolado/$', views.AglomeradoRuralIsoladoList.as_view(), name='aglomerado_rural_isolado_list'),
-    url(r'^aldeias-indigenas/$', views.AldeiaIndigenaList.as_view(), name='aldeia_indigena_list'),
-    url(r'^aldeias-indigenas/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.AldeiaIndigenaListFiltered.as_view(), name='aldeia_indigena_list_filtered'),
-    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]*)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_aldeia'),
-    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]*)/(?P<spatial_function>[A-Za-z]+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_sf'),
-    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]*)/(?P<spatial_function>[A-Za-z]+)/(?P<param>.*)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_sf'),
+
     url(r'^areas-edificadas/$', views.AreaEdificadaList.as_view(), name='area_edificada_list'),
     url(r'^capitais/$', views.CapitalList.as_view(), name='capital_list'),
     url(r'^vilas/$', views.VilaList.as_view(), name='vila_list'),

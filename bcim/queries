@@ -10,4 +10,4 @@ Object
 3) <<servidor>>/ibge/bcim/estados/SP/contains/{"type": "Feature", "geometry": {"type": "Point","coordinates": [-42, -21]}}
 4) <<servidor>>/ibge/bcim/estados/RJ/buffer/0.2
 5) <<servidor>>/ibge/bcim/aldeias-indigenas/587
-
+6)

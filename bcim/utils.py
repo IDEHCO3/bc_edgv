@@ -1,6 +1,6 @@
 import json
 
-import httplib2
+import requests
 from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -31,6 +31,9 @@ class DefaultsMixin(object):
         authentication.TokenAuthentication,
     )
 """
+
+import ast
+from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
 
 class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
 
@@ -71,15 +74,22 @@ class BasicListFiltered(generics.ListCreateAPIView):
 
         return self.queryset
 
+    def make_geometrycollection_from_featurecollection(feature_collection):
+        geoms = []
+        features = ast.literal_eval(feature_collection)
+        for feature in features['features']:
+            feature_geom = feature['geometry']
+            geoms.append(GEOSGeometry(feature))
+        return GeometryCollection(tuple(geoms))
+
+
     def geos_geometry(self, geom_str_or_url):
         a_geom =  geom_str_or_url
         str1 = (geom_str_or_url[0:5]).upper()
         https = ['http:', 'https']
         if (str1 in https):
-            h = httplib2.Http(".cache")
-            resp, a_geom = h.request(geom_str_or_url, "GET")
-            a_geojson = json.loads(a_geom.decode())
-            a_geom = (a_geojson["features"][0]["geometry"]).__str__()
+            resp= requests.get(geom_str_or_url)
+            return self.make_geometrycollection_from_featurecollection(resp.text)
         return GEOSGeometry(a_geom)
 
 
@@ -126,9 +136,8 @@ class APIViewBasicSpatialFunction(APIView):
             try:
                 http_str = (value[0:4]).lower()
                 if (http_str == 'http'):
-                    h = httplib2.Http(".cache")
-                    resp, a_geom = h.request(value, "GET")
-                    a_geojson = json.loads(a_geom.decode())
+                    resp = requests(value)
+                    a_geojson = json.loads(resp.txt)
                     a_geom = (a_geojson["geometry"])
                     paramsConveted.append(GEOSGeometry((json.dumps(a_geom))))
             except ValueError:

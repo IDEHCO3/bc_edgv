@@ -126,9 +126,68 @@ class UnidadeFederacaoDetail(APIViewDetailSpatialFunction):
     """
     serializer_class = UnidadeFederacaoSerializer
 
+class UnidadeFederacaoDetailSpatial(APIViewDetailSpatialFunction):
+    serializer_class = UnidadeFederacaoSerializer
+
+class UnidadeFederacaoDetailOLD1(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self):
+        queryset = UnidadeFederacao.objects.all()
+        filter = {}
+        #for field in self.multiple_lookup_fields:
+        #    filter[field] = self.kwargs[field]
+
+        obj = get_object_or_404(queryset, **self.kwargs)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        uf = self.get_object()
+        serializer = UnidadeFederacaoSerializer(uf)
+        return Response(serializer.data)
+
+class UnidadeFederacaoDetailSpatialOld(APIView):
+    """
+    Retrieve, update or delete a snippet instance.
+    """
+    def get_object(self, a_dict):
+        queryset = UnidadeFederacao.objects.all()
+        obj = get_object_or_404(queryset, **a_dict)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        st_function = self.kwargs.get('spatial_function')
+        param = self.kwargs.get('param')
+        a_dict = {}
+        for key, value in self.kwargs.items():
+            if key != 'spatial_function' and key != 'param':
+                a_dict[key] = value
+                break
+        uf = self.get_object(a_dict)
+        if param:
+            res = getattr(uf.geom,st_function)(param)
+        else:
+            res = getattr(uf.geom,st_function)
+            if callable(res):
+                res = res(param)
+        a_dict = {st_function : res}
+
+        return Response(json.dumps(a_dict))
+
+class UnidadeFederacaoList(generics.ListCreateAPIView):
+    queryset = UnidadeFederacao.objects.all()
+    serializer_class = UnidadeFederacaoSerializer
+
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
 class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters):
     """API endpoint for listing and creating sprints."""
     serializer_class = UnidadeFederacaoSerializer
+
 
 class UnidadeFederacaoFiltered(BasicListFiltered):
 
@@ -155,6 +214,8 @@ class UnidadeFederacaoFiltered(BasicListFiltered):
             return self.queryset.filter( sigla__in=siglas.split(",") )
 
         return super(UnidadeFederacaoFiltered, self).get_queryset()
+
+
 
 class MunicipioList(generics.ListCreateAPIView):
 
@@ -242,11 +303,11 @@ class AldeiaIndigenaListFiltered(BasicListFiltered):
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
 
-class AldeiaIndigenaListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters):
-    serializer_class = AldeiaIndigenaSerializer
 
 class AldeiaIndigenaDetail(APIViewDetailSpatialFunction):
+
     serializer_class = AldeiaIndigenaSerializer
+
 
 class AreaEdificadaList(generics.ListCreateAPIView):
 
