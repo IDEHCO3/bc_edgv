@@ -79,16 +79,19 @@ class BasicListFiltered(generics.ListCreateAPIView):
         features = ast.literal_eval(feature_collection)
         for feature in features['features']:
             feature_geom = feature['geometry']
-            geoms.append(GEOSGeometry(feature))
+            geoms.append(GEOSGeometry(feature_geom))
         return GeometryCollection(tuple(geoms))
 
 
     def geos_geometry(self, geom_str_or_url):
         a_geom =  geom_str_or_url
-        str1 = (geom_str_or_url[0:5]).upper()
+        str1 = (geom_str_or_url[0:5]).lower()
         https = ['http:', 'https']
         if (str1 in https):
             resp= requests.get(geom_str_or_url)
+            j = resp.json()
+            if j["type"].lower()== 'feature':
+               return GEOSGeometry(json.dumps(j["geometry"]))
             return self.make_geometrycollection_from_featurecollection(resp.text)
         return GEOSGeometry(a_geom)
 

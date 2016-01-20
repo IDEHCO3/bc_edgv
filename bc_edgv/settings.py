@@ -14,8 +14,6 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,7 +25,7 @@ SECRET_KEY = 'c(389qsh!zp=boq_^3#y-)^cbyq$t2ts=h#tu3^-tns-)6o+a8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -47,11 +45,15 @@ INSTALLED_APPS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
+    'django.middleware.security.SecurityMiddleware',
 
 
 
@@ -88,19 +90,18 @@ DATABASES = {
    'default': {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
        'OPTIONS': {
-               'options': '-c search_path=bcim,ptcon_base,public',
+               'options': '-c search_path=bcim,public',
 
        },
-       'HOST': 'xxxxx',
-       'NAME': 'ccar_prod',
-       'USER': 'ccar_prod',
-       'PASSWORD': 'xxxxx',
-       'SCHEMA': 'public,bcim, ptcon_base',
+       'HOST': 'localhost',
+       'NAME': 'idehco3',
+       'USER': 'postgres',
+       'PASSWORD': 'desenv',
+       #'SCHEMA': 'public,bcim',
 
 
    }
 }
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
