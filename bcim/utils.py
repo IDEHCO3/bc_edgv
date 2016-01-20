@@ -139,9 +139,8 @@ class APIViewBasicSpatialFunction(APIView):
             try:
                 http_str = (value[0:4]).lower()
                 if (http_str == 'http'):
-                    resp = requests(value)
-                    a_geojson = json.loads(resp.txt)
-                    a_geom = (a_geojson["geometry"])
+                    resp = requests.get(value)
+                    a_geom = resp.json()["geometry"]
                     paramsConveted.append(GEOSGeometry((json.dumps(a_geom))))
             except ValueError:
                 paramsConveted.append ( value)
