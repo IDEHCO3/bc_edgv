@@ -24,6 +24,7 @@ class NoDbTestRunner(DiscoverRunner):
 
 #python manage.py test app --testrunner=app.filename.NoDbTestRunner
 #python manage.py test bcim.tests  --testrunner=bcim.tests.NoDbTestRunner
+#python manage.py test bcim.test_spatial_functions  --testrunner=bcim.test_spatial_functions.NoDbTestRunner
 
 class UnidadeFederacaoDetailSpatialQueryTestCase(SimpleTestCase):
 
@@ -34,13 +35,13 @@ class UnidadeFederacaoDetailSpatialQueryTestCase(SimpleTestCase):
 
 
     def test_uf_sigla_contains_point(self):
-        an_url = url = self.host_base + '/ibge/bcim/estados/RJ/contains/POINT(-42 -21)/'
+        an_url = self.host_base + '/ibge/bcim/estados/RJ/contains/POINT(-42 -21)/'
         req = requests.get(an_url)
         is_true = req.json()["contains"]
         self.assertTrue(is_true)
 
     def test_uf_sigla_contains_point_as_geojson(self):
-        an_url = url = self.host_base + '/ibge/bcim/estados/RJ/contains/{ "type": "Point", "coordinates": [ -42, -21]}/'
+        an_url = self.host_base + '/ibge/bcim/estados/RJ/contains/{ "type": "Point", "coordinates": [ -42, -21]}/'
         req = requests.get(an_url)
         is_true = req.json()["contains"]
         self.assertTrue(is_true)
