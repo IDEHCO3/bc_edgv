@@ -358,6 +358,13 @@ class TrechoFerroviarioList(generics.ListCreateAPIView):
     queryset = TrechoFerroviario.objects.all()
     serializer_class = TrechoFerroviarioSerializer
 
+class TrechoFerroviarioDetail(APIViewDetailSpatialFunction):
+    """
+    Retrieve, update or delete a unidades da federação instance.
+    """
+    serializer_class = TrechoFerroviarioSerializer
+
+
 class TrechoHidroviarioList(generics.ListCreateAPIView):
 
     queryset = TrechoHidroviario.objects.all()

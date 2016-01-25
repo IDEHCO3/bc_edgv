@@ -58,7 +58,11 @@ urlpatterns = format_suffix_patterns([
     url(r'^sinalizacaoes$', views.SinalizacaoList.as_view(), name='sinalizacao_list'),
     url(r'^travessias/$', views.TravessiaList.as_view(), name='travessia_list'),
     url(r'^trechos-dutos/$', views.TrechoDutoList.as_view(), name='trecho_duto_list'),
+    #Trecho_ferroviario
     url(r'^trechos-ferroviarios/$', views.TrechoFerroviarioList.as_view(), name='trecho_ferroviario_list'),
+    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_id_objeto'),
+    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/(?P<spatial_function>[A-Za-z]+)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_si'),
+
     url(r'^trechos-hidroviarios/$', views.TrechoHidroviarioList.as_view(), name='trecho_hidroviario_list'),
     #url(r'^trechos-rodoviarios/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list'),
     url(r'^tuneis/$', views.TunelList.as_view(), name='tunel_list'),

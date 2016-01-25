@@ -4,6 +4,7 @@ import requests
 from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from requests.packages.urllib3.exceptions import HTTPError, ConnectionError
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -147,8 +148,9 @@ class APIViewBasicSpatialFunction(APIView):
                     else:
                         a_geom = js
                     paramsConveted.append(GEOSGeometry((json.dumps(a_geom))))
-            except ValueError:
-                paramsConveted.append ( value)
+            except (ConnectionError,  HTTPError) as err:
+                print('Error: '.format(err))
+                #paramsConveted.append (value)
 
         return paramsConveted
 
