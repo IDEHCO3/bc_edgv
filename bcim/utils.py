@@ -106,10 +106,43 @@ class APIViewBasicSpatialFunction(APIView):
         return self.serializer_class.Meta.geo_field
 
     def spatial_function_name_template(self):
-        return 'spatial_function'
+        return 'spatial_function_'
+
+    def function_name_template(self):
+        return 'function_'
 
     def spatial_function_parameter_template(self):
-        return 'param'
+        return 'param_'
+
+    def key_is_spatial_function(self, a_key):
+        return a_key[0:17] ==  self.spatial_function_name_template() # len of spatial_function_
+
+    def key_is_not_spatial_function(self, a_key):
+        return not self.key_is_spatial_function(a_key)
+
+    def key_is_function(self, a_key):
+        return a_key[0:9] ==  self.function_name_template() # len of function_
+
+    def key_is_not_function(self, a_key):
+        return not self.key_is_function( a_key)
+
+    def key_is_param(self, a_key):
+        return a_key[0:6] ==  self.spatial_function_parameter_template() # len of param_
+
+    def key_is_not_param(self, a_key):
+        return not self.key_is_param(a_key)
+
+    def key_is_identifier(self, a_key):
+        return self.key_is_not_spatial_function(a_key) and self.key_is_not_param(a_key) and self.key_is_not_function(a_key)
+
+
+    def dic_with_only_identitier_field(self, dict_params):
+        dic = dict_params.copy()
+        a_dict = {}
+        for key, value in dic.items():
+            if self.key_is_identifier(key):
+                a_dict[key] = value
+        return a_dict
 
     def parametersConverted(self, params_as_ampersand_string):
         paramsConveted = []
@@ -141,6 +174,8 @@ class APIViewBasicSpatialFunction(APIView):
                 http_str = (value[0:4]).lower()
                 if (http_str == 'http'):
                     resp = requests.get(value)
+                    if 400 <= resp.status_code <= 599:
+                        raise HTTPError({resp.status_code: resp.reason})
                     js = resp.json()
 
                     if (js.get("type") and js["type"].lower() in ['feature', 'featurecollection']):
@@ -165,37 +200,37 @@ class APIViewDetailSpatialFunction(APIViewBasicSpatialFunction):
         self.check_object_permissions(self.request, obj)
         return obj
 
-    def dic_with_only_identitier_field(self):
-        a_dict = {}
-        for key, value in self.kwargs.items():
-            if key != self.spatial_function_name_template() and key != self.spatial_function_parameter_template():
-                a_dict[key] = value
-                break
-        return a_dict
-
     def get_geometry_object(self, object_model):
         return getattr(object_model, self.geometry_field_name(), None)
 
+    def spatial_functions_with_params(self, dict_params):
+        a_dic_sf_param = {}
+        for i in range(len(dict_params)):
+           sf = dict_params.get('spatial_function_' + str(i+1))
+           if sf is not None:
+              a_dic_sf_param[sf] = dict_params.get('param_' + str(i+1))
+        return a_dic_sf_param
 
     def get(self, request, *args, **kwargs):
+        object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))
 
-        object_model = self.get_object(self.dic_with_only_identitier_field())
-        st_function = self.kwargs.get(self.spatial_function_name_template())
-        if not st_function:
+        st_functions = self.spatial_functions_with_params(kwargs)
+
+        if len(st_functions) == 0:
            serializer = self.serializer_class(object_model)
            res = Response(serializer.data)
            return res
 
-        param = self.kwargs.get(self.spatial_function_parameter_template())
-        if param:
-            params = self.parametersConverted(param)
-            obj_geometry = self.get_geometry_object(object_model)
-            res = getattr(obj_geometry , st_function)(*params)
-        else:
-            res = getattr(self.get_geometry_object(object_model), st_function)
+        obj_geometry = self.get_geometry_object(object_model)
+        for st_name, param_value in st_functions.items():
+            if param_value:
+                params = self.parametersConverted(param_value)
+                obj_geometry = getattr(obj_geometry, st_name)(*params)
+            else:
+                obj_geometry = getattr(obj_geometry, st_name)
 
-        if isinstance(res, GEOSGeometry):
-            return JSONResponse(res.geojson)
+        if isinstance(obj_geometry, GEOSGeometry):
+          return JSONResponse(obj_geometry.geojson)
 
-        a_dict = {st_function : res}
+        a_dict = { st_functions.__str__(): obj_geometry}
         return Response(a_dict)

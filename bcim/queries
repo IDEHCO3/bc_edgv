@@ -12,11 +12,13 @@ a.2) Collection parameters URLs
 Object
 1) <<servidor>>/ibge/bcim/estados/RJ/area/
 2) <<servidor>>/ibge/bcim/estados/SP/contains/POINT(-42 -21)
-3) <<servidor>>/ibge/bcim/estados/SP/contains/{"type": "Feature", "geometry": {"type": "Point","coordinates": [-42, -21]}}
+3) <<servidor>>/ibge/bcim/estados/SP/contains/{"type": "Point","coordinates": [-42, -21]}
 4) <<servidor>>/ibge/bcim/estados/RJ/buffer/0.2
 5) <<servidor>>/ibge/bcim/aldeias-indigenas/587
 6) <<servidor>>/ibge/bcim/estados/ES/<<servidor>>/ibge/bcim/aldeias-indigenas/587
-7) <<servidor>>/ibge/bcim/aldeias-indigenas/587/within/http://127.0.0.1:8001/ibge/bcim/estados/ES/envelope
+7) <<servidor>>/ibge/bcim/aldeias-indigenas/587/within/<<servidor>>/ibge/bcim/estados/ES/envelope
 8) <<servidor>>/ibge/bcim/estados/RJ/boundary/
-
+9) <<servidor>>/ibge/bcim/estados/RJ/transform/3857&True/area
+10) <<servidor>>/ibge/bcim/estados/MG/contains/http://172.30.10.61:8000/ibge/bcim/estados/MG/centroid/
+11) <<servidor>>/ibge/bcim/estados/MG/transform/3005%26True/area/
 

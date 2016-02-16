@@ -23,8 +23,6 @@ class NoDbTestRunner(DiscoverRunner):
    def teardown_databases(self, old_config, **kwargs):
      pass
 
-#python manage.py test app --testrunner=app.filename.NoDbTestRunner
-#python manage.py test bcim.tests  --testrunner=bcim.tests.NoDbTestRunner
 
 class UnidadeFederacaoTestCase(SimpleTestCase):
 
