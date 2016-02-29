@@ -1,0 +1,18 @@
+#config files
+.idea/*
+
+#compiled files
+*.pyc
+
+#temp files
+*~
+
+#migrations
+*/migrations/*
+
+#static
+bc_edgv/static_root/*
+
+#media
+bc_edgv/media_root/*
+
