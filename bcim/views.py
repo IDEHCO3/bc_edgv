@@ -52,7 +52,7 @@ from bcim.serializers import UnidadeFederacaoSerializer,MunicipioSerializer, Out
 @api_view(('GET',))
 def api_root(request, format=None):
     return Response({
-        #'unidades federativas': reverse('bcim_v1:uf_list', request=request, format=format),
+        'unidades federativas': reverse('bcim_v1:uf_list', request=request, format=format),
         'municipios': reverse('bcim_v1:municipio_list', request=request, format=format),
         'outras unidades protegidas': reverse('bcim_v1:outras_unid_protegidas_list', request=request, format=format),
         'outros limites oficiais': reverse('bcim_v1:outros_limites_oficiais_list', request=request, format=format),
