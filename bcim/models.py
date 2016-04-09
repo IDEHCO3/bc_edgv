@@ -675,7 +675,7 @@ class UnidadeConservacaoNaoSnuc(models.Model):
 
 
 class UnidadeFederacao(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    id_objeto = models.IntegerField(primary_key=True, db_column='id_objeto')
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)

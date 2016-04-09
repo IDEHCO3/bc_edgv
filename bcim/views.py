@@ -12,7 +12,7 @@ from rest_framework_gis import filters
 from rest_framework_gis.filterset import GeoFilterSet
 
 from bcim.utils import APIViewDetailSpatialFunction, DefaultsMixin, ResourceListCreateFilteredByQueryParameters, \
-    BasicListFiltered
+    BasicListFiltered, APIViewHypermedia
 from .models import UnidadeFederacao,Municipio, OutrasUnidProtegidas, OutrosLimitesOficiais, Pais, TerraIndigena, \
     UnidadeConservacaoNaoSnuc, UnidadeProtecaoIntegral,UnidadeUsoSustentavel, AglomeradoRuralDeExtensaoUrbana, \
     AglomeradoRuralDeExtensaoUrbana, AglomeradoRuralIsolado, AldeiaIndigena, AreaEdificada, Capital, Cidade, Vila, \
@@ -120,7 +120,7 @@ def api_root(request, format=None):
     })
 
 
-class UnidadeFederacaoDetail(APIViewDetailSpatialFunction):
+class UnidadeFederacaoDetail(APIViewHypermedia):
     """
     Retrieve, update or delete a unidades da federacao instance.
     """

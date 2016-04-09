@@ -42,6 +42,17 @@ INSTALLED_APPS = (
     'rest_framework_gis',
     'corsheaders',
     'bcim',
+<<<<<<< HEAD
+
+)
+
+MIDDLEWARE_CLASSES = (
+     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+=======
 )
 
 MIDDLEWARE_CLASSES = (
@@ -54,6 +65,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
 
 
 
@@ -86,12 +98,15 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+<<<<<<< HEAD
+=======
 
 if not 'IP_SGBD' in os.environ:
     os.environ['IP_SGBD'] = 'localhost'
 
 ip_sgbd = os.environ['IP_SGBD']
 
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
 DATABASES = {
    'default': {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -99,16 +114,27 @@ DATABASES = {
                'options': '-c search_path=bcim,public',
 
        },
+<<<<<<< HEAD
+       'HOST': 'localhost',
+       'NAME': 'idehco3',
+       'USER': 'postgres',
+       'PASSWORD': 'desenv',
+=======
        'HOST': ip_sgbd,
        'NAME': 'ccar_prod',
        'USER': 'ccar_prod',
        'PASSWORD': 'ccar_prod',
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
        #'SCHEMA': 'public,bcim',
 
 
    }
 }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -126,7 +152,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+<<<<<<< HEAD
+STATIC_URL = '/static/'
+=======
 STATIC_URL = '/idehco3/bcedgv/static/'
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from rest_framework import serializers
+[]
 from .models import UnidadeFederacao, Municipio, OutrasUnidProtegidas, OutrosLimitesOficiais, Pais, TerraIndigena, \
     UnidadeConservacaoNaoSnuc, UnidadeProtecaoIntegral, UnidadeUsoSustentavel, AglomeradoRuralDeExtensaoUrbana, \
     AglomeradoRuralIsolado, AldeiaIndigena, AreaEdificada, Capital, Cidade, Vila, CurvaBatimetrica, CurvaNivel, Duna, \
@@ -38,6 +38,7 @@ class UnidadeFederacaoSerializer(GeoFeatureModelSerializer):
         model = UnidadeFederacao
         geo_field = 'geom'
         fields = ['id_objeto', 'nome', 'nomeabrev', 'sigla', 'geocodigo']
+        identifiers = ['id_objeto', 'nome', 'nomeabrev', 'sigla', 'geocodigo']
 
 
 class MunicipioSerializer(GeoFeatureModelSerializer):

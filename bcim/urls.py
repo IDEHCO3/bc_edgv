@@ -11,8 +11,14 @@ urlpatterns = format_suffix_patterns([
     url(r'^estados/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
     url(r'^estados/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
+<<<<<<< HEAD
+   # url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<attributes>[A-Za-z&0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
+    url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
+    #url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function_1>[A-Za-z0-9]+)/(?P<param_1>\.\d+\.)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla_nu'),
+=======
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function_1>[A-Za-z0-9]+)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function_1>[A-Za-z0-9]+)/(?P<param_1>\.\d+\.)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla_nu'),
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function_1>[A-Za-z0-9]+)/(?P<param_1>[\{a-zA-Z&:.,"\[\(+\-0-9\s\]\)\}]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla_vl'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function_1>[A-Za-z]+)/(?P<param_1>.*)/(?P<spatial_function_2>[A-Za-z]+)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
     url(r'^estados/(?P<sigla>[A-Za-z]{2})/(?P<spatial_function_1>[A-Za-z0-9]+)/(?P<spatial_function_2>[A-Za-z0-9]+)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
@@ -20,13 +26,19 @@ urlpatterns = format_suffix_patterns([
 
 
     #Collection estados
+<<<<<<< HEAD
+     url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
+     url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
+     url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
+=======
     url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
     url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
     url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
+>>>>>>> cb339b99f70707bd59f7ab092bce76fd60a00dda
 
     url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_aldeia'),
-    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<spatial_function_1>[A-Za-z]+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_sf'),
-    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<spatial_function_1>[A-Za-z]+)/(?P<param_1>.+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_with_param_sf'),
+    url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<attributes_functions>.*)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_si'),
+    #url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<spatial_function_1>[A-Za-z]+)/(?P<param_1>.+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_with_param_sf'),
     #collection
     url(r'^aldeias-indigenas/$', views.AldeiaIndigenaListFilteredByQueryParameters.as_view(), name='aldeia_indigena_list'),
     url(r'^aldeias-indigenas/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.AldeiaIndigenaListFiltered.as_view(), name='aldeia_indigena_list_filtered'),

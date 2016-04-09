@@ -9,7 +9,13 @@ a.2) Collection parameters URLs
 3) <<servidor>>/ibge/bcim/aldeias-indigenas/within/http://127.0.0.1:8001/ibge/bcim/estados/ES
 4) <<servidor>>/ibge/bcim/aldeias-indigenas/within/http://127.0.0.1:8001/ibge/bcim/estados/PA/
 
-Object
+b) Object - http://api.ibge.gov.br/servicos/bcim/estados/{identificador}/[{function}/[{parameter}]*]*
+b.1) attribute
+1) <<servidor>>/ibge/bcim/estados/RJ/sigla
+2) <<servidor>>/ibge/bcim/estados/RJ/geom
+3) <<servidor>>/ibge/bcim/estados/RJ/sigla&geom
+b.2) Function
+b.3) SpatialFunction
 1) <<servidor>>/ibge/bcim/estados/RJ/area/
 2) <<servidor>>/ibge/bcim/estados/SP/contains/POINT(-42 -21)
 3) <<servidor>>/ibge/bcim/estados/SP/contains/{"type": "Point","coordinates": [-42, -21]}
