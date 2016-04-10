@@ -1,4 +1,4 @@
-import httplib2
+
 import json as json
 from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponse

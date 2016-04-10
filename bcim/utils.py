@@ -5,6 +5,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.db import models
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils import six
 from requests.packages.urllib3.exceptions import HTTPError, ConnectionError
 from rest_framework import generics
 from rest_framework.renderers import JSONRenderer
@@ -185,7 +186,6 @@ class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
         return dict
 
 
-
 class BasicListFiltered(generics.ListCreateAPIView):
 
     def get_queryset(self):
@@ -258,10 +258,6 @@ class BasicAPIViewHypermedia(APIView):
     def is_spatial_and_has_parameters(self, attribute_or_method_name):
         dic = geometry_with_parameters_type()
         return (attribute_or_method_name in dic) and len(dic[attribute_or_method_name])
-
-
-
-
 
 class APIViewHypermedia(BasicAPIViewHypermedia):
 
@@ -353,15 +349,19 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return  getattr(object, attribute_or_function_name)
 
-    def getAttributes_as_dic(self, object_model, attributes_functions_name):
+    def response_resquest_with_attributes(self, object_model, attributes_functions_name):
         a_dict ={}
         attributes = attributes_functions_name.split('&')
         for attr_name in attributes:
            obj = self._value_from_object(object_model, attr_name, [])
            if isinstance(obj, GEOSGeometry):
                 obj =  json.loads( obj.geojson)
+                if len(attributes) == 1:
+                    return Response(obj,  content_type='application/vnd.geo+json')
+
            a_dict[attr_name] = obj
-        return a_dict
+
+        return Response(a_dict, content_type='application/json')
 
     def attributes_functions_str_has_url(self, attributes_functions_str_url):
         return (attributes_functions_str_url.find('http:') > -1) or (attributes_functions_str_url.find('https:') > -1)\
@@ -395,20 +395,20 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return self._execute_attribute_or_method(obj, arr_attrib_method_name[0], arr_attrib_method_name[1:])
 
-    def chain_dic(self, object, attributes_functions_str):
+    def response_of_request(self, object, attributes_functions_str):
         att_funcs = attributes_functions_str.split('/')
-        dic = {}
+
         obj = self.get_geometry_object(object)
         if  not self.is_spatial_operation ( att_funcs[0]) and self.is_spatial_attribute(att_funcs[0]):
             att_funcs = att_funcs[1:]
 
         a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:] )
+
         if isinstance(a_value, GEOSGeometry):
            a_value =  json.loads( a_value.geojson)
+           return Response(data=a_value, content_type='application/vnd.geo+json')
 
-        dic[attributes_functions_str] = a_value
-
-        return dic
+        return Response(data=a_value, content_type='application/json')
 
     def get(self, request, *args, **kwargs):
         object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))
@@ -417,28 +417,22 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         if attributes_functions_str is None:
             serializer = self.serializer_class(object_model)
-            res = Response(data=serializer.data, content_type='application/json')
-            return res
+            return Response(serializer.data,  content_type='application/vnd.geo+json')
 
         if self.has_only_attribute(object_model, attributes_functions_str):
-
-            a_data =  self.getAttributes_as_dic(object_model, attributes_functions_str )
-            return Response(a_data)
-
-            return resp
+            return  self.response_resquest_with_attributes(object_model, attributes_functions_str )
 
         if self.attributes_functions_str_has_url(attributes_functions_str.lower()):
             arr_of_two_url =  self.attributes_functions_splitted_by_url(attributes_functions_str)
             resp = requests.get(arr_of_two_url[1])
             if resp .status_code == 404:
                 return Response({'Erro:' + str(resp.status_code)})
-            j = resp.json()
+            j = resp.text
             attributes_functions_str = arr_of_two_url[0] + j
 
+        return self.response_of_request(object_model, attributes_functions_str)
 
-        res = self.chain_dic(object_model, attributes_functions_str)
 
-        return Response(res)
 
 
 class APIViewBasicSpatialFunction(APIView):
