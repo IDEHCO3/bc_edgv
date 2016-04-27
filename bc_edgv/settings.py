@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = 'localhost'
+    os.environ['IP_SGBD'] = '172.17.0.2'
 
 ip_sgbd = os.environ['IP_SGBD']
 
@@ -95,10 +95,10 @@ DATABASES = {
 
        },
 
-       'HOST': 'localhost',
-       'NAME': 'idehco3',
-       'USER': 'postgres',
-       'PASSWORD': 'desenv',
+       'HOST': ip_sgbd,
+       'NAME': 'ccar_prod',
+       'USER': 'ccar_prod',
+       'PASSWORD': 'ccar_prod',
    }
 }
 
@@ -118,9 +118,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-
-STATIC_URL = '/static/'
 
 STATIC_URL = '/idehco3/bcedgv/static/'
 

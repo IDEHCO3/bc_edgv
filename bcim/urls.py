@@ -15,7 +15,7 @@ urlpatterns = format_suffix_patterns([
 
 
     #Collection estados
-    # url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list' ),
+    url(r'^estados/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list'),
     # url(r'^estados/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
     # url(r'^estados/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
 
