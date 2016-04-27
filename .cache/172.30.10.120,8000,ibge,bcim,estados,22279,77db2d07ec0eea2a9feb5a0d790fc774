@@ -1,9 +1,0 @@
-status: 301
-content-location: http://172.30.10.120:8000/ibge/bcim/estados/22279
-server: WSGIServer/0.2 Python/3.2
-location: http://172.30.10.120:8000/ibge/bcim/estados/22279/
-date: Mon, 18 Jan 2016 20:47:21 GMT
-x-frame-options: SAMEORIGIN
-content-type: text/html; charset=utf-8
--x-permanent-redirect-url: http://172.30.10.120:8000/ibge/bcim/estados/22279/
-
