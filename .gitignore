@@ -1,6 +1,9 @@
 #config files
 .idea/*
 
+#cache files
+.cache/*
+
 #compiled files
 *.pyc
 
