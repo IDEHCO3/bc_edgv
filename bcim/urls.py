@@ -5,7 +5,7 @@ from bcim import views
 
 
 urlpatterns = format_suffix_patterns([
-    url(r'^$', views.api_root),
+    url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
     #Detail estados
     url(r'^estados/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
