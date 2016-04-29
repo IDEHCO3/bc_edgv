@@ -39,7 +39,7 @@ class Context(BaseMetadata):
         if url is not None:
             self._data["@context"][name] = url
         else:
-            self._data["@context"][name] = {"@id":id, "@type": type}
+            self._data["@context"][name] = {"@id": id, "@type": type}
 
     def determine_metadata(self, request, view):
         self.request = request
