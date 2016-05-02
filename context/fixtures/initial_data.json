@@ -1,0 +1,19 @@
+[
+  {
+    "model": "context.Class",
+    "pk": 1,
+    "fields": {
+      "name": "APIRoot"
+    }
+  },
+  {
+    "model": "context.Context",
+    "pk": 1,
+    "fields": {
+      "attribute": "unidades federativas",
+      "means": "http://schema.org/Country",
+      "type": "http://schema.org/Text",
+      "classname": 1
+    }
+  }
+]

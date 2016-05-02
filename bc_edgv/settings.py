@@ -42,11 +42,12 @@ INSTALLED_APPS = (
     'rest_framework_gis',
     'corsheaders',
     'bcim',
+    'context',
 
 )
 
 MIDDLEWARE_CLASSES = (
-     'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -91,14 +92,14 @@ DATABASES = {
    'default': {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
        'OPTIONS': {
-               'options': '-c search_path=bcim,public',
+               'options': '-c search_path=public,bcim',
 
        },
 
        'HOST': ip_sgbd,
-       'NAME': 'ccar_prod',
-       'USER': 'ccar_prod',
-       'PASSWORD': 'ccar_prod',
+       'NAME': 'idehco3',
+       'USER': 'idehco3',
+       'PASSWORD': 'idehco3',
    }
 }
 
