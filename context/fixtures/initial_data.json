@@ -3,7 +3,7 @@
     "model": "context.Class",
     "pk": 1,
     "fields": {
-      "name": "APIRoot"
+      "name": "api-root"
     }
   },
   {
