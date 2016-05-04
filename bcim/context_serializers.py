@@ -1,4 +1,4 @@
-from context.context import Context
+from context.context import ContextBase
 from context.hydra import HydraClassSerializer
 
 class APIRootHydraSerializer(HydraClassSerializer):
@@ -81,7 +81,7 @@ class APIRootHydraSerializer(HydraClassSerializer):
         method_serializer.addCustomOperation(title="List", returns=method_serializer.getClassName(), view="bcim_v1:api_root")
 
 
-class APIRootContext(Context):
+class APIRootContext(ContextBase):
 
     operation_class = APIRootHydraSerializer
 
@@ -157,7 +157,7 @@ class APIRootContext(Context):
         for attribute in attributes:
             self.addAttribute(attribute, id=schemaUrl+attributes[attribute], type="@id")
 
-class UnidadeFederacaoContext(Context):
+class UnidadeFederacaoContext(ContextBase):
 
     def createAttributes(self):
         schemaUrl = "http://schema.org/"

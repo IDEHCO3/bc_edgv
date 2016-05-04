@@ -1,9 +1,8 @@
 from rest_framework.metadata import BaseMetadata
 
-class Context(BaseMetadata):
+class ContextBase(BaseMetadata):
 
-    def __init__(self):
-        self._data = {"@context": {}}
+    _data = {"@context": {}}
 
     def getTypeID(self):
         return "@id"
@@ -46,7 +45,7 @@ class Context(BaseMetadata):
         return self.data
 
     def createOperations(self):
-        if self.operation_class is not None:
+        if hasattr(self, "operation_class") and self.operation_class is not None:
             op = self.operation_class(request=self.request)
             self._data["suportedClass"] = op.data
 
