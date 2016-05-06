@@ -1,27 +1,25 @@
 from django.db import models
 from django.contrib.gis.geos import GEOSGeometry, Point, LineString, Polygon
+from context.models import Class
 # Create your models here.
-class Class(models.Model):
-    name = models.CharField(max_length=100, blank=False, null=False)
 
 class SupportedProperty(models.Model):
     type = models.CharField(max_length=100, blank=False, null=False)
-    property = models.CharField(max_length=100, blank=False, null=False) #The property
-    required = models.BooleanField(null=False) #Is the property required in a request to be valid?
-    readable = models.BooleanField(null=False)  #Can the client retrieve the property's value?
-    writeable = models.BooleanField(null=False) #Can the client change the property's value?
+    property = models.CharField(max_length=100, blank=False, null=False)
+    required = models.BooleanField(null=False)
+    readable = models.BooleanField(null=False)
+    writeable = models.BooleanField(null=False)
     hydra_class = models.ForeignKey(Class, blank=False, null=False, related_name='supported_properties')
 
 class SupportedOperation(models.Model):
     type = models.CharField(max_length=100, blank=True, null=False)
-    title = models.CharField(max_length=100, blank=False, null=False) #Creates a new comment",
+    title = models.CharField(max_length=100, blank=False, null=False)
     method = models.CharField(max_length=100, blank=False, null=False)
-    returns = models.CharField(max_length=100, blank=True, null=False) #"http://api.example.com/doc/#Comment",
+    returns = models.CharField(max_length=100, blank=True, null=False)
     possibleStatus = models.CharField(max_length=100, blank=True, null=True)
     hydra_class = models.ForeignKey(Class, blank=False, null=False, related_name='supported_operations')
 
 class ExpectedParameter(models.Model):
-    #type = models.CharField(max_length=100, blank=True, null=True) #"http://api.example.com/doc/#Comment",
     classname = models.ForeignKey(Class, blank=False, null=True)
     supportedOperation = models.ForeignKey(SupportedOperation, blank=False, null=False, related_name='expects')
 
