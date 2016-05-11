@@ -49,21 +49,18 @@ from bcim.serializers import UnidadeFederacaoSerializer,MunicipioSerializer, Out
 
 
 from bcim.context_serializers import *
+from context.utilities import *
 
 class APIRoot(APIView):
-    metadata_class = APIRootContext
 
     def options(self, request, *args, **kwargs):
-        if self.metadata_class is None:
-            return self.http_method_not_allowed(request, *args, **kwargs)
-        data = self.metadata_class().determine_metadata(request, self)
-        response = Response(data, status=status.HTTP_200_OK, content_type="application/ld+json")
-        response['Link'] = '</context/entrypoint.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\";'
+        response = Response(getContextData('api-root'), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = createLinkOfContext('api-root', request, response)
         return response
 
     def get(self, request, *args, **kwargs):
         format = None
-        return Response({
+        response = Response({
             'unidades federativas': reverse('bcim_v1:uf_list', request=request, format=format),
             'municipios': reverse('bcim_v1:municipio_list', request=request, format=format),
             'outras unidades protegidas': reverse('bcim_v1:outras_unid_protegidas_list', request=request, format=format),
@@ -130,6 +127,8 @@ class APIRoot(APIView):
             'marcos de limite': reverse('bcim_v1:marco_de_limite_list', request=request, format=format),
             'pontos geodesicos': reverse('bcim_v1:ponto_exibicao_wgs84_list', request=request, format=format),
         })
+        response = createLinkOfContext('api-root', request, response)
+        return response
 
 
 class UnidadeFederacaoDetail(APIViewHypermedia):
@@ -137,24 +136,20 @@ class UnidadeFederacaoDetail(APIViewHypermedia):
     Retrieve, update or delete a unidades da federacao instance.
     """
     serializer_class = UnidadeFederacaoSerializer
-    metadata_class = UnidadeFederacaoContext
-
-    def options(self, request, *args, **kwargs):
-        response = super(APIViewHypermedia, self).options(self, request, *args, **kwargs)
-        response.content_type = "application/ld+json"
-        return response
 
 class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters):
     """API endpoint for listing and creating sprints."""
     serializer_class = UnidadeFederacaoSerializer
 
+    def options(self, request, *args, **kwargs):
+        response = Response(getContextData('unidades-federativas'), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = createLinkOfContext('unidades-federativas', request, response)
+        return response
+
 class UnidadeFederacaoFiltered(BasicListFiltered):
 
     queryset = UnidadeFederacao.objects.all()
-
     serializer_class = UnidadeFederacaoSerializer
-
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 

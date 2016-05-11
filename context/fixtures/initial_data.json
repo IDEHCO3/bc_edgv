@@ -12,7 +12,7 @@
     "fields": {
       "attribute": "unidades federativas",
       "means": "http://schema.org/Country",
-      "type": "http://schema.org/Text",
+      "type": "http://schema.org/collection",
       "classname": 1
     }
   }
