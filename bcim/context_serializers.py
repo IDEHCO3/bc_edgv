@@ -1,5 +1,5 @@
 from context.context import ContextBase
-from context.hydra import HydraClassSerializer
+from hydra.hydra import HydraClassSerializer
 
 class APIRootHydraSerializer(HydraClassSerializer):
 

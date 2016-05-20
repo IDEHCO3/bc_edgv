@@ -1,7 +1,7 @@
 from django.db import models
 
 class Class(models.Model):
-    name = models.CharField(max_length=1000, blank=False, null=False)
+    name = models.CharField(max_length=1000, blank=False, null=False, unique=True)
 
 # Create your models here.
 class Context(models.Model):

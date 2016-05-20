@@ -15,13 +15,14 @@ class SupportedOperation(models.Model):
     type = models.CharField(max_length=100, blank=True, null=False)
     title = models.CharField(max_length=100, blank=False, null=False)
     method = models.CharField(max_length=100, blank=False, null=False)
+    expects = models.ForeignKey(Class, null=False)
     returns = models.CharField(max_length=100, blank=True, null=False)
     possibleStatus = models.CharField(max_length=100, blank=True, null=True)
     hydra_class = models.ForeignKey(Class, blank=False, null=False, related_name='supported_operations')
 
-class ExpectedParameter(models.Model):
-    classname = models.ForeignKey(Class, blank=False, null=True)
-    supportedOperation = models.ForeignKey(SupportedOperation, blank=False, null=False, related_name='expects')
+# class ExpectedParameter(models.Model):
+#     classname = models.ForeignKey(Class, blank=False, null=True)
+#     supportedOperation = models.ForeignKey(SupportedOperation, blank=False, null=False, related_name='expects')
 
 
 def point_with_parameters_type():

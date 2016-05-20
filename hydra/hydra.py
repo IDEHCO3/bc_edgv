@@ -173,6 +173,7 @@ class HydraClassSerializer():
         class_name = self.getTitle()
 
         base = {
+            "@context": self.getContext(),
             "@id": self.url,
             "@type": "hydra:Class",
             "title": class_name,
@@ -198,6 +199,50 @@ class HydraClassSerializer():
     def data(self):
         self.createMetadata()
         return self._data
+
+    def getContext(self):
+        context = {
+            #"vocab": "self.vocab",
+            "hydra": "http://www.w3.org/ns/hydra/core#",
+            "ApiDocumentation": "hydra:ApiDocumentation",
+            "property": {
+                "@id": "hydra:property",
+                "@type": "@id"
+            },
+            "readonly": "hydra:readonly",
+            "writeonly": "hydra:writeonly",
+            "supportedClass": "hydra:supportedClass",
+            "supportedProperty": "hydra:supportedProperty",
+            "supportedOperation": "hydra:supportedOperation",
+            "method": "hydra:method",
+            "expects": {
+                "@id": "hydra:expects",
+                "@type": "@id"
+            },
+            "returns": {
+                "@id": "hydra:returns",
+                "@type": "@id"
+            },
+            "statusCodes": "hydra:statusCodes",
+            "code": "hydra:statusCode",
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            "label": "rdfs:label",
+            #"description": "rdfs:comment",
+            "domain": {
+                "@id": "rdfs:domain",
+                "@type": "@id"
+            },
+            "range": {
+                "@id": "rdfs:range",
+                "@type": "@id"
+            },
+            "subClassOf": {
+                "@id": "rdfs:subClassOf",
+                "@type": "@id"
+            }
+        }
+        return context
 
 
 class HydraAPISerializer():
