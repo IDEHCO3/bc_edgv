@@ -1,12 +1,27 @@
 [
   {
-    "model": "",
+    "model": "hydra.SupportedProperty",
     "pk": 1,
-    "fields": {}
+    "fields": {
+      "type": "http://schema.org/Text",
+      "property": "testing",
+      "required": false,
+      "readable": true,
+      "writeable": false,
+      "hydra_class": 1
+    }
   },
   {
-    "model": "",
+    "model": "hydra.SupportedOperation",
     "pk": 1,
-    "fields": {}
+    "fields": {
+      "type": "hydra:action",
+      "title": "List maps",
+      "method": "GET",
+      "expects": 1,
+      "returns": "json",
+      "possibleStatus": "200",
+      "hydra_class": 1
+    }
   }
 ]

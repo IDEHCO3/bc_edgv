@@ -15,8 +15,8 @@ class SupportedOperation(models.Model):
     type = models.CharField(max_length=100, blank=True, null=False)
     title = models.CharField(max_length=100, blank=False, null=False)
     method = models.CharField(max_length=100, blank=False, null=False)
-    expects = models.ForeignKey(Class, null=False)
-    returns = models.CharField(max_length=100, blank=True, null=False)
+    expects = models.ForeignKey(Class, null=True)
+    returns = models.CharField(max_length=100, blank=True, null=True)
     possibleStatus = models.CharField(max_length=100, blank=True, null=True)
     hydra_class = models.ForeignKey(Class, blank=False, null=False, related_name='supported_operations')
 

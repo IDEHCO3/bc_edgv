@@ -11,8 +11,8 @@ class HydraSerializer(HydraClassSerializer):
 
     def createProperties(self, property_serializer):
         for property in self.properties_objects:
-            pass
+            property_serializer.addProperty(name=property.property, type=property.type, required=property.required, readable=property.readable, writeable=property.writeable)
 
     def createMethods(self, method_serializer):
         for method in self.operations_objects:
-            pass
+            method_serializer.addCustomOperation(title=method.title, httpMethod=method.method, expects=method.expects_id, returns=method.returns)
