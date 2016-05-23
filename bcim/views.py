@@ -54,7 +54,7 @@ from context.utilities import *
 class APIRoot(APIView):
 
     def options(self, request, *args, **kwargs):
-        response = Response(getContextData('api-root'), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = Response(getContextData('api-root', request), status=status.HTTP_200_OK, content_type="application/ld+json")
         response = createLinkOfContext('api-root', request, response)
         return response
 
@@ -142,7 +142,7 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
     serializer_class = UnidadeFederacaoSerializer
 
     def options(self, request, *args, **kwargs):
-        response = Response(getContextData('unidades-federativas'), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = Response(getContextData('unidades-federativas', request), status=status.HTTP_200_OK, content_type="application/ld+json")
         response = createLinkOfContext('unidades-federativas', request, response)
         return response
 
