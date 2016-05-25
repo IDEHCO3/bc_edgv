@@ -33,7 +33,7 @@ class HydraPropertySerializer:
 
     def addProperty(self, name="", type="", required=False, readable=False, writeable=False):
         property = {
-            "@type": type,
+            #"@type": type,
             "property": name,
             "required": required,
             "readable": readable,
@@ -49,10 +49,8 @@ class HydraPropertySerializer:
 
 class HydraMethodSerializer:
 
-    def __init__(self, class_name="", request=None):
+    def __init__(self,):
         self._data = []
-        self.class_name = class_name
-        self.request = request
 
     def createMethods(self):
         pass
@@ -69,66 +67,51 @@ class HydraMethodSerializer:
     def getRetrieveName(self):
         return "GET"
 
-    def getClassName(self):
-        return self.class_name
-
-    def getClassNameCollection(self):
-        return self.class_name + "Collection"
-
-    def setClassName(self, class_name):
-        self.class_name =class_name
-
-    def getViewUrl(self, view=None):
-        id = ""
-        if view is not None:
-            id = reverse(view, request=self.request)
-        return id
-
-    def addDefaultCreateOperation(self, view=None):
+    def addDefaultCreateOperation(self, id="", expects="", returns="", possible_status=[]):
         method = {
-            "@id": self.getViewUrl(view=view),
+            #"@id": id,
             "@type": "CreateResourceOperation",
             "title": "Create",
             "method": "POST",
-            "expects": self.getClassName(),
-            "returns": self.getClassName(),
-            "possibleStatus": []
+            "expects": expects,
+            "returns": returns,
+            "possibleStatus": possible_status
         }
         self._data.append(method)
 
-    def addDefaultUpdateOperation(self, view=None):
+    def addDefaultUpdateOperation(self, id="", expects="", returns="", possible_status=[]):
         method = {
-            "@id": self.getViewUrl(view=view),
+            #"@id": id,
             "@type": "ReplaceResourceOperation",
             "title": "Update",
             "method": "PUT",
-            "expects": self.getClassName(),
-            "returns": self.getClassName(),
-            "possibleStatus": []
+            "expects": expects,
+            "returns": returns,
+            "possibleStatus": possible_status
         }
         self._data.append(method)
 
-    def addDefaultDeleteOperation(self, view=None):
+    def addDefaultDeleteOperation(self, id="", possible_status=[]):
         method = {
-            "@id": self.getViewUrl(view=view),
+            #"@id": id,
             "@type": "DeleteResourceOperation",
             "title": "Delete",
             "method": "DELETE",
-            "expects": self.getClassName(),
+            "expects": "",
             "returns": "",
-            "possibleStatus": []
+            "possibleStatus": possible_status
         }
         self._data.append(method)
 
-    def addCustomOperation(self, title="Default", httpMethod="GET", expects="", returns="", view=None):
+    def addCustomOperation(self, id="", type="", title="Default", httpMethod="GET", expects="", returns="", possible_status=[]):
         method = {
-            "@id": self.getViewUrl(view=view),
-            "@type": "Operation",
+            #"@id": id,
+            "@type": type,
             "title": title,
             "method": httpMethod,
             "expects": expects,
             "returns": returns,
-            "possibleStatus": []
+            "possibleStatus": possible_status
         }
         self._data.append(method)
 
@@ -147,7 +130,6 @@ class HydraClassSerializer():
 
         self.class_name = None
         self.is_collection = False
-        self.url = ""
         self.context = ""
         self.description = ""
 
@@ -165,7 +147,7 @@ class HydraClassSerializer():
         self.createProperties(property_serializer)
         self._data["suportedProperty"] = property_serializer.data
 
-        method_serializer = HydraMethodSerializer(class_name=self.getClassTitle(), request=self.request)
+        method_serializer = HydraMethodSerializer()
         self.createMethods(method_serializer)
         self._data["suportedOperation"] = method_serializer.data
 
@@ -174,7 +156,7 @@ class HydraClassSerializer():
 
         base = {
             "@context": self.getContext(),
-            "@id": self.url,
+            "@id": self.request.get_full_path(),
             "@type": "hydra:Class",
             "title": class_name,
             "description": self.description,

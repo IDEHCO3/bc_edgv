@@ -4,5 +4,5 @@ from hydra.serializers import *
 
 def getHydraData(classname, request):
     classobject = Class.objects.get(name=classname)
-    serializerHydra = HydraSerializer(classobject, request)
+    serializerHydra = HydraSerializer(classobject, request, classname)
     return serializerHydra.data
