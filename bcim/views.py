@@ -146,6 +146,11 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
         response = createLinkOfContext('unidades-federativas', request, response)
         return response
 
+    def get(self, request, *args, **kwargs):
+        response = super(UnidadeFederacaoListFilteredByQueryParameters, self).__init__(request, *args, **kwargs)
+        response = createLinkOfContext('estados', request, response)
+        return response
+
 class UnidadeFederacaoFiltered(BasicListFiltered):
 
     queryset = UnidadeFederacao.objects.all()

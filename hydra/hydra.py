@@ -153,10 +153,13 @@ class HydraClassSerializer():
 
     def baseStructure(self):
         class_name = self.getTitle()
-
+        if self.class_name is None:
+            id = ""
+        else:
+            id = reverse('context:detail', args=[self.class_name], request=self.request)
         base = {
             "@context": self.getContext(),
-            "@id": self.request.get_full_path(),
+            "@id": id,
             "@type": "hydra:Class",
             "title": class_name,
             "description": self.description,

@@ -62,5 +62,17 @@
   {"model": "context.Context", "pk": 59, "fields": {"attribute": "trechos hidroviarios", "means": "", "type": "http://schema.org/collection", "classname": 1}},
   {"model": "context.Context", "pk": 60, "fields": {"attribute": "capitais", "means": "", "type": "http://schema.org/collection", "classname": 1}},
   {"model": "context.Context", "pk": 61, "fields": {"attribute": "trechos ferroviarios", "means": "", "type": "http://schema.org/collection", "classname": 1}},
-  {"model": "context.Context", "pk": 62, "fields": {"attribute": "tuneis", "means": "", "type": "http://schema.org/collection", "classname": 1}}
+  {"model": "context.Context", "pk": 62, "fields": {"attribute": "tuneis", "means": "", "type": "http://schema.org/collection", "classname": 1}},
+
+
+  {"model": "context.Class", "pk": 2, "fields": {"name": "estados"}},
+
+  {"model": "context.Context", "pk": 63, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 2}},
+  {"model": "context.Context", "pk": 64, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 2}},
+  {"model": "context.Context", "pk": 65, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 2}},
+  {"model": "context.Context", "pk": 66, "fields": {"attribute": "sigla", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 2}},
+  {"model": "context.Context", "pk": 67, "fields": {"attribute": "geocodigo", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 2}},
+  {"model": "context.Context", "pk": 68, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 2}}
+
+
 ]
