@@ -11,7 +11,10 @@ class ContextView(APIView):
 
     def get(self, request, *args, **kwargs):
         classname = kwargs.get('classname')
-        pk = Class.objects.get(name=classname).id
+        try:
+            pk = Class.objects.get(name=classname).id
+        except:
+            return Response(data={})
         context = Context.objects.filter(classname=pk)
 
         serializer = ContextSerializer(context)

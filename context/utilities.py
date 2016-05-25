@@ -8,7 +8,10 @@ def createLinkOfContext(classname, request, response):
     return response
 
 def getContextData(classname, request):
-    pk = Class.objects.get(name=classname).id
+    try:
+        pk = Class.objects.get(name=classname).id
+    except:
+        return ""
     context = Context.objects.filter(classname=pk)
     serializer = ContextSerializer(context)
     contextdata = serializer.data
