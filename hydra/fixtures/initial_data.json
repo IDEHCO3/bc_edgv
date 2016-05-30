@@ -63,6 +63,9 @@
   {"model": "hydra.SupportedProperty", "pk": 59, "fields": {"property": "trechos hidroviarios", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
   {"model": "hydra.SupportedProperty", "pk": 60, "fields": {"property": "capitais", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
   {"model": "hydra.SupportedProperty", "pk": 61, "fields": {"property": "trechos ferroviarios", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
-  {"model": "hydra.SupportedProperty", "pk": 62, "fields": {"property": "tuneis", "required": false, "readable": true, "writeable": false, "hydra_class": 1}}
+  {"model": "hydra.SupportedProperty", "pk": 62, "fields": {"property": "tuneis", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
+
+
+  {"model": "hydra.SupportedOperation", "pk": 2, "fields": {"identifier": "", "type": "Operation", "title": "Contains", "method": "GET", "expects": 2, "returns": 2, "possible_status": "", "hydra_class": 2}}
 
 ]
