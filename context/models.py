@@ -1,7 +1,13 @@
 from django.db import models
 
+spatial_list = [
+    ('None', 'none'),
+    ('Geometry', 'geometry')
+]
+
 class Class(models.Model):
     name = models.CharField(max_length=1000, blank=False, null=False, unique=True)
+    spatial = models.CharField(max_length=255, choices=spatial_list, blank=False, null=False, default="none")
 
 # Create your models here.
 class Context(models.Model):

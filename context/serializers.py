@@ -18,3 +18,5 @@ class ContextSerializer(ContextBase):
             return (obj.attribute, obj.means, obj.type)
         else:
             return (obj.attribute, obj.means)
+
+

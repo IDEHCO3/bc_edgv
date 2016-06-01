@@ -1,6 +1,6 @@
 [
 
-  {"model": "hydra.SupportedOperation", "pk": 1, "fields": {"identifier": "", "type": "Operation", "title": "List maps", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
+  {"model": "hydra.SupportedOperation", "pk": 100, "fields": {"identifier": "", "type": "Operation", "title": "List maps", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
 
   {"model": "hydra.SupportedProperty", "pk": 1, "fields": {"property": "unidades federativas", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
   {"model": "hydra.SupportedProperty", "pk": 2, "fields": {"property": "municipios", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
@@ -63,9 +63,6 @@
   {"model": "hydra.SupportedProperty", "pk": 59, "fields": {"property": "trechos hidroviarios", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
   {"model": "hydra.SupportedProperty", "pk": 60, "fields": {"property": "capitais", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
   {"model": "hydra.SupportedProperty", "pk": 61, "fields": {"property": "trechos ferroviarios", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
-  {"model": "hydra.SupportedProperty", "pk": 62, "fields": {"property": "tuneis", "required": false, "readable": true, "writeable": false, "hydra_class": 1}},
-
-
-  {"model": "hydra.SupportedOperation", "pk": 2, "fields": {"identifier": "", "type": "Operation", "title": "Contains", "method": "GET", "expects": 2, "returns": 2, "possible_status": "", "hydra_class": 2}}
+  {"model": "hydra.SupportedProperty", "pk": 62, "fields": {"property": "tuneis", "required": false, "readable": true, "writeable": false, "hydra_class": 1}}
 
 ]

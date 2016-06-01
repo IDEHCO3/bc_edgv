@@ -142,8 +142,8 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
     serializer_class = UnidadeFederacaoSerializer
 
     def options(self, request, *args, **kwargs):
-        response = Response(getContextData('unidades-federativas', request), status=status.HTTP_200_OK, content_type="application/ld+json")
-        response = createLinkOfContext('unidades-federativas', request, response)
+        response = Response(getContextData('estados', request), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = createLinkOfContext('estados', request, response)
         return response
 
     def get(self, request, *args, **kwargs):
