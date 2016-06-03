@@ -4,19 +4,12 @@ from context.models import Context
 
 class ContextSerializer(ContextBase):
 
-    def __init__(self, data):
-        self.model = Context
-        for semantic in data:
-            triple = self.getKeyValueTuple(semantic)
-            if len(triple) == 3:
-                self.addAttribute(triple[0], id=triple[1], type=triple[2])
-            if len(triple) == 2:
-                self.addAttribute(triple[0], url=triple[1])
+    def __init__(self, classobject):
+        for context in classobject.contexts.all():
+            if context.type is not None:
+                self.addAttribute(context.attribute, id=context.means, type=context.type)
+            else:
+                self.addAttribute(context.attribute, url=context.means)
 
-    def getKeyValueTuple(self, obj):
-        if obj.type is not None:
-            return (obj.attribute, obj.means, obj.type)
-        else:
-            return (obj.attribute, obj.means)
 
 

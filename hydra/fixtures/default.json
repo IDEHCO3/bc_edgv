@@ -1,5 +1,5 @@
 [
   {"model": "context.Class", "pk": 1, "fields": {"name": "geometry", "spatial": "none"}},
 
-  {"model": "hydra.SupportedOperation", "pk": 1, "fields": {"identifier": "", "type": "Operation", "title": "area", "method": "GET", "expects": null, "returns": 2, "possible_status": "", "hydra_class": 2}}
+  {"model": "hydra.SupportedOperation", "pk": 1, "fields": {"identifier": "", "type": "Operation", "title": "area", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}}
 ]
