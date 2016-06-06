@@ -40,19 +40,9 @@ class ContextBase(BaseMetadata):
         else:
             self._data["@context"][name] = {"@id": id, "@type": type}
 
-    def determine_metadata(self, request, view):
-        self.request = request
-        return self.data
-
-    def createOperations(self):
-        if hasattr(self, "operation_class") and self.operation_class is not None:
-            op = self.operation_class(request=self.request)
-            self._data["suportedClass"] = op.data
-
     @property
     def data(self):
         self.createAttributes()
-        self.createOperations()
         return self._data
 
     def createAttributes(self):
