@@ -272,9 +272,232 @@
 
   {"model": "context.Class", "pk": 134, "fields": {"name": "dunas", "spatial": "geometry"}},
 
-  {"model": "context.Context", "pk": 374, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 134}},
-  {"model": "context.Context", "pk": 375, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 134}},
-  {"model": "context.Context", "pk": 376, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 134}},
-  {"model": "context.Context", "pk": 377, "fields": {"attribute": "fixa", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 134}},
-  {"model": "context.Context", "pk": 378, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 134}}
+  {"model": "context.Context", "pk": 384, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 134}},
+  {"model": "context.Context", "pk": 385, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 134}},
+  {"model": "context.Context", "pk": 386, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 134}},
+  {"model": "context.Context", "pk": 387, "fields": {"attribute": "fixa", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 134}},
+  {"model": "context.Context", "pk": 388, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 134}},
+
+
+  {"model": "context.Class", "pk": 136, "fields": {"name": "elementos-fisiografico-natural", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 394, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 136}},
+  {"model": "context.Context", "pk": 395, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 136}},
+  {"model": "context.Context", "pk": 396, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 136}},
+  {"model": "context.Context", "pk": 397, "fields": {"attribute": "tipoelemnat", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 136}},
+  {"model": "context.Context", "pk": 398, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 136}},
+
+
+  {"model": "context.Class", "pk": 138, "fields": {"name": "picos", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 403, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 138}},
+  {"model": "context.Context", "pk": 404, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 138}},
+  {"model": "context.Context", "pk": 405, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 138}},
+  {"model": "context.Context", "pk": 406, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 138}},
+
+
+  {"model": "context.Class", "pk": 140, "fields": {"name": "pontos-cotados-altimetricos", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 411, "fields": {"attribute": "cota", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 140}},
+  {"model": "context.Context", "pk": 412, "fields": {"attribute": "cotacomprovada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 140}},
+  {"model": "context.Context", "pk": 413, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 140}},
+  {"model": "context.Context", "pk": 414, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 140}},
+
+
+  {"model": "context.Class", "pk": 142, "fields": {"name": "pontos-cotados-batimetricos", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 417, "fields": {"attribute": "profundidade", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 142}},
+  {"model": "context.Context", "pk": 418, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 142}},
+
+
+  {"model": "context.Class", "pk": 144, "fields": {"name": "eclusas", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 430, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 144}},
+  {"model": "context.Context", "pk": 431, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 144}},
+  {"model": "context.Context", "pk": 432, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 144}},
+  {"model": "context.Context", "pk": 433, "fields": {"attribute": "desnivel", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 144}},
+  {"model": "context.Context", "pk": 434, "fields": {"attribute": "largura", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 144}},
+  {"model": "context.Context", "pk": 435, "fields": {"attribute": "extensao", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 144}},
+  {"model": "context.Context", "pk": 436, "fields": {"attribute": "calado", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 144}},
+  {"model": "context.Context", "pk": 437, "fields": {"attribute": "matconstr", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 144}},
+  {"model": "context.Context", "pk": 438, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 144}},
+  {"model": "context.Context", "pk": 439, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 144}},
+  {"model": "context.Context", "pk": 440, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 144}},
+
+
+  {"model": "context.Class", "pk": 146, "fields": {"name": "edificacoes-de-construcao-portuaria", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 450, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 451, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 452, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 453, "fields": {"attribute": "tipoedifport", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 454, "fields": {"attribute": "administracao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 455, "fields": {"attribute": "matconstr", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 456, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 457, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 146}},
+  {"model": "context.Context", "pk": 458, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 146}},
+
+
+  {"model": "context.Class", "pk": 148, "fields": {"name": "edificacoes-de-construcao-aeroportuaria", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 468, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 469, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 470, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 471, "fields": {"attribute": "tipoedifaero", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 472, "fields": {"attribute": "administracao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 473, "fields": {"attribute": "matconstr", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 474, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 475, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 148}},
+  {"model": "context.Context", "pk": 476, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 148}},
+
+
+  {"model": "context.Class", "pk": 150, "fields": {"name": "edificacoes-metro-ferroviaria", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 487, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 488, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 489, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 490, "fields": {"attribute": "multimodal", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 491, "fields": {"attribute": "funcaoedifmetroferrov", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 492, "fields": {"attribute": "administracao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 493, "fields": {"attribute": "matconstr", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 494, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 495, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 150}},
+  {"model": "context.Context", "pk": 496, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 150}},
+
+
+  {"model": "context.Class", "pk": 152, "fields": {"name": "fundeadouros", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 503, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 152}},
+  {"model": "context.Context", "pk": 504, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 152}},
+  {"model": "context.Context", "pk": 505, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 152}},
+  {"model": "context.Context", "pk": 506, "fields": {"attribute": "administracao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 152}},
+  {"model": "context.Context", "pk": 507, "fields": {"attribute": "destinacaofundeadouro", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 152}},
+  {"model": "context.Context", "pk": 508, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 152}},
+
+
+  {"model": "context.Class", "pk": 154, "fields": {"name": "pistas-de-ponto-pouso", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 521, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 522, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 523, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 524, "fields": {"attribute": "largura", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 154}},
+  {"model": "context.Context", "pk": 525, "fields": {"attribute": "extensao", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 154}},
+  {"model": "context.Context", "pk": 526, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 527, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 528, "fields": {"attribute": "homologacao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 529, "fields": {"attribute": "tipopista", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 530, "fields": {"attribute": "usopista", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 531, "fields": {"attribute": "revestimento", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 154}},
+  {"model": "context.Context", "pk": 532, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 154}},
+
+
+  {"model": "context.Class", "pk": 156, "fields": {"name": "pontes", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 550, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 551, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 552, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 553, "fields": {"attribute": "tipoponte", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 554, "fields": {"attribute": "modaluso", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 555, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 556, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 557, "fields": {"attribute": "matconstr", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 558, "fields": {"attribute": "vaolivrehoriz", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 156}},
+  {"model": "context.Context", "pk": 559, "fields": {"attribute": "vaovertical", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 156}},
+  {"model": "context.Context", "pk": 560, "fields": {"attribute": "cargasuportmaxima", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 156}},
+  {"model": "context.Context", "pk": 561, "fields": {"attribute": "nrpistas", "means": "http://schema.org/Thing", "type": "http://schema.org/Integer", "classname": 156}},
+  {"model": "context.Context", "pk": 562, "fields": {"attribute": "nrfaixas", "means": "http://schema.org/Thing", "type": "http://schema.org/Integer", "classname": 156}},
+  {"model": "context.Context", "pk": 563, "fields": {"attribute": "extensao", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 156}},
+  {"model": "context.Context", "pk": 564, "fields": {"attribute": "largura", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 156}},
+  {"model": "context.Context", "pk": 565, "fields": {"attribute": "posicaopista", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 156}},
+  {"model": "context.Context", "pk": 566, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 156}},
+
+
+  {"model": "context.Class", "pk": 158, "fields": {"name": "sinalizacaoes", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 574, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 158}},
+  {"model": "context.Context", "pk": 575, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 158}},
+  {"model": "context.Context", "pk": 576, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 158}},
+  {"model": "context.Context", "pk": 577, "fields": {"attribute": "tiposinal", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 158}},
+  {"model": "context.Context", "pk": 578, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 158}},
+  {"model": "context.Context", "pk": 579, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 158}},
+  {"model": "context.Context", "pk": 580, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 158}},
+
+
+  {"model": "context.Class", "pk": 160, "fields": {"name": "travessias", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 586, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 160}},
+  {"model": "context.Context", "pk": 587, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 160}},
+  {"model": "context.Context", "pk": 588, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 160}},
+  {"model": "context.Context", "pk": 589, "fields": {"attribute": "tipotravessia", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 160}},
+  {"model": "context.Context", "pk": 590, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 160}},
+
+
+  {"model": "context.Class", "pk": 162, "fields": {"name": "trechos-dutos", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 604, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 605, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 606, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 607, "fields": {"attribute": "nrdutos", "means": "http://schema.org/Thing", "type": "http://schema.org/Integer", "classname": 162}},
+  {"model": "context.Context", "pk": 608, "fields": {"attribute": "tipotrechoduto", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 609, "fields": {"attribute": "mattransp", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 610, "fields": {"attribute": "setor", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 611, "fields": {"attribute": "posicaorelativa", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 612, "fields": {"attribute": "matconstr", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 613, "fields": {"attribute": "situacaoespacial", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 614, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 615, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 162}},
+  {"model": "context.Context", "pk": 616, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 162}},
+
+
+  {"model": "context.Class", "pk": 164, "fields": {"name": "trechos-ferroviarios", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 634, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 635, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 636, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 637, "fields": {"attribute": "codtrechoferrov", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 638, "fields": {"attribute": "posicaorelativa", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 639, "fields": {"attribute": "tipotrechoferrov", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 640, "fields": {"attribute": "bitola", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 641, "fields": {"attribute": "eletrificada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 642, "fields": {"attribute": "nrlinhas", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 643, "fields": {"attribute": "emarruamento", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 644, "fields": {"attribute": "jurisdicao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 645, "fields": {"attribute": "administracao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 646, "fields": {"attribute": "concessionaria", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 647, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 648, "fields": {"attribute": "cargasuportmaxima", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 649, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 164}},
+  {"model": "context.Context", "pk": 650, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 164}},
+
+
+  {"model": "context.Class", "pk": 166, "fields": {"name": "trechos-hidroviarios", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 660, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 166}},
+  {"model": "context.Context", "pk": 661, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 166}},
+  {"model": "context.Context", "pk": 662, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 166}},
+  {"model": "context.Context", "pk": 663, "fields": {"attribute": "extensaotrecho", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 166}},
+  {"model": "context.Context", "pk": 664, "fields": {"attribute": "caladomaxseca", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 166}},
+  {"model": "context.Context", "pk": 665, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 166}},
+  {"model": "context.Context", "pk": 666, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 166}},
+  {"model": "context.Context", "pk": 667, "fields": {"attribute": "regime", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 166}},
+  {"model": "context.Context", "pk": 668, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 166}},
+
+
+  {"model": "context.Class", "pk": 168, "fields": {"name": "trechos-rodoviarios", "spatial": "geometry"}},
+
+  {"model": "context.Context", "pk": 684, "fields": {"attribute": "codtrechorodov", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 685, "fields": {"attribute": "tipotrechorod", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 686, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 687, "fields": {"attribute": "jurisdicao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 688, "fields": {"attribute": "administracao", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 689, "fields": {"attribute": "concessionaria", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 690, "fields": {"attribute": "revestimento", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 691, "fields": {"attribute": "operacional", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 692, "fields": {"attribute": "situacaofisica", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 693, "fields": {"attribute": "nrpistas", "means": "http://schema.org/Thing", "type": "http://schema.org/Integer", "classname": 168}},
+  {"model": "context.Context", "pk": 694, "fields": {"attribute": "nrfaixas", "means": "http://schema.org/Thing", "type": "http://schema.org/Integer", "classname": 168}},
+  {"model": "context.Context", "pk": 695, "fields": {"attribute": "trafego", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 696, "fields": {"attribute": "canteirodivisorio", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 168}},
+  {"model": "context.Context", "pk": 697, "fields": {"attribute": "capaccarga", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 168}},
+  {"model": "context.Context", "pk": 698, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 168}}
 ]

@@ -56,7 +56,7 @@ urlpatterns = format_suffix_patterns([
     url(r'^fundeadouros/$', views.FundeadouroList.as_view(), name='fundeadouro_list'),
     url(r'^pistas-de-ponto-pouso/$', views.PistaPontoPousoList.as_view(), name='pista_ponto_pouso_list'),
     url(r'^pontes/$', views.PonteList.as_view(), name='ponte_list'),
-    url(r'^sinalizacaoes$', views.SinalizacaoList.as_view(), name='sinalizacao_list'),
+    url(r'^sinalizacaoes/$', views.SinalizacaoList.as_view(), name='sinalizacao_list'),
     url(r'^travessias/$', views.TravessiaList.as_view(), name='travessia_list'),
     url(r'^trechos-dutos/$', views.TrechoDutoList.as_view(), name='trecho_duto_list'),
     #Trecho_ferroviario
