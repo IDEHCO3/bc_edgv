@@ -65,10 +65,10 @@
   {"model": "hydra.SupportedProperty", "pk": 161, "fields": {"property": "trechos ferroviarios", "required": false, "readable": true, "writeable": false, "hydra_class": 100}},
   {"model": "hydra.SupportedProperty", "pk": 162, "fields": {"property": "tuneis", "required": false, "readable": true, "writeable": false, "hydra_class": 100}},
 
-  {"model": "hydra.SupportedProperty", "pk": 163, "fields": {"property": "nome", "required": false, "readable": true, "writeable": false, "hydra_class": 101}},
-  {"model": "hydra.SupportedProperty", "pk": 164, "fields": {"property": "nomeabrev", "required": false, "readable": true, "writeable": false, "hydra_class": 101}},
-  {"model": "hydra.SupportedProperty", "pk": 165, "fields": {"property": "geometriaaproximada", "required": false, "readable": true, "writeable": false, "hydra_class": 101}},
-  {"model": "hydra.SupportedProperty", "pk": 166, "fields": {"property": "sigla", "required": false, "readable": true, "writeable": false, "hydra_class": 101}},
-  {"model": "hydra.SupportedProperty", "pk": 167, "fields": {"property": "geocodigo", "required": false, "readable": true, "writeable": false, "hydra_class": 101}},
-  {"model": "hydra.SupportedProperty", "pk": 168, "fields": {"property": "geom", "required": false, "readable": true, "writeable": false, "hydra_class": 101}}
+  {"model": "hydra.SupportedProperty", "pk": 163, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 101}},
+  {"model": "hydra.SupportedProperty", "pk": 164, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 101}},
+  {"model": "hydra.SupportedProperty", "pk": 165, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 101}},
+  {"model": "hydra.SupportedProperty", "pk": 166, "fields": {"property": "sigla", "required": true, "readable": true, "writeable": true, "hydra_class": 101}},
+  {"model": "hydra.SupportedProperty", "pk": 167, "fields": {"property": "geocodigo", "required": true, "readable": true, "writeable": true, "hydra_class": 101}},
+  {"model": "hydra.SupportedProperty", "pk": 168, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 101}}
 ]
