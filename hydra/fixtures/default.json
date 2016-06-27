@@ -227,8 +227,18 @@
   {"model": "hydra.SupportedOperation", "pk": 40, "fields": {"identifier": "", "type": "Operation", "title": "json", "method": "GET", "expects": null, "returns": 36, "possible_status": "", "hydra_class": 1}},
 
 
-  {"model": "hydra.SupportedOperation", "pk": 41, "fields": {"identifier": "", "type": "Operation", "title": "kml", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 42, "fields": {"identifier": "", "type": "Operation", "title": "length", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
+  {"model": "context.Class", "pk": 37, "fields": {"name": "kmlReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 38, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 37}},
+  {"model": "hydra.SupportedProperty", "pk": 39, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 37}},
+  {"model": "hydra.SupportedOperation", "pk": 41, "fields": {"identifier": "", "type": "Operation", "title": "kml", "method": "GET", "expects": null, "returns": 37, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 38, "fields": {"name": "lengthReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 39, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Float", "classname": 38}},
+  {"model": "hydra.SupportedProperty", "pk": 40, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 38}},
+  {"model": "hydra.SupportedOperation", "pk": 42, "fields": {"identifier": "", "type": "Operation", "title": "length", "method": "GET", "expects": null, "returns": 38, "possible_status": "", "hydra_class": 1}},
+
+
   {"model": "hydra.SupportedOperation", "pk": 43, "fields": {"identifier": "", "type": "Operation", "title": "normalize", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
   {"model": "hydra.SupportedOperation", "pk": 44, "fields": {"identifier": "", "type": "Operation", "title": "num_coords", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
   {"model": "hydra.SupportedOperation", "pk": 45, "fields": {"identifier": "", "type": "Operation", "title": "num_geom", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
