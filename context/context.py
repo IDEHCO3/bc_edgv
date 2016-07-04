@@ -2,7 +2,8 @@ from rest_framework.metadata import BaseMetadata
 
 class ContextBase(BaseMetadata):
 
-    _data = {"@context": {}}
+    def __init__(self):
+        self._data = {"@context": {}}
 
     def getTypeID(self):
         return "@id"

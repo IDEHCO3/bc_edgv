@@ -2,8 +2,6 @@
   {"model": "context.Class", "pk": 1, "fields": {"name": "geometry", "spatial": "none"}},
   {"model": "context.Context", "pk": 1, "fields": {"attribute": "geom", "means": "", "type": "http://schema.org/geo", "classname": 1}},
   {"model": "hydra.SupportedProperty", "pk": 1, "fields": {"property": "geom", "required": true, "readable": false, "writeable": true, "hydra_class": 1}},
-  {"model": "context.Context", "pk": 50, "fields": {"attribute": "typeGeom", "means": "", "type": "", "classname": 1}},
-  {"model": "hydra.SupportedProperty", "pk": 2, "fields": {"property": "typeGeom", "required": true, "readable": false, "writeable": true, "hydra_class": 1}},
 
 
   {"model": "context.Class", "pk": 2, "fields": {"name": "areaReturns", "spatial": "none"}},
@@ -41,7 +39,7 @@
   {"model": "hydra.SupportedOperation", "pk": 7, "fields": {"identifier": "", "type": "Operation", "title": "coord_seq", "method": "GET", "expects": null, "returns": 6, "possible_status": "", "hydra_class": 1}},
 
 
-  {"model": "context.Class", "pk": 7, "fields": {"name": "coord_seqReturns", "spatial": "none"}},
+  {"model": "context.Class", "pk": 7, "fields": {"name": "coordReturns", "spatial": "none"}},
   {"model": "context.Context", "pk": 7, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/ItemList", "classname": 7}},
   {"model": "hydra.SupportedProperty", "pk": 8, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 7}},
   {"model": "hydra.SupportedOperation", "pk": 8, "fields": {"identifier": "", "type": "Operation", "title": "coords", "method": "GET", "expects": null, "returns": 7, "possible_status": "", "hydra_class": 1}},
@@ -239,45 +237,207 @@
   {"model": "hydra.SupportedOperation", "pk": 42, "fields": {"identifier": "", "type": "Operation", "title": "length", "method": "GET", "expects": null, "returns": 38, "possible_status": "", "hydra_class": 1}},
 
 
-  {"model": "hydra.SupportedOperation", "pk": 43, "fields": {"identifier": "", "type": "Operation", "title": "normalize", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 44, "fields": {"identifier": "", "type": "Operation", "title": "num_coords", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 45, "fields": {"identifier": "", "type": "Operation", "title": "num_geom", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 46, "fields": {"identifier": "", "type": "Operation", "title": "num_points", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
+  {"model": "context.Class", "pk": 39, "fields": {"name": "normalizeExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 40, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Float", "classname": 39}},
+  {"model": "hydra.SupportedProperty", "pk": 41, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 39}},
+  {"model": "hydra.SupportedOperation", "pk": 43, "fields": {"identifier": "", "type": "Operation", "title": "normalize", "method": "GET", "expects": 39, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 40, "fields": {"name": "num_coordsReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 41, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Integer", "classname": 40}},
+  {"model": "hydra.SupportedProperty", "pk": 42, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 40}},
+  {"model": "hydra.SupportedOperation", "pk": 44, "fields": {"identifier": "", "type": "Operation", "title": "num_coords", "method": "GET", "expects": null, "returns": 40, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 41, "fields": {"name": "num_geomReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 42, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Integer", "classname": 41}},
+  {"model": "hydra.SupportedProperty", "pk": 43, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 41}},
+  {"model": "hydra.SupportedOperation", "pk": 45, "fields": {"identifier": "", "type": "Operation", "title": "num_geom", "method": "GET", "expects": null, "returns": 41, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 42, "fields": {"name": "num_pointsReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 43, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Integer", "classname": 42}},
+  {"model": "hydra.SupportedProperty", "pk": 44, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 42}},
+  {"model": "hydra.SupportedOperation", "pk": 46, "fields": {"identifier": "", "type": "Operation", "title": "num_points", "method": "GET", "expects": null, "returns": 42, "possible_status": "", "hydra_class": 1}},
+
+
   {"model": "hydra.SupportedOperation", "pk": 47, "fields": {"identifier": "", "type": "Operation", "title": "ogr", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 48, "fields": {"identifier": "", "type": "Operation", "title": "overlaps", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 43, "fields": {"name": "overlapsReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 44, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Boolean", "classname": 43}},
+  {"model": "hydra.SupportedProperty", "pk": 45, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 43}},
+  {"model": "hydra.SupportedOperation", "pk": 48, "fields": {"identifier": "", "type": "Operation", "title": "overlaps", "method": "GET", "expects": 1, "returns": 43, "possible_status": "", "hydra_class": 1}},
+
+
   {"model": "hydra.SupportedOperation", "pk": 49, "fields": {"identifier": "", "type": "Operation", "title": "point_on_surface", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 50, "fields": {"identifier": "", "type": "Operation", "title": "pop", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 44, "fields": {"name": "popReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 45, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/ItemList", "classname": 44}},
+  {"model": "hydra.SupportedProperty", "pk": 46, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 44}},
+  {"model": "hydra.SupportedOperation", "pk": 50, "fields": {"identifier": "", "type": "Operation", "title": "pop", "method": "GET", "expects": null, "returns": 44, "possible_status": "", "hydra_class": 1}},
+
+
   {"model": "hydra.SupportedOperation", "pk": 51, "fields": {"identifier": "", "type": "Operation", "title": "prepared", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 52, "fields": {"identifier": "", "type": "Operation", "title": "ptr", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 53, "fields": {"identifier": "", "type": "Operation", "title": "ptr_type", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 54, "fields": {"identifier": "", "type": "Operation", "title": "relate", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 55, "fields": {"identifier": "", "type": "Operation", "title": "relate_pattern", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 56, "fields": {"identifier": "", "type": "Operation", "title": "remove", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 57, "fields": {"identifier": "", "type": "Operation", "title": "reverse", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 58, "fields": {"identifier": "", "type": "Operation", "title": "ring", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 59, "fields": {"identifier": "", "type": "Operation", "title": "set_coords", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 60, "fields": {"identifier": "", "type": "Operation", "title": "set_srid", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 61, "fields": {"identifier": "", "type": "Operation", "title": "set_x", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 62, "fields": {"identifier": "", "type": "Operation", "title": "set_y", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 63, "fields": {"identifier": "", "type": "Operation", "title": "set_z", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 64, "fields": {"identifier": "", "type": "Operation", "title": "simple", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 65, "fields": {"identifier": "", "type": "Operation", "title": "simplify", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 66, "fields": {"identifier": "", "type": "Operation", "title": "srid", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 67, "fields": {"identifier": "", "type": "Operation", "title": "srs", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 68, "fields": {"identifier": "", "type": "Operation", "title": "sym_difference", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 69, "fields": {"identifier": "", "type": "Operation", "title": "touches", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 70, "fields": {"identifier": "", "type": "Operation", "title": "transform", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 71, "fields": {"identifier": "", "type": "Operation", "title": "tuple", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 72, "fields": {"identifier": "", "type": "Operation", "title": "union", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 73, "fields": {"identifier": "", "type": "Operation", "title": "valid", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 74, "fields": {"identifier": "", "type": "Operation", "title": "valid_reason", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 75, "fields": {"identifier": "", "type": "Operation", "title": "within", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 76, "fields": {"identifier": "", "type": "Operation", "title": "wkb", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 77, "fields": {"identifier": "", "type": "Operation", "title": "wkt", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 78, "fields": {"identifier": "", "type": "Operation", "title": "x", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 79, "fields": {"identifier": "", "type": "Operation", "title": "y", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
-  {"model": "hydra.SupportedOperation", "pk": 80, "fields": {"identifier": "", "type": "Operation", "title": "z", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}}
 
 
-  //missing interpolate function
+  {"model": "context.Class", "pk": 45, "fields": {"name": "relateReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 46, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 45}},
+  {"model": "hydra.SupportedProperty", "pk": 47, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 45}},
+  {"model": "hydra.SupportedOperation", "pk": 54, "fields": {"identifier": "", "type": "Operation", "title": "relate", "method": "GET", "expects": 1, "returns": 45, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 46, "fields": {"name": "relate_patternReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 47, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 46}},
+  {"model": "hydra.SupportedProperty", "pk": 48, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 46}},
+  {"model": "context.Class", "pk": 47, "fields": {"name": "relate_patternExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 48, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/geo", "classname": 47}},
+  {"model": "hydra.SupportedProperty", "pk": 49, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 47}},
+  {"model": "context.Context", "pk": 49, "fields": {"attribute": "p2", "means": "", "type": "http://schema.org/Text", "classname": 47}},
+  {"model": "hydra.SupportedProperty", "pk": 50, "fields": {"property": "p2", "required": true, "readable": false, "writeable": true, "hydra_class": 47}},
+  {"model": "hydra.SupportedOperation", "pk": 55, "fields": {"identifier": "", "type": "Operation", "title": "relate_pattern", "method": "GET", "expects": 47, "returns": 46, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 48, "fields": {"name": "ringReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 50, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Boolean", "classname": 48}},
+  {"model": "hydra.SupportedProperty", "pk": 51, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 48}},
+  {"model": "hydra.SupportedOperation", "pk": 58, "fields": {"identifier": "", "type": "Operation", "title": "ring", "method": "GET", "expects": null, "returns": 48, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 49, "fields": {"name": "set_coordsExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 51, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/ItemList", "classname": 49}},
+  {"model": "hydra.SupportedProperty", "pk": 52, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 49}},
+  {"model": "hydra.SupportedOperation", "pk": 59, "fields": {"identifier": "", "type": "Operation", "title": "set_coords", "method": "GET", "expects": 49, "returns": null, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 50, "fields": {"name": "set_sridExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 52, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Text", "classname": 50}},
+  {"model": "hydra.SupportedProperty", "pk": 53, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 50}},
+  {"model": "hydra.SupportedOperation", "pk": 60, "fields": {"identifier": "", "type": "Operation", "title": "set_srid", "method": "GET", "expects": 50, "returns": null, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 51, "fields": {"name": "set_xExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 53, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Float", "classname": 51}},
+  {"model": "hydra.SupportedProperty", "pk": 54, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 51}},
+  {"model": "hydra.SupportedOperation", "pk": 61, "fields": {"identifier": "", "type": "Operation", "title": "set_x", "method": "GET", "expects": 51, "returns": null, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 52, "fields": {"name": "set_yExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 54, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Float", "classname": 52}},
+  {"model": "hydra.SupportedProperty", "pk": 55, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 52}},
+  {"model": "hydra.SupportedOperation", "pk": 62, "fields": {"identifier": "", "type": "Operation", "title": "set_y", "method": "GET", "expects": 52, "returns": null, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 53, "fields": {"name": "set_zExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 55, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Float", "classname": 53}},
+  {"model": "hydra.SupportedProperty", "pk": 56, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 53}},
+  {"model": "hydra.SupportedOperation", "pk": 63, "fields": {"identifier": "", "type": "Operation", "title": "set_z", "method": "GET", "expects": 53, "returns": null, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 54, "fields": {"name": "simpleReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 56, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Boolean", "classname": 54}},
+  {"model": "hydra.SupportedProperty", "pk": 57, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 54}},
+  {"model": "hydra.SupportedOperation", "pk": 64, "fields": {"identifier": "", "type": "Operation", "title": "simple", "method": "GET", "expects": null, "returns": 54, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 55, "fields": {"name": "simplifyExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 57, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Float", "classname": 55}},
+  {"model": "hydra.SupportedProperty", "pk": 58, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 55}},
+  {"model": "context.Context", "pk": 58, "fields": {"attribute": "p2", "means": "", "type": "http://schema.org/Boolean", "classname": 55}},
+  {"model": "hydra.SupportedProperty", "pk": 59, "fields": {"property": "p2", "required": true, "readable": false, "writeable": true, "hydra_class": 55}},
+  {"model": "hydra.SupportedOperation", "pk": 65, "fields": {"identifier": "", "type": "Operation", "title": "simplify", "method": "GET", "expects": 55, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 56, "fields": {"name": "sridReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 59, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Integer", "classname": 56}},
+  {"model": "hydra.SupportedProperty", "pk": 60, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 56}},
+  {"model": "hydra.SupportedOperation", "pk": 66, "fields": {"identifier": "", "type": "Operation", "title": "srid", "method": "GET", "expects": null, "returns": 56, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 57, "fields": {"name": "srsReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 60, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 57}},
+  {"model": "hydra.SupportedProperty", "pk": 61, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 57}},
+  {"model": "hydra.SupportedOperation", "pk": 67, "fields": {"identifier": "", "type": "Operation", "title": "srs", "method": "GET", "expects": null, "returns": 57, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "hydra.SupportedOperation", "pk": 68, "fields": {"identifier": "", "type": "Operation", "title": "sym_difference", "method": "GET", "expects": 1, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 58, "fields": {"name": "touchesReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 61, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Boolean", "classname": 58}},
+  {"model": "hydra.SupportedProperty", "pk": 62, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 58}},
+  {"model": "hydra.SupportedOperation", "pk": 69, "fields": {"identifier": "", "type": "Operation", "title": "touches", "method": "GET", "expects": 1, "returns": 58, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 59, "fields": {"name": "transformExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 62, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Integer", "classname": 59}},
+  {"model": "hydra.SupportedProperty", "pk": 63, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 59}},
+  {"model": "context.Context", "pk": 63, "fields": {"attribute": "p2", "means": "", "type": "http://schema.org/Boolean", "classname": 59}},
+  {"model": "hydra.SupportedProperty", "pk": 64, "fields": {"property": "p2", "required": true, "readable": false, "writeable": true, "hydra_class": 59}},
+  {"model": "hydra.SupportedOperation", "pk": 70, "fields": {"identifier": "", "type": "Operation", "title": "transform", "method": "GET", "expects": 59, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 60, "fields": {"name": "tupleReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 64, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/ItemList", "classname": 60}},
+  {"model": "hydra.SupportedProperty", "pk": 65, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 60}},
+  {"model": "hydra.SupportedOperation", "pk": 71, "fields": {"identifier": "", "type": "Operation", "title": "tuple", "method": "GET", "expects": null, "returns": 60, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "hydra.SupportedOperation", "pk": 72, "fields": {"identifier": "", "type": "Operation", "title": "union", "method": "GET", "expects": 1, "returns": 1, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 61, "fields": {"name": "validReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 65, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Boolean", "classname": 61}},
+  {"model": "hydra.SupportedProperty", "pk": 66, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 61}},
+  {"model": "hydra.SupportedOperation", "pk": 73, "fields": {"identifier": "", "type": "Operation", "title": "valid", "method": "GET", "expects": 1, "returns": 61, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 62, "fields": {"name": "valid_reasonReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 66, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 62}},
+  {"model": "hydra.SupportedProperty", "pk": 67, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 62}},
+  {"model": "hydra.SupportedOperation", "pk": 74, "fields": {"identifier": "", "type": "Operation", "title": "valid_reason", "method": "GET", "expects": 1, "returns": 62, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 63, "fields": {"name": "withinReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 67, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Boolean", "classname": 63}},
+  {"model": "hydra.SupportedProperty", "pk": 68, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 63}},
+  {"model": "hydra.SupportedOperation", "pk": 75, "fields": {"identifier": "", "type": "Operation", "title": "within", "method": "GET", "expects": 1, "returns": 63, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 64, "fields": {"name": "wkbReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 68, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 64}},
+  {"model": "hydra.SupportedProperty", "pk": 69, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 64}},
+  {"model": "hydra.SupportedOperation", "pk": 76, "fields": {"identifier": "", "type": "Operation", "title": "wkb", "method": "GET", "expects": null, "returns": 64, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 65, "fields": {"name": "wktReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 69, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Text", "classname": 65}},
+  {"model": "hydra.SupportedProperty", "pk": 70, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 65}},
+  {"model": "hydra.SupportedOperation", "pk": 77, "fields": {"identifier": "", "type": "Operation", "title": "wkt", "method": "GET", "expects": null, "returns": 65, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 66, "fields": {"name": "xReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 70, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Float", "classname": 66}},
+  {"model": "hydra.SupportedProperty", "pk": 71, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 66}},
+  {"model": "hydra.SupportedOperation", "pk": 78, "fields": {"identifier": "", "type": "Operation", "title": "x", "method": "GET", "expects": null, "returns": 66, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 67, "fields": {"name": "yReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 71, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Float", "classname": 67}},
+  {"model": "hydra.SupportedProperty", "pk": 72, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 67}},
+  {"model": "hydra.SupportedOperation", "pk": 79, "fields": {"identifier": "", "type": "Operation", "title": "y", "method": "GET", "expects": null, "returns": 67, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 68, "fields": {"name": "zReturns", "spatial": "none"}},
+  {"model": "context.Context", "pk": 72, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Float", "classname": 68}},
+  {"model": "hydra.SupportedProperty", "pk": 73, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 68}},
+  {"model": "hydra.SupportedOperation", "pk": 80, "fields": {"identifier": "", "type": "Operation", "title": "z", "method": "GET", "expects": null, "returns": 68, "possible_status": "", "hydra_class": 1}},
+
+
+  {"model": "context.Class", "pk": 69, "fields": {"name": "interpolateExpects", "spatial": "none"}},
+  {"model": "context.Context", "pk": 73, "fields": {"attribute": "p1", "means": "", "type": "http://schema.org/Float", "classname": 69}},
+  {"model": "hydra.SupportedProperty", "pk": 74, "fields": {"property": "p1", "required": true, "readable": false, "writeable": true, "hydra_class": 69}},
+  {"model": "hydra.SupportedOperation", "pk": 81, "fields": {"identifier": "", "type": "Operation", "title": "interpolate", "method": "GET", "expects": 69, "returns": 1, "possible_status": "", "hydra_class": 1}}
+
 ]

@@ -2,7 +2,9 @@ from rest_framework.reverse import reverse
 
 class HydraPropertySerializer:
 
-    _data = []
+
+    def __init__(self):
+        self._data = []
 
     def createProperties(self):
         pass
@@ -49,7 +51,7 @@ class HydraPropertySerializer:
 
 class HydraMethodSerializer:
 
-    def __init__(self,):
+    def __init__(self):
         self._data = []
 
     def createMethods(self):
