@@ -148,7 +148,7 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
         return response
 
     def get(self, request, *args, **kwargs):
-        response = super(UnidadeFederacaoListFilteredByQueryParameters, self).__init__(request, *args, **kwargs)
+        response = super(UnidadeFederacaoListFilteredByQueryParameters, self).get(request, *args, **kwargs)
         response = createLinkOfContext('unidades-federativas', request, response)
         return response
 
