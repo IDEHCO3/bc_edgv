@@ -9,11 +9,10 @@ def createLinkOfContext(classname, request, response):
 
 def getContextData(classname, request):
     try:
-        pk = Class.objects.get(name=classname).id
+        classobject = Class.objects.get(name=classname)
     except:
         return ""
-    context = Context.objects.filter(classname=pk)
-    serializer = ContextSerializer(context)
+    serializer = ContextSerializer(classobject)
     contextdata = serializer.data
     hydradata = getHydraData(classname, request)
     if "@context" in hydradata:
