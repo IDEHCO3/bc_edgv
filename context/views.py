@@ -1,9 +1,13 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
 from context.models import *
 from context.serializers import ContextSerializer
 from hydra.serializers import HydraSerializer
+from rest_framework import status
+
+from context.utilities import *
 # Create your views here.
 
 class ContextView(APIView):
@@ -24,4 +28,16 @@ class ContextView(APIView):
         response = Response(data=contextdata)
         if request.accepted_media_type != "text/html":
             response.content_type = "application/ld+json"
+        return response
+
+class CreatorContext(generics.ListCreateAPIView):
+
+    def options(self, request, *args, **kwargs):
+        response = Response(getContextData(self.classname, request), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = createLinkOfContext(self.classname, request, response)
+        return response
+
+    def get(self, request, *args, **kwargs):
+        response = super(CreatorContext, self).get(request, *args, **kwargs)
+        response = createLinkOfContext(self.classname, request, response)
         return response

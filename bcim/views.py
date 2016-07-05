@@ -50,6 +50,7 @@ from bcim.serializers import UnidadeFederacaoSerializer,MunicipioSerializer, Out
 
 from bcim.context_serializers import *
 from context.utilities import *
+from context.views import CreatorContext
 
 class APIRoot(APIView):
 
@@ -205,7 +206,9 @@ class MunicipioFiltered(generics.ListCreateAPIView):
 
         return self.queryset
 
-class OutrasUnidProtegidasList(generics.ListCreateAPIView):
+class OutrasUnidProtegidasList(CreatorContext):
+
+    classname = 'outras-unidades-protegidas'
 
     queryset = OutrasUnidProtegidas.objects.all()
     serializer_class = OutrasUnidProtegidasSerializer
