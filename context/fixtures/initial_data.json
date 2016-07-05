@@ -65,7 +65,7 @@
   {"model": "context.Context", "pk": 162, "fields": {"attribute": "tuneis", "means": "http://schema.org/Thing", "type": "http://schema.org/ItemList", "classname": 100}},
 
 
-  {"model": "context.Class", "pk": 101, "fields": {"name": "estados", "spatial": "geometry"}},
+  {"model": "context.Class", "pk": 101, "fields": {"name": "unidades-federativas", "spatial": "geometry"}},
 
   {"model": "context.Context", "pk": 163, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 101}},
   {"model": "context.Context", "pk": 164, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 101}},
@@ -75,7 +75,7 @@
   {"model": "context.Context", "pk": 168, "fields": {"attribute": "geom", "means": "http://schema.org/Place", "type": "http://schema.org/geo", "classname": 101}},
 
 
-  {"model": "context.Class", "pk": 102, "fields": {"name": "estado", "spatial": "geometry"}},
+  {"model": "context.Class", "pk": 102, "fields": {"name": "unidade-federativa", "spatial": "geometry"}},
 
   {"model": "context.Context", "pk": 169, "fields": {"attribute": "nome", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 102}},
   {"model": "context.Context", "pk": 170, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/name", "type": "http://schema.org/Text", "classname": 102}},
