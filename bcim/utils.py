@@ -17,41 +17,6 @@ from rest_framework.compat import (
     INDENT_SEPARATORS, LONG_SEPARATORS, SHORT_SEPARATORS
 )
 
-class JSONRendererHypermedia(JSONRenderer):
-    def render(self, data, accepted_media_type=None, renderer_context=None):
-            """
-            Render `data` into JSON, returning a bytestring.
-            """
-            if data is None:
-                return bytes()
-
-            renderer_context = renderer_context or {}
-            indent = self.get_indent(accepted_media_type, renderer_context)
-
-            if indent is None:
-                separators = SHORT_SEPARATORS if self.compact else LONG_SEPARATORS
-            else:
-                separators = INDENT_SEPARATORS
-
-            ret = json.dumps(
-                data, cls=self.encoder_class,
-                indent=indent, ensure_ascii=self.ensure_ascii,
-                separators=separators
-            )
-
-            # On python 2.x json.dumps() returns bytestrings if ensure_ascii=True,
-            # but if ensure_ascii=False, the return type is underspecified,
-            # and may (or may not) be unicode.
-            # On python 3.x json.dumps() returns unicode strings.
-            if isinstance(ret, six.text_type):
-                # We always fully escape \u2028 and \u2029 to ensure we output JSON
-                # that is a strict javascript subset. If bytes were returned
-                # by json.dumps() then we don't have these characters in any case.
-                # See: http://timelessrepo.com/json-isnt-a-javascript-subset
-                ret = ret.replace('\u2028', '\\u2028').replace('\u2029', '\\u2029')
-                return bytes(ret.encode('utf-8'))
-            return ret
-
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
@@ -65,15 +30,14 @@ class DefaultsMixin(object):
         permissions.IsAuthenticatedOrReadOnly,
     )
 
-   # paginate_by = 250
-
+    # paginate_by = 250
+    #
     # Default settings for view authentication, permissions, filtering and pagination.
-"""
-    authentication_classes = (
-        authentication.BasicAuthentication,
-        authentication.TokenAuthentication,
-    )
-"""
+
+    # authentication_classes = (
+    #     authentication.BasicAuthentication,
+    #     authentication.TokenAuthentication,
+    # )
 
 import ast
 from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
@@ -235,9 +199,6 @@ class BasicAPIViewHypermedia(APIView):
     def get_geometry_object(self, object_model):
         return getattr(object_model, self.geometry_field_name(), None)
 
-    def geometry_field_name(self):
-        return self.serializer_class.Meta.geo_field
-
     def key_is_identifier(self, key):
         return key in self.serializer_class.Meta.identifiers
 
@@ -347,7 +308,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
             params = self.all_parameters_converted(attribute_or_function_name, parameters)
             return getattr(object, attribute_or_function_name)(*params)
 
-        return  getattr(object, attribute_or_function_name)
+        return getattr(object, attribute_or_function_name)
 
     def response_resquest_with_attributes(self, object_model, attributes_functions_name):
         a_dict ={}
@@ -355,7 +316,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         for attr_name in attributes:
            obj = self._value_from_object(object_model, attr_name, [])
            if isinstance(obj, GEOSGeometry):
-                obj =  json.loads( obj.geojson)
+                obj = json.loads( obj.geojson)
                 if len(attributes) == 1:
                     return Response(obj,  content_type='application/vnd.geo+json')
 
@@ -370,13 +331,13 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
     def attributes_functions_splitted_by_url(self, attributes_functions_str_url):
         res = attributes_functions_str_url.lower().find('http:')
         if res == -1:
-            res =  attributes_functions_str_url.lower().find('https:')
+            res = attributes_functions_str_url.lower().find('https:')
             if res == -1:
-                res =  attributes_functions_str_url.lower().find('www.')
+                res = attributes_functions_str_url.lower().find('www.')
                 if res == -1:
                     return [attributes_functions_str_url]
 
-        return [attributes_functions_str_url[0:res],attributes_functions_str_url[res:] ]
+        return [attributes_functions_str_url[0:res], attributes_functions_str_url[res:]]
 
     def _execute_attribute_or_method(self, object, attribute_or_method_name, array_of_attribute_or_method_name):
         dic = {}
@@ -399,7 +360,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         att_funcs = attributes_functions_str.split('/')
 
         obj = self.get_geometry_object(object)
-        if  not self.is_spatial_operation ( att_funcs[0]) and self.is_spatial_attribute(att_funcs[0]):
+        if not self.is_spatial_operation ( att_funcs[0]) and self.is_spatial_attribute(att_funcs[0]):
             att_funcs = att_funcs[1:]
 
         a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:] )
@@ -420,10 +381,10 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
             return Response(serializer.data,  content_type='application/vnd.geo+json')
 
         if self.has_only_attribute(object_model, attributes_functions_str):
-            return  self.response_resquest_with_attributes(object_model, attributes_functions_str )
+            return self.response_resquest_with_attributes(object_model, attributes_functions_str )
 
         if self.attributes_functions_str_has_url(attributes_functions_str.lower()):
-            arr_of_two_url =  self.attributes_functions_splitted_by_url(attributes_functions_str)
+            arr_of_two_url = self.attributes_functions_splitted_by_url(attributes_functions_str)
             resp = requests.get(arr_of_two_url[1])
             if resp .status_code == 404:
                 return Response({'Erro:' + str(resp.status_code)})
@@ -570,5 +531,5 @@ class APIViewDetailSpatialFunction(APIViewBasicSpatialFunction):
         if isinstance(obj_geometry, GEOSGeometry):
           return JSONResponse(obj_geometry.geojson)
 
-        a_dict = { st_functions.__str__(): obj_geometry}
+        a_dict = {st_functions.__str__(): obj_geometry}
         return Response(a_dict)

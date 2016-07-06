@@ -3,40 +3,13 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 
-from bcim.utils import APIViewDetailSpatialFunction, DefaultsMixin, ResourceListCreateFilteredByQueryParameters, \
-    BasicListFiltered, APIViewHypermedia
-from .models import UnidadeFederacao,Municipio, OutrasUnidProtegidas, OutrosLimitesOficiais, Pais, TerraIndigena, \
-    UnidadeConservacaoNaoSnuc, UnidadeProtecaoIntegral,UnidadeUsoSustentavel, AglomeradoRuralDeExtensaoUrbana, \
-    AglomeradoRuralDeExtensaoUrbana, AglomeradoRuralIsolado, AldeiaIndigena, AreaEdificada, Capital, Cidade, Vila, \
-    CurvaBatimetrica, CurvaNivel, Duna, ElementoFisiograficoNatural, Pico, PontoCotadoAltimetrico, PontoCotadoBatimetrico, \
-    Eclusa, EdifConstPortuaria, EdifConstrAeroportuaria, EdifMetroFerroviaria, Fundeadouro, PistaPontoPouso, Ponte, \
-    Sinalizacao, Travessia, TrechoDuto, TrechoFerroviario, TrechoHidroviario, TrechoRodoviario, Tunel, BrejoPantano, \
-    Mangue, VegRestinga, EdifPubMilitar, PostoFiscal, EdifAgropecExtVegetalPesca, EdifIndustrial, ExtMineral, EdifReligiosa, \
-    EstGeradEnergiaEletrica, Hidreletrica, Termeletrica, TorreEnergia, BancoAreia, Barragem, Corredeira, FozMaritima, \
-    Ilha, MassaDagua, QuedaDagua, Recife, RochaEmAgua, SumidouroVertedouro, TerrenoSujeitoInundacao, TrechoDrenagem, \
-    TrechoMassaDagua, AreaDesenvolvimentoControle, MarcoDeLimite, PontosExibicaoWgs84
+from bcim.utils import *
+from bcim.models import *
 
-
-#from permissions import IsOwnerOrReadOnly
 from rest_framework import permissions
 
 from rest_framework import generics
-from bcim.serializers import UnidadeFederacaoSerializer,MunicipioSerializer, OutrasUnidProtegidasSerializer, \
-    OutrosLimitesOficiaisSerializer, PaisSerializer, TerraIndigenaSerializer, UnidadeConservacaoNaoSnucSerializer, \
-    UnidadeProtecaoIntegralSerializer, UnidadeUsoSustentavelSerializer, AglomeradoRuralDeExtensaoUrbanaSerializer, \
-    AglomeradoRuralIsoladoSerializer, AldeiaIndigenaSerializer, AreaEdificadaSerializer, CapitalSerializer, \
-    CidadeSerializer, VilaSerializer, CurvaBatimetricaSerializer, CurvaNivelSerializer, DunaSerializer, \
-    ElementoFisiograficoNaturalSerializer, PicoSerializer, PontoCotadoAltimetricoSerializer, PontoCotadoBatimetricoSerializer, \
-    EclusaSerializer, EdifConstPortuariaSerializer, EdifConstrAeroportuariaSerializer, EdifMetroFerroviariaSerializer, \
-    FundeadouroSerializer, PistaPontoPousoSerializer, PonteSerializer, SinalizacaoSerializer, TravessiaSerializer, \
-    TrechoDutoSerializer, TrechoFerroviarioSerializer, TrechoHidroviarioSerializer, TrechoRodoviarioSerializer,\
-    TunelSerializer, BrejoPantanoSerializer, MangueSerializer, VegRestingaSerializer, EdifPubMilitarSerializer, \
-    PostoFiscalSerializer, EdifAgropecExtVegetalPescaSerializer, EdifIndustrialSerializer, ExtMineralSerializer,\
-    EdifReligiosaSerializer, EstGeradEnergiaEletricaSerializer,HidreletricaSerializer, TermeletricaSerializer, \
-    TorreEnergiaSerializer, BancoAreiaSerializer, BarragemSerializer, CorredeiraSerializer, FozMaritimaSerializer, \
-    IlhaSerializer, MassaDaguaSerializer, QuedaDaguaSerializer, RecifeSerializer, RochaEmAguaSerializer, \
-    SumidouroVertedouroSerializer, TerrenoSujeitoInundacaoSerializer, TrechoDrenagemSerializer, TrechoMassaDaguaSerializer, \
-    AreaDesenvolvimentoControleSerializer, MarcoDeLimiteSerializer, PontosExibicaoWgs84Serializer
+from bcim.serializers import *
 
 
 from context.utilities import *
@@ -128,19 +101,19 @@ class UnidadeFederacaoDetail(APIViewHypermedia):
     """
     serializer_class = UnidadeFederacaoSerializer
 
-class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters):
+class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters, CreatorContext):
     """API endpoint for listing and creating sprints."""
     serializer_class = UnidadeFederacaoSerializer
 
-    def options(self, request, *args, **kwargs):
-        response = Response(getContextData('unidades-federativas', request), status=status.HTTP_200_OK, content_type="application/ld+json")
-        response = createLinkOfContext('unidades-federativas', request, response)
-        return response
-
-    def get(self, request, *args, **kwargs):
-        response = super(UnidadeFederacaoListFilteredByQueryParameters, self).get(request, *args, **kwargs)
-        response = createLinkOfContext('unidades-federativas', request, response)
-        return response
+    # def options(self, request, *args, **kwargs):
+    #     response = Response(getContextData('unidades-federativas', request), status=status.HTTP_200_OK, content_type="application/ld+json")
+    #     response = createLinkOfContext('unidades-federativas', request, response)
+    #     return response
+    #
+    # def get(self, request, *args, **kwargs):
+    #     response = super(UnidadeFederacaoListFilteredByQueryParameters, self).get(request, *args, **kwargs)
+    #     response = createLinkOfContext('unidades-federativas', request, response)
+    #     return response
 
 class UnidadeFederacaoFiltered(BasicListFiltered):
 
