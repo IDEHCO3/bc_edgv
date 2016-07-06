@@ -33,11 +33,21 @@ class ContextView(APIView):
 class CreatorContext(generics.ListCreateAPIView):
 
     def options(self, request, *args, **kwargs):
-        response = Response(getContextData(self.classname, request), status=status.HTTP_200_OK, content_type="application/ld+json")
-        response = createLinkOfContext(self.classname, request, response)
+        path = request._request.path
+        if path[-1] != '/':
+            path += '/'
+        list_path = path.split('/')
+        classname = list_path[len(list_path)-2]
+        response = Response(getContextData(classname, request), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = createLinkOfContext(classname, request, response)
         return response
 
     def get(self, request, *args, **kwargs):
         response = super(CreatorContext, self).get(request, *args, **kwargs)
-        response = createLinkOfContext(self.classname, request, response)
+        path = request._request.path
+        if path[-1] != '/':
+            path += '/'
+        list_path = path.split('/')
+        classname = list_path[-2]
+        response = createLinkOfContext(classname, request, response)
         return response
