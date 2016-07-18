@@ -202,5 +202,18 @@
   {"model": "hydra.SupportedProperty", "pk": 331, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 124}},
   {"model": "hydra.SupportedProperty", "pk": 332, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 124}},
   {"model": "hydra.SupportedProperty", "pk": 333, "fields": {"property": "geocodigo", "required": true, "readable": true, "writeable": true, "hydra_class": 124}},
-  {"model": "hydra.SupportedProperty", "pk": 334, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 124}}
+  {"model": "hydra.SupportedProperty", "pk": 334, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 124}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 340, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 126}},
+  {"model": "hydra.SupportedProperty", "pk": 341, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 126}},
+  {"model": "hydra.SupportedProperty", "pk": 342, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 126}},
+  {"model": "hydra.SupportedProperty", "pk": 343, "fields": {"property": "tipocapital", "required": true, "readable": true, "writeable": true, "hydra_class": 126}},
+  {"model": "hydra.SupportedProperty", "pk": 344, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 126}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 349, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
+  {"model": "hydra.SupportedProperty", "pk": 350, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
+  {"model": "hydra.SupportedProperty", "pk": 351, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
+  {"model": "hydra.SupportedProperty", "pk": 352, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 128}}
 ]
