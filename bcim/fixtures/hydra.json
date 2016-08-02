@@ -215,5 +215,240 @@
   {"model": "hydra.SupportedProperty", "pk": 349, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
   {"model": "hydra.SupportedProperty", "pk": 350, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
   {"model": "hydra.SupportedProperty", "pk": 351, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
-  {"model": "hydra.SupportedProperty", "pk": 352, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 128}}
+  {"model": "hydra.SupportedProperty", "pk": 352, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 128}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 355, "fields": {"property": "profundidade", "required": true, "readable": true, "writeable": true, "hydra_class": 130}},
+  {"model": "hydra.SupportedProperty", "pk": 356, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 130}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 362, "fields": {"property": "cota", "required": true, "readable": true, "writeable": true, "hydra_class": 132}},
+  {"model": "hydra.SupportedProperty", "pk": 363, "fields": {"property": "depressao", "required": true, "readable": true, "writeable": true, "hydra_class": 132}},
+  {"model": "hydra.SupportedProperty", "pk": 364, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 132}},
+  {"model": "hydra.SupportedProperty", "pk": 365, "fields": {"property": "indice", "required": true, "readable": true, "writeable": true, "hydra_class": 132}},
+  {"model": "hydra.SupportedProperty", "pk": 366, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 132}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 372, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 134}},
+  {"model": "hydra.SupportedProperty", "pk": 373, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 134}},
+  {"model": "hydra.SupportedProperty", "pk": 374, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 134}},
+  {"model": "hydra.SupportedProperty", "pk": 375, "fields": {"property": "fixa", "required": true, "readable": true, "writeable": true, "hydra_class": 134}},
+  {"model": "hydra.SupportedProperty", "pk": 376, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 134}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 382, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 136}},
+  {"model": "hydra.SupportedProperty", "pk": 383, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 136}},
+  {"model": "hydra.SupportedProperty", "pk": 384, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 136}},
+  {"model": "hydra.SupportedProperty", "pk": 385, "fields": {"property": "tipoelemnat", "required": true, "readable": true, "writeable": true, "hydra_class": 136}},
+  {"model": "hydra.SupportedProperty", "pk": 386, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 136}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 391, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 138}},
+  {"model": "hydra.SupportedProperty", "pk": 392, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 138}},
+  {"model": "hydra.SupportedProperty", "pk": 393, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 138}},
+  {"model": "hydra.SupportedProperty", "pk": 394, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 138}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 399, "fields": {"property": "cota", "required": true, "readable": true, "writeable": true, "hydra_class": 140}},
+  {"model": "hydra.SupportedProperty", "pk": 400, "fields": {"property": "cotacomprovada", "required": true, "readable": true, "writeable": true, "hydra_class": 140}},
+  {"model": "hydra.SupportedProperty", "pk": 401, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 140}},
+  {"model": "hydra.SupportedProperty", "pk": 402, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 140}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 405, "fields": {"property": "profundidade", "required": true, "readable": true, "writeable": true, "hydra_class": 142}},
+  {"model": "hydra.SupportedProperty", "pk": 406, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 142}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 418, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 419, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 420, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 421, "fields": {"property": "desnivel", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 422, "fields": {"property": "largura", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 423, "fields": {"property": "extensao", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 424, "fields": {"property": "calado", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 425, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 426, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 427, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+  {"model": "hydra.SupportedProperty", "pk": 428, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 144}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 438, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 439, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 440, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 441, "fields": {"property": "tipoedifport", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 442, "fields": {"property": "administracao", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 443, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 444, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 445, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+  {"model": "hydra.SupportedProperty", "pk": 446, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 146}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 456, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 457, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 458, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 459, "fields": {"property": "tipoedifaero", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 460, "fields": {"property": "administracao", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 461, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 462, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 463, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+  {"model": "hydra.SupportedProperty", "pk": 464, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 148}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 475, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 476, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 477, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 478, "fields": {"property": "multimodal", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 479, "fields": {"property": "funcaoedifmetroferrov", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 480, "fields": {"property": "administracao", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 481, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 482, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 483, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+  {"model": "hydra.SupportedProperty", "pk": 484, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 150}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 491, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 152}},
+  {"model": "hydra.SupportedProperty", "pk": 492, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 152}},
+  {"model": "hydra.SupportedProperty", "pk": 493, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 152}},
+  {"model": "hydra.SupportedProperty", "pk": 494, "fields": {"property": "administracao", "required": true, "readable": true, "writeable": true, "hydra_class": 152}},
+  {"model": "hydra.SupportedProperty", "pk": 495, "fields": {"property": "destinacaofundeadouro", "required": true, "readable": true, "writeable": true, "hydra_class": 152}},
+  {"model": "hydra.SupportedProperty", "pk": 496, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 152}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 509, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 510, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 511, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 512, "fields": {"property": "largura", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 513, "fields": {"property": "extensao", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 514, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 515, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 516, "fields": {"property": "homologacao", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 517, "fields": {"property": "tipopista", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 518, "fields": {"property": "usopista", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 519, "fields": {"property": "revestimento", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+  {"model": "hydra.SupportedProperty", "pk": 520, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 154}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 538, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 539, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 540, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 541, "fields": {"property": "tipoponte", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 542, "fields": {"property": "modaluso", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 543, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 544, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 545, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 546, "fields": {"property": "vaolivrehoriz", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 547, "fields": {"property": "vaovertical", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 548, "fields": {"property": "cargasuportmaxima", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 549, "fields": {"property": "nrpistas", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 550, "fields": {"property": "nrfaixas", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 551, "fields": {"property": "extensao", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 552, "fields": {"property": "largura", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 553, "fields": {"property": "posicaopista", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+  {"model": "hydra.SupportedProperty", "pk": 554, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 156}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 562, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+  {"model": "hydra.SupportedProperty", "pk": 563, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+  {"model": "hydra.SupportedProperty", "pk": 564, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+  {"model": "hydra.SupportedProperty", "pk": 565, "fields": {"property": "tiposinal", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+  {"model": "hydra.SupportedProperty", "pk": 566, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+  {"model": "hydra.SupportedProperty", "pk": 567, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+  {"model": "hydra.SupportedProperty", "pk": 568, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 158}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 574, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 160}},
+  {"model": "hydra.SupportedProperty", "pk": 575, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 160}},
+  {"model": "hydra.SupportedProperty", "pk": 576, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 160}},
+  {"model": "hydra.SupportedProperty", "pk": 577, "fields": {"property": "tipotravessia", "required": true, "readable": true, "writeable": true, "hydra_class": 160}},
+  {"model": "hydra.SupportedProperty", "pk": 578, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 160}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 592, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 593, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 594, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 595, "fields": {"property": "nrdutos", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 596, "fields": {"property": "tipotrechoduto", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 597, "fields": {"property": "mattransp", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 598, "fields": {"property": "setor", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 599, "fields": {"property": "posicaorelativa", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 600, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 601, "fields": {"property": "situacaoespacial", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 602, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 603, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+  {"model": "hydra.SupportedProperty", "pk": 604, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 162}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 622, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 623, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 624, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 625, "fields": {"property": "codtrechoferrov", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 626, "fields": {"property": "posicaorelativa", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 627, "fields": {"property": "tipotrechoferrov", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 628, "fields": {"property": "bitola", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 629, "fields": {"property": "eletrificada", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 630, "fields": {"property": "nrlinhas", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 631, "fields": {"property": "emarruamento", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 632, "fields": {"property": "jurisdicao", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 633, "fields": {"property": "administracao", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 634, "fields": {"property": "concessionaria", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 635, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 636, "fields": {"property": "cargasuportmaxima", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 637, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+  {"model": "hydra.SupportedProperty", "pk": 638, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 164}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 648, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 649, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 650, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 651, "fields": {"property": "extensaotrecho", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 652, "fields": {"property": "caladomaxseca", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 653, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 654, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 655, "fields": {"property": "regime", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+  {"model": "hydra.SupportedProperty", "pk": 656, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 166}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 672, "fields": {"property": "codtrechorodov", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 673, "fields": {"property": "tipotrechorod", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 674, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 675, "fields": {"property": "jurisdicao", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 676, "fields": {"property": "administracao", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 677, "fields": {"property": "concessionaria", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 678, "fields": {"property": "revestimento", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 679, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 680, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 681, "fields": {"property": "nrpistas", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 682, "fields": {"property": "nrfaixas", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 683, "fields": {"property": "trafego", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 684, "fields": {"property": "canteirodivisorio", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 685, "fields": {"property": "capaccarga", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+  {"model": "hydra.SupportedProperty", "pk": 686, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 168}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 702, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 703, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 704, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 705, "fields": {"property": "modaluso", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 706, "fields": {"property": "nrpistas", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 707, "fields": {"property": "nrfaixas", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 708, "fields": {"property": "extensao", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 709, "fields": {"property": "altura", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 710, "fields": {"property": "largura", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 711, "fields": {"property": "posicaopista", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 712, "fields": {"property": "operacional", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 713, "fields": {"property": "situacaofisica", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 714, "fields": {"property": "matconstr", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 715, "fields": {"property": "tipotunel", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+  {"model": "hydra.SupportedProperty", "pk": 716, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 170}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 726, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 727, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 728, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 729, "fields": {"property": "alturamediaindividuos", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 730, "fields": {"property": "classificacaoporte", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 731, "fields": {"property": "tipobrejopantano", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 732, "fields": {"property": "denso", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 733, "fields": {"property": "antropizada", "required": true, "readable": true, "writeable": true, "hydra_class": 172}},
+  {"model": "hydra.SupportedProperty", "pk": 734, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 172}}
 ]
