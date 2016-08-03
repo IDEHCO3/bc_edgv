@@ -29,6 +29,8 @@ urlpatterns = format_suffix_patterns([
 
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
+    url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
+    url(r'^municipios/(?P<geocodigo>[0-9]{7})/(?P<property>[A-Za-z]+)/', views.MunicipioDetailProperty.as_view(), name='municipio_detail_property'),
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),
     url(r'^outros-limites-oficiais/$', views.OutrosLimitesOficiaisList.as_view(), name='outros_limites_oficiais_list'),
     url(r'^paises/$', views.PaisList.as_view(), name='pais_list'),

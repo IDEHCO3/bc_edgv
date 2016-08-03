@@ -13,7 +13,7 @@ from bcim.serializers import *
 
 
 from context.utilities import *
-from context.views import CreatorContext
+from context.views import *
 
 class APIRoot(APIView):
 
@@ -168,6 +168,36 @@ class MunicipioFiltered(CreatorContext):
 
 
         return self.queryset
+
+class MunicipioDetail(generics.RetrieveAPIView):
+
+    queryset = Municipio.objects.all()
+    serializer_class = MunicipioSerializer
+    lookup_field = "geocodigo"
+
+
+class MunicipioDetailProperty(CreatorContextToRetrieve):
+
+    queryset = Municipio.objects.all()
+    serializer_class = MunicipioSerializer
+    lookup_field = "geocodigo"
+
+    def get(self, request, *args, **kwargs):
+        response = super(MunicipioDetailProperty, self).get(request, *args, **kwargs)
+
+        property_name = self.kwargs.get("property")
+        property_value = response.data['properties'].get(property_name)
+        property_type = Municipio._meta.get_field(property_name).get_internal_type()
+
+        if property_type == "GeometryField":
+            del response.data["properties"]
+            return response
+
+        filtered_data = {}
+        filtered_data[property_name] = property_value
+        response.data = filtered_data
+        return response
+
 
 class OutrasUnidProtegidasList(CreatorContext):
 
