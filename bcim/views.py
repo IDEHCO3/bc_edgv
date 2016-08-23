@@ -95,7 +95,7 @@ class APIRoot(APIView):
         return response
 
 
-class UnidadeFederacaoDetail(APIViewHypermedia):
+class UnidadeFederacaoDetail(APIViewHypermedia,):
     """
     Retrieve, update or delete a unidades da federacao instance.
     """
@@ -105,17 +105,7 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
     """API endpoint for listing and creating sprints."""
     serializer_class = UnidadeFederacaoSerializer
 
-    # def options(self, request, *args, **kwargs):
-    #     response = Response(getContextData('unidades-federativas', request), status=status.HTTP_200_OK, content_type="application/ld+json")
-    #     response = createLinkOfContext('unidades-federativas', request, response)
-    #     return response
-    #
-    # def get(self, request, *args, **kwargs):
-    #     response = super(UnidadeFederacaoListFilteredByQueryParameters, self).get(request, *args, **kwargs)
-    #     response = createLinkOfContext('unidades-federativas', request, response)
-    #     return response
-
-class UnidadeFederacaoFiltered(BasicListFiltered):
+class UnidadeFederacaoFiltered(BasicListFiltered, CreatorContext):
 
     queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
@@ -169,7 +159,7 @@ class MunicipioFiltered(CreatorContext):
 
         return self.queryset
 
-class MunicipioDetail(generics.RetrieveAPIView):
+class MunicipioDetail(CreatorContextToRetrieve):
 
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
@@ -181,6 +171,7 @@ class MunicipioDetailProperty(CreatorContextToRetrieve):
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
     lookup_field = "geocodigo"
+
 
     def get(self, request, *args, **kwargs):
         response = super(MunicipioDetailProperty, self).get(request, *args, **kwargs)

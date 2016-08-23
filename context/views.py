@@ -10,6 +10,13 @@ from rest_framework import status
 from context.utilities import *
 # Create your views here.
 
+class GeojsonOnContentType(APIView):
+    def get(self, request, *args, **kwargs):
+        response = super(GeojsonOnContentType, self).get(request, *args, **kwargs)
+        if request.accepted_media_type != "text/html":
+            response.content_type = "application/vnd.geo+json"
+        return response
+
 class ContextView(APIView):
 
 
@@ -30,7 +37,7 @@ class ContextView(APIView):
             response.content_type = "application/ld+json"
         return response
 
-class CreatorContext(generics.ListCreateAPIView):
+class CreatorContext(GeojsonOnContentType, generics.ListCreateAPIView):
 
     def options(self, request, *args, **kwargs):
         classname = getClassnameByURL(request._request.path)
@@ -44,7 +51,7 @@ class CreatorContext(generics.ListCreateAPIView):
         response = createLinkOfContext(classname, request, response)
         return response
 
-class CreatorContextToRetrieve(generics.RetrieveAPIView):
+class CreatorContextToRetrieve(GeojsonOnContentType, generics.RetrieveAPIView):
 
     def options(self, request, *args, **kwargs):
         classname = getClassnameByURL(request._request.path)
@@ -57,3 +64,5 @@ class CreatorContextToRetrieve(generics.RetrieveAPIView):
         classname = getClassnameByURL(request._request.path)
         response = createLinkOfContext(classname, request, response)
         return response
+
+
