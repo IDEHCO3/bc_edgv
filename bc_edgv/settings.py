@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = '172.17.0.2'
+    os.environ['IP_SGBD'] = '127.0.0.1'
 
 ip_sgbd = os.environ['IP_SGBD']
 
@@ -98,6 +98,7 @@ DATABASES = {
        },
 
        'HOST': ip_sgbd,
+       'PORT': '2345',
        'NAME': 'idehco3',
        'USER': 'idehco3',
        'PASSWORD': 'idehco3',
