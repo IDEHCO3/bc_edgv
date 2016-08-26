@@ -15,7 +15,8 @@
 
 #static
 bc_edgv/static_root/*
+static_root/*
 
 #media
 bc_edgv/media_root/*
-
+media_root/*
