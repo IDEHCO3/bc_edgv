@@ -84,9 +84,13 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = '127.0.0.1'
+    os.environ['IP_SGBD'] = 'localhost'
+
+if not 'PORT_SGBD' in os.environ:
+    os.environ['PORT_SGBD'] = '5432'
 
 ip_sgbd = os.environ['IP_SGBD']
+port_sgbd = os.environ['PORT_SGBD']
 
 
 DATABASES = {
@@ -98,7 +102,7 @@ DATABASES = {
        },
 
        'HOST': ip_sgbd,
-       'PORT': '2345',
+       'PORT': port_sgbd,
        'NAME': 'idehco3',
        'USER': 'idehco3',
        'PASSWORD': 'idehco3',
