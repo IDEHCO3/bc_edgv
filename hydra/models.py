@@ -2,7 +2,7 @@ from django.contrib.gis.gdal import SpatialReference, OGRGeometry
 from django.contrib.gis.geos.prepared import PreparedGeometry
 from django.db import models
 from django.contrib.gis.geos import GEOSGeometry, Point, LineString, Polygon
-from context.models import Class
+from context_api.models import Class
 # Create your models here.
 
 class SupportedProperty(models.Model):

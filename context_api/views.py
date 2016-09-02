@@ -2,12 +2,12 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
-from context.models import *
-from context.serializers import ContextSerializer
+from context_api.models import *
+from context_api.serializers import ContextSerializer
 from hydra.serializers import HydraSerializer
 from rest_framework import status
 
-from context.utilities import *
+from context_api.utilities import *
 # Create your views here.
 
 class GeojsonOnContentType(APIView):

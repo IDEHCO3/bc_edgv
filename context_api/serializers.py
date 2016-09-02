@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-from context.context import ContextBase
-from context.models import Context
+from context_api.context import ContextBase
+from context_api.models import Context
 
 class ContextSerializer(ContextBase):
 

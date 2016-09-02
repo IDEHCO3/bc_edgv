@@ -1,6 +1,6 @@
-from hydra.hydra import *
+from hydra.hydra2 import *
 from hydra.models import SupportedProperty, SupportedOperation
-from context.models import Class
+from context_api.models import Class
 
 class HydraSerializer(HydraClassSerializer):
 

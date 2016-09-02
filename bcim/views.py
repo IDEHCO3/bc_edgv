@@ -4,7 +4,6 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from bcim.utils import *
-from bcim.models import *
 
 from rest_framework import permissions
 
@@ -12,8 +11,7 @@ from rest_framework import generics
 from bcim.serializers import *
 
 
-from context.utilities import *
-from context.views import *
+from context_api.views import *
 
 class APIRoot(APIView):
 
@@ -104,6 +102,10 @@ class UnidadeFederacaoDetail(APIViewHypermedia,):
 class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters, CreatorContext):
     """API endpoint for listing and creating sprints."""
     serializer_class = UnidadeFederacaoSerializer
+
+    def get(self, request, *args, **kwargs):
+        super(UnidadeFederacaoListFilteredByQueryParameters)
+        return None
 
 class UnidadeFederacaoFiltered(BasicListFiltered, CreatorContext):
 

@@ -42,9 +42,8 @@ INSTALLED_APPS = (
     'rest_framework_gis',
     'corsheaders',
     'bcim',
-    'context',
+    'context_api',
     'hydra',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,14 +83,25 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = 'localhost'
+    os.environ['IP_SGBD'] = '172.17.0.2'
 
 if not 'PORT_SGBD' in os.environ:
     os.environ['PORT_SGBD'] = '5432'
 
+if not 'DB_NAME' in os.environ:
+    os.environ['DB_NAME'] = 'idehco3'
+
+if not 'DB_USERNAME' in os.environ:
+    os.environ['DB_USERNAME'] = 'idehco3'
+
+if not 'DB_PASSWORD' in os.environ:
+    os.environ['DB_PASSWORD'] = 'idehco3'
+
 ip_sgbd = os.environ['IP_SGBD']
 port_sgbd = os.environ['PORT_SGBD']
-
+db_name = os.environ['DB_NAME']
+user = os.environ['DB_USERNAME']
+password = os.environ['DB_PASSWORD']
 
 DATABASES = {
    'default': {
@@ -103,9 +113,9 @@ DATABASES = {
 
        'HOST': ip_sgbd,
        'PORT': port_sgbd,
-       'NAME': 'idehco3',
-       'USER': 'idehco3',
-       'PASSWORD': 'idehco3',
+       'NAME': db_name,
+       'USER': user,
+       'PASSWORD': password,
    }
 }
 

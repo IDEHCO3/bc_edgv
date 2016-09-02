@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python manage.py loaddata hydra/fixtures/default.json
-python manage.py loaddata bcim/fixtures/context.json
-python manage.py loaddata bcim/fixtures/hydra.json
+python3 manage.py loaddata hydra/fixtures/default.json
+python3 manage.py loaddata bcim/fixtures/context.json
+python3 manage.py loaddata bcim/fixtures/hydra.json
 
