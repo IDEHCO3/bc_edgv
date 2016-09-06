@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cp module.conf /etc/nginx/sites-available/
-ls -s /etc/nginx/sites-available/module.conf /etc/nginx/sites-enabled/module
+cp nginx.conf /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/nginx.conf /etc/nginx/sites-enabled/module
 
 service nginx restart
 
