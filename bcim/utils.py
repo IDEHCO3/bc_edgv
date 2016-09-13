@@ -6,7 +6,7 @@ from django.contrib.gis.db import models
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import six
-from requests.packages.urllib3.exceptions import HTTPError, ConnectionError
+from requests.exceptions import HTTPError, ConnectionError
 from rest_framework import generics
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
