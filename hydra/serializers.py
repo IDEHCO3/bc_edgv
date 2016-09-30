@@ -1,12 +1,10 @@
 from hydra.hydra2 import *
-from hydra.models import SupportedProperty, SupportedOperation
 from context_api.models import Class
 
 class HydraSerializer(HydraClassSerializer):
 
     def __init__(self, classobject, request):
-        super(HydraSerializer, self).__init__()
-        self.request = request
+        HydraClassSerializer.__init__(self, request=request)
         self.classobject = classobject
 
     def getSpatialOperations(self):
