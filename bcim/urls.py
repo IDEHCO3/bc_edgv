@@ -8,13 +8,13 @@ urlpatterns = format_suffix_patterns([
     url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
     #Detail estados
+
+    url(r'^unidades-federativas/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
+    url(r'^unidades-federativas/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
+    url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
+    url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
+
     url(r'^unidades-federativas/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list'),
-
-    #url(r'^unidades-federativas/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
-    #url(r'^unidades-federativas/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
-    #url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
-    #url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
-
 
     #Collection estados
     # url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
@@ -44,6 +44,7 @@ urlpatterns = format_suffix_patterns([
 
     url(r'^areas-edificadas/$', views.AreaEdificadaList.as_view(), name='area_edificada_list'),
     url(r'^capitais/$', views.CapitalList.as_view(), name='capital_list'),
+    url(r'^capitais/(?P<pk>\d+)/$', views.CapitalDetail.as_view(), name='capital_detail'),
     url(r'^vilas/$', views.VilaList.as_view(), name='vila_list'),
     url(r'^curvas-batimetricas/$', views.CurvaBatimetricaList.as_view(), name='curva_batimetrica_list'),
     #url(r'^curvas-de-nivel/$', views.CurvaNivelList.as_view(), name='curva_nivel_list'), # nao carrega (muita informacao)

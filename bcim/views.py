@@ -268,6 +268,12 @@ class CapitalList(CreatorContext):
     queryset = Capital.objects.all()
     serializer_class = CapitalSerializer
 
+
+class CapitalDetail(generics.RetrieveDestroyAPIView):
+
+    queryset = Capital.objects.all()
+    serializer_class = CapitalSerializer
+
 class CidadeList(CreatorContext):
 
     queryset = Cidade.objects.all()

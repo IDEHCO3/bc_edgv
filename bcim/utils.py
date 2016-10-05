@@ -458,11 +458,43 @@ class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
         queryset = queryset.filter(**dict)
         return queryset
 
+    def json_geometrycollection_from_featurecollection(self, feature_collection):
+        geometry_collection = {
+            "type": "GeometryCollection",
+            "geometries": []
+        }
+
+        for feature in feature_collection['features']:
+            geometry_collection['geometries'].append(feature['geometry'])
+
+        return json.dumps(geometry_collection)
+
+    def make_geometrycollection_from_featurecollection(self, feature_collection):
+        geoms = []
+        features = ast.literal_eval(feature_collection)
+        for feature in features['features']:
+            feature_geom = feature['geometry']
+            geoms.append(GEOSGeometry(feature_geom))
+        return GeometryCollection(tuple(geoms))
+
     def get_dict_with_spatialfunction_or_same_dict(self, dict):
         for key, value in dict.items():
             if key.startswith('*'):
                 new_key = self.serializer_class.Meta.geo_field + '__' + key[1:]
                 dict.pop(key)
+                str1 = (value[0:5]).lower()
+                https = ['http:', 'https']
+                if (str1 in https):
+                    resp = requests.get(value)
+                    j = resp.json()
+
+                    if j["type"].lower() == 'feature':
+                        value = json.dumps(j["geometry"])
+                    elif j["type"].lower() == 'featurecollection':
+                        value = self.json_geometrycollection_from_featurecollection(resp.json())
+                    else:
+                        value = json.dumps(j)
+
                 #a_value = value
                 #a_geom = GEOSGeometry(a_value, 4326)
                 dict[new_key] = value
