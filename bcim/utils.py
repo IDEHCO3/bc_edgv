@@ -508,7 +508,9 @@ class BasicListFiltered(generics.ListCreateAPIView):
             if j["type"].lower() == 'featurecollection':
                 return self.make_geometrycollection_from_featurecollection(resp.text)
 
-        return GEOSGeometry(json.dumps(j))
+            a_geom = json.dumps(j)
+
+        return GEOSGeometry(a_geom)
 
 
 class BasicAPIViewHypermedia(APIView):

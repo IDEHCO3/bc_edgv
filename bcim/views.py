@@ -111,9 +111,6 @@ class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListC
     """API endpoint for listing and creating sprints."""
     serializer_class = UnidadeFederacaoSerializer
 
-    def get(self, request, *args, **kwargs):
-        super(UnidadeFederacaoListFilteredByQueryParameters)
-        return None
 
 class UnidadeFederacaoFiltered(BasicListFiltered, CreatorContext):
 
@@ -493,9 +490,9 @@ class QuedaDaguaList(CreatorContext):
     queryset = QuedaDagua.objects.all()
     serializer_class = QuedaDaguaSerializer
 
-class RecifeList(CreatorContext):
+class RecifeList(DefaultsMixin, ResourceListCreateFilteredByQueryParameters, CreatorContext):
 
-    queryset = Recife.objects.all()
+    #queryset = Recife.objects.all()
     serializer_class = RecifeSerializer
 
 class RochaEmAguaList(CreatorContext):
