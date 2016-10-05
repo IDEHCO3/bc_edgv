@@ -1,13 +1,19 @@
 #!/bin/bash
 
 if [ "$1" != "" ]; then
-	python3 manage.py $@
+	python manage.py $@
 	exit
-fi
+else
 
-ET="eth0"
-IP="$(ifconfig $ET | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1 }')"
-if [ "$IP" != "" ]; then
-	python3 manage.py runserver $IP:8000
+    cp nginx.conf /etc/nginx/sites-available/
+    LINK_FILE='/etc/nginx/sites-enabled/module'
+
+    if [ -f $LINK_FILE ]; then
+        rm $LINK_FILE
+    fi
+
+    ln -s /etc/nginx/sites-available/nginx.conf $LINK_FILE
+    service nginx restart
+    /usr/bin/uwsgi --ini bc_edgv.ini --uid root --gid www-data
 fi
 
