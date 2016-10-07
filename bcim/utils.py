@@ -14,6 +14,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import permissions
+from rest_framework import status
 
 from rest_framework.compat import (
     INDENT_SEPARATORS, LONG_SEPARATORS, SHORT_SEPARATORS
@@ -721,18 +722,28 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return self._execute_attribute_or_method(obj, arr_attrib_method_name[0], arr_attrib_method_name[1:])
 
+    def function_name(self, attributes_functions_str):
+        functions_dic = geometry_with_parameters_type()
+        if str(attributes_functions_str[-1]) in functions_dic:
+            return str(attributes_functions_str[-1])
+        return str(attributes_functions_str[-2])
+
     def response_of_request(self, object, attributes_functions_str):
         att_funcs = attributes_functions_str.split('/')
 
         obj = self.get_geometry_object(object)
-        if not self.is_spatial_operation ( att_funcs[0]) and self.is_spatial_attribute(att_funcs[0]):
+        if not self.is_spatial_operation(att_funcs[0]) and self.is_spatial_attribute(att_funcs[0]):
             att_funcs = att_funcs[1:]
 
-        a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:] )
+        a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])
 
         if isinstance(a_value, GEOSGeometry):
-           a_value =  json.loads( a_value.geojson)
+           a_value = json.loads(a_value.geojson)
            return Response(data=a_value, content_type='application/vnd.geo+json')
+        else:
+            a_value = {
+                self.function_name(att_funcs): a_value
+            }
 
         return Response(data=a_value, content_type='application/json')
 
@@ -746,13 +757,13 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
             return Response(serializer.data,  content_type='application/vnd.geo+json')
 
         if self.has_only_attribute(object_model, attributes_functions_str):
-            return self.response_resquest_with_attributes(object_model, attributes_functions_str )
+            return self.response_resquest_with_attributes(object_model, attributes_functions_str)
 
         if self.attributes_functions_str_has_url(attributes_functions_str.lower()):
             arr_of_two_url = self.attributes_functions_splitted_by_url(attributes_functions_str)
             resp = requests.get(arr_of_two_url[1])
-            if resp .status_code == 404:
-                return Response({'Erro:' + str(resp.status_code)})
+            if resp.status_code == 404:
+                return Response({'Erro:' + str(resp.status_code)}, status=status.HTTP_404_NOT_FOUND)
             j = resp.text
             attributes_functions_str = arr_of_two_url[0] + j
 
