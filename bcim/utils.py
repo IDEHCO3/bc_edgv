@@ -1,8 +1,10 @@
 import json
 
 import requests
+from django.contrib.gis.gdal.geometries import Point, Polygon, OGRGeometry
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.db import models
+from django.contrib.gis.geos.prepared import PreparedGeometry
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils import six
@@ -47,6 +49,10 @@ class Type_Called():
         self.name = a_name
         self.parameters = params
         self.return_type = answer
+
+    def description(self):
+        param = self.parameters or []
+        return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
 
 class FeatureModel(models.Model):
 
@@ -293,6 +299,7 @@ class FeatureModel(models.Model):
             self.dic['coords'] = Type_Called('coords', None, tuple)
             self.dic['count'] = Type_Called('count', None, int)
             self.dic['crosses'] = Type_Called('crosses', [GEOSGeometry], bool)
+            from django.contrib.gis.gdal import SpatialReference
             self.dic['crs'] = Type_Called('crs', None, SpatialReference)
             self.dic['difference'] = Type_Called('difference', [GEOSGeometry], GEOSGeometry)
             self.dic['dims'] = Type_Called('dims', None, int)
