@@ -1,4 +1,4 @@
-
+from collections import OrderedDict
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -82,7 +82,8 @@ def get_root_response(request):
         'marcos de limite': reverse('bcim_v1:marco_de_limite_list', request=request, format=format),
         'pontos geodesicos': reverse('bcim_v1:ponto_exibicao_wgs84_list', request=request, format=format),
     }
-    return root_links
+    ordered_dict_of_link = OrderedDict(sorted(root_links.items(), key=lambda t: t[0]))
+    return ordered_dict_of_link
 
 class APIRoot(APIView):
 
