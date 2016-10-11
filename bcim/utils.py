@@ -16,6 +16,11 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
 
+import ast
+from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
+
+from context_api.views import *
+
 from rest_framework.compat import (
     INDENT_SEPARATORS, LONG_SEPARATORS, SHORT_SEPARATORS
 )
@@ -41,9 +46,6 @@ class DefaultsMixin(object):
     #     authentication.BasicAuthentication,
     #     authentication.TokenAuthentication,
     # )
-
-import ast
-from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
 
 class Type_Called():
     def __init__(self, a_name, params, answer):
@@ -455,16 +457,54 @@ def geometry_with_parameters_type():
     dic['z'] = []
     return dic
 
-class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
+# In developing.
+class HandleFunctionsList(CreatorContextList):
 
     def get_queryset(self):
-        model_class = self.serializer_class.Meta.model
-        queryset = model_class.objects.all()
-        query_parameters = self.request.query_params
-        dict = self.get_dict_with_spatialfunction_or_same_dict(query_parameters.dict())
+        stFunction = self.kwargs.get("spatial_function", None)
+        modelClass = self.serializer_class.Meta.model
 
-        queryset = queryset.filter(**dict)
-        return queryset
+        if stFunction is None: # to get query parameters
+            queryset = modelClass.objects.all()
+            query_parameters = self.request.query_params
+            dict = self.get_dict_with_spatialfunction_or_same_dict(query_parameters.dict())
+            queryset = queryset.filter(**dict)
+            return queryset
+        else: # to get query from url
+            geom_str_or_url = self.kwargs.get('geom')
+            aKey = self.serializer_class.Meta.geo_field + '__' + stFunction
+            aGeom = self.geos_geometry(geom_str_or_url)
+
+            if stFunction is not None:
+                return modelClass.objects.filter(**({aKey: aGeom}))
+
+            return self.queryset
+
+    def make_geometrycollection_from_featurecollection(self, feature_collection):
+        geoms = []
+        features = ast.literal_eval(feature_collection)
+        for feature in features['features']:
+            feature_geom = feature['geometry']
+            geoms.append(GEOSGeometry(feature_geom))
+        return GeometryCollection(tuple(geoms))
+
+    def geos_geometry(self, geom_str_or_url):
+        a_geom = geom_str_or_url
+        str1 = (geom_str_or_url[0:5]).lower()
+        https = ['http:', 'https']
+        if (str1 in https):
+            resp = requests.get(geom_str_or_url)
+            j = resp.json()
+
+            if j["type"].lower() == 'feature':
+               return GEOSGeometry(json.dumps(j["geometry"]))
+
+            if j["type"].lower() == 'featurecollection':
+                return self.make_geometrycollection_from_featurecollection(resp.text)
+
+            a_geom = json.dumps(j)
+
+        return GEOSGeometry(a_geom)
 
     def json_geometrycollection_from_featurecollection(self, feature_collection):
         geometry_collection = {
@@ -476,14 +516,6 @@ class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
             geometry_collection['geometries'].append(feature['geometry'])
 
         return json.dumps(geometry_collection)
-
-    def make_geometrycollection_from_featurecollection(self, feature_collection):
-        geoms = []
-        features = ast.literal_eval(feature_collection)
-        for feature in features['features']:
-            feature_geom = feature['geometry']
-            geoms.append(GEOSGeometry(feature_geom))
-        return GeometryCollection(tuple(geoms))
 
     def get_dict_with_spatialfunction_or_same_dict(self, dict):
         for key, value in dict.items():
@@ -507,51 +539,6 @@ class ResourceListCreateFilteredByQueryParameters(generics.ListCreateAPIView):
                 #a_geom = GEOSGeometry(a_value, 4326)
                 dict[new_key] = value
         return dict
-
-
-class BasicListFiltered(generics.ListCreateAPIView):
-
-    def get_queryset(self):
-
-        st_function = self.kwargs.get("spatial_function")
-        geom_str_or_url = self.kwargs.get('geom')
-        url_rest = self.request.query_params.get('url', None)
-        a_key = self.serializer_class.Meta.geo_field + '__' + st_function
-        aGeom = self.geos_geometry(geom_str_or_url)
-
-        if st_function is not None:
-            model_class = self.serializer_class.Meta.model
-            return model_class.objects.filter(**({a_key: aGeom}))
-
-        return self.queryset
-
-    def make_geometrycollection_from_featurecollection(self, feature_collection):
-        geoms = []
-        features = ast.literal_eval(feature_collection)
-        for feature in features['features']:
-            feature_geom = feature['geometry']
-            geoms.append(GEOSGeometry(feature_geom))
-        return GeometryCollection(tuple(geoms))
-
-
-    def geos_geometry(self, geom_str_or_url):
-        a_geom =  geom_str_or_url
-        str1 = (geom_str_or_url[0:5]).lower()
-        https = ['http:', 'https']
-        if (str1 in https):
-            resp= requests.get(geom_str_or_url)
-            j = resp.json()
-
-            if j["type"].lower() == 'feature':
-               return GEOSGeometry(json.dumps(j["geometry"]))
-
-            if j["type"].lower() == 'featurecollection':
-                return self.make_geometrycollection_from_featurecollection(resp.text)
-
-            a_geom = json.dumps(j)
-
-        return GEOSGeometry(a_geom)
-
 
 class BasicAPIViewHypermedia(APIView):
 
@@ -768,7 +755,6 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
             attributes_functions_str = arr_of_two_url[0] + j
 
         return self.response_of_request(object_model, attributes_functions_str)
-
 
 class APIViewBasicSpatialFunction(APIView):
 

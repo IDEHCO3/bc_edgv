@@ -101,52 +101,40 @@ class APIRoot(APIView):
         response = createLinkOfContext('api-root', request, response)
         return response
 
-
 class UnidadeFederacaoDetail(APIViewHypermedia,):
-    """
-    Retrieve, update or delete a unidades da federacao instance.
-    """
     serializer_class = UnidadeFederacaoSerializer
 
-class UnidadeFederacaoListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters, CreatorContext):
-    """API endpoint for listing and creating sprints."""
-    serializer_class = UnidadeFederacaoSerializer
-
-
-class UnidadeFederacaoFiltered(BasicListFiltered, CreatorContext):
+class UnidadeFederacaoList(HandleFunctionsList):
 
     queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
 
     def get_queryset(self):
 
-        geocodigo_uf =  self.kwargs.get("geocodigo")
+        geocodigo_uf = self.kwargs.get("geocodigo")
         if geocodigo_uf is not None:
-            return self.queryset.filter( geocodigo=geocodigo_uf )
+            return self.queryset.filter(geocodigo=geocodigo_uf)
 
         sigla_uf = self.kwargs.get("sigla")
         if sigla_uf is not None:
-            return self.queryset.filter( sigla=sigla_uf.upper())
+            return self.queryset.filter(sigla=sigla_uf.upper())
 
-        siglas =  self.kwargs.get("siglas")
+        siglas = self.kwargs.get("siglas")
         if siglas is not None:
-            return self.queryset.filter( sigla__in=siglas.split(",") )
+            return self.queryset.filter(sigla__in=siglas.split(","))
 
-        return super(UnidadeFederacaoFiltered, self).get_queryset()
+        return super(UnidadeFederacaoList, self).get_queryset()
 
-class MunicipioList(CreatorContext):
+class MunicipioList(HandleFunctionsList):
 
     queryset = Municipio.objects.all()
-
     serializer_class = MunicipioSerializer
 
     class Meta:
         managed = False
         db_table = 'lim_municipio_a'
 
-class MunicipioFiltered(CreatorContext):
+class MunicipioFiltered(CreatorContextList):
 
     queryset = Municipio.objects.all()
 
@@ -167,14 +155,14 @@ class MunicipioFiltered(CreatorContext):
 
         return self.queryset
 
-class MunicipioDetail(CreatorContextToRetrieve):
+class MunicipioDetail(CreatorContextDetail):
 
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
     lookup_field = "geocodigo"
 
 
-class MunicipioDetailProperty(CreatorContextToRetrieve):
+class MunicipioDetailProperty(CreatorContextDetail):
 
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
@@ -198,73 +186,73 @@ class MunicipioDetailProperty(CreatorContextToRetrieve):
         return response
 
 
-class OutrasUnidProtegidasList(CreatorContext):
+class OutrasUnidProtegidasList(CreatorContextList):
 
     queryset = OutrasUnidProtegidas.objects.all()
     serializer_class = OutrasUnidProtegidasSerializer
 
-class OutrosLimitesOficiaisList(CreatorContext):
+class OutrosLimitesOficiaisList(CreatorContextList):
 
     queryset = OutrosLimitesOficiais.objects.all()
     serializer_class = OutrosLimitesOficiaisSerializer
 
-class PaisList(CreatorContext):
+class PaisList(CreatorContextList):
 
     queryset = Pais.objects.all()
     serializer_class = PaisSerializer
 
-class TerraIndigenaList(CreatorContext):
+class TerraIndigenaList(CreatorContextList):
 
     queryset = TerraIndigena.objects.all()
     serializer_class = TerraIndigenaSerializer
 
-class UnidadeConservacaoNaoSnucList(CreatorContext):
+class UnidadeConservacaoNaoSnucList(CreatorContextList):
 
     queryset = UnidadeConservacaoNaoSnuc.objects.all()
     serializer_class = UnidadeConservacaoNaoSnucSerializer
 
-class UnidadeProtecaoIntegralList(CreatorContext):
+class UnidadeProtecaoIntegralList(CreatorContextList):
 
     queryset = UnidadeProtecaoIntegral.objects.all()
     serializer_class = UnidadeProtecaoIntegralSerializer
 
-class UnidadeUsoSustentavelList(CreatorContext):
+class UnidadeUsoSustentavelList(CreatorContextList):
 
     queryset = UnidadeUsoSustentavel.objects.all()
     serializer_class = UnidadeUsoSustentavelSerializer
 
-class AglomeradoRuralDeExtensaoUrbanaList(CreatorContext):
+class AglomeradoRuralDeExtensaoUrbanaList(CreatorContextList):
 
     queryset = AglomeradoRuralDeExtensaoUrbana.objects.all()
     serializer_class = AglomeradoRuralDeExtensaoUrbanaSerializer
 
-class AglomeradoRuralIsoladoList(CreatorContext):
+class AglomeradoRuralIsoladoList(CreatorContextList):
 
     queryset = AglomeradoRuralIsolado.objects.all()
     serializer_class = AglomeradoRuralIsoladoSerializer
 
-class AldeiaIndigenaList(CreatorContext):
+class AldeiaIndigenaList(CreatorContextList):
 
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
 
-class AldeiaIndigenaListFiltered(BasicListFiltered):
+class AldeiaIndigenaListFiltered(HandleFunctionsList):
 
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
 
-class AldeiaIndigenaListFilteredByQueryParameters(DefaultsMixin, ResourceListCreateFilteredByQueryParameters):
+class AldeiaIndigenaListFilteredByQueryParameters(HandleFunctionsList):
     serializer_class = AldeiaIndigenaSerializer
 
 class AldeiaIndigenaDetail(APIViewDetailSpatialFunction):
     serializer_class = AldeiaIndigenaSerializer
 
-class AreaEdificadaList(CreatorContext):
+class AreaEdificadaList(CreatorContextList):
 
     queryset = AreaEdificada.objects.all()
     serializer_class = AreaEdificadaSerializer
 
-class CapitalList(CreatorContext):
+class CapitalList(CreatorContextList):
 
     queryset = Capital.objects.all()
     serializer_class = CapitalSerializer
@@ -275,102 +263,102 @@ class CapitalDetail(generics.RetrieveDestroyAPIView):
     queryset = Capital.objects.all()
     serializer_class = CapitalSerializer
 
-class CidadeList(CreatorContext):
+class CidadeList(CreatorContextList):
 
     queryset = Cidade.objects.all()
     serializer_class = CidadeSerializer
 
-class VilaList(CreatorContext):
+class VilaList(CreatorContextList):
 
     queryset = Vila.objects.all()
     serializer_class = VilaSerializer
 
-class CurvaBatimetricaList(CreatorContext):
+class CurvaBatimetricaList(CreatorContextList):
 
     queryset = CurvaBatimetrica.objects.all()
     serializer_class = CurvaBatimetricaSerializer
 
-class CurvaNivelList(CreatorContext):
+class CurvaNivelList(CreatorContextList):
 
     queryset = CurvaNivel.objects.all()
     serializer_class = CurvaNivelSerializer
 
-class DunaList(CreatorContext):
+class DunaList(CreatorContextList):
 
     queryset = Duna.objects.all()
     serializer_class = DunaSerializer
 
-class ElementoFisiograficoNaturalList(CreatorContext):
+class ElementoFisiograficoNaturalList(CreatorContextList):
 
     queryset = ElementoFisiograficoNatural.objects.all()
     serializer_class = ElementoFisiograficoNaturalSerializer
 
-class PicoList(CreatorContext):
+class PicoList(CreatorContextList):
 
     queryset = Pico.objects.all()
     serializer_class = PicoSerializer
 
-class PontoCotadoAltimetricoList(CreatorContext):
+class PontoCotadoAltimetricoList(CreatorContextList):
 
     queryset = PontoCotadoAltimetrico.objects.all()
     serializer_class = PontoCotadoAltimetricoSerializer
 
-class PontoCotadoBatimetricoList(CreatorContext):
+class PontoCotadoBatimetricoList(CreatorContextList):
 
     queryset = PontoCotadoBatimetrico.objects.all()
     serializer_class = PontoCotadoBatimetricoSerializer
 
-class EclusaList(CreatorContext):
+class EclusaList(CreatorContextList):
 
     queryset = Eclusa.objects.all()
     serializer_class = EclusaSerializer
 
-class EdifConstPortuariaList(CreatorContext):
+class EdifConstPortuariaList(CreatorContextList):
 
     queryset = EdifConstPortuaria.objects.all()
     serializer_class = EdifConstPortuariaSerializer
 
-class EdifConstrAeroportuariaList(CreatorContext):
+class EdifConstrAeroportuariaList(CreatorContextList):
 
     queryset = EdifConstrAeroportuaria.objects.all()
     serializer_class = EdifConstrAeroportuariaSerializer
 
-class EdifMetroFerroviariaList(CreatorContext):
+class EdifMetroFerroviariaList(CreatorContextList):
 
     queryset = EdifMetroFerroviaria.objects.all()
     serializer_class = EdifMetroFerroviariaSerializer
 
-class FundeadouroList(CreatorContext):
+class FundeadouroList(CreatorContextList):
 
     queryset = Fundeadouro.objects.all()
     serializer_class = FundeadouroSerializer
 
-class PistaPontoPousoList(CreatorContext):
+class PistaPontoPousoList(CreatorContextList):
 
     queryset = PistaPontoPouso.objects.all()
     serializer_class = PistaPontoPousoSerializer
 
-class PonteList(CreatorContext):
+class PonteList(CreatorContextList):
 
     queryset = Ponte.objects.all()
     serializer_class = PonteSerializer
 
-class SinalizacaoList(CreatorContext):
+class SinalizacaoList(CreatorContextList):
 
     queryset = Sinalizacao.objects.all()
     serializer_class = SinalizacaoSerializer
 
-class TravessiaList(CreatorContext):
+class TravessiaList(CreatorContextList):
 
     queryset = Travessia.objects.all()
     serializer_class = TravessiaSerializer
 
-class TrechoDutoList(CreatorContext):
+class TrechoDutoList(CreatorContextList):
 
     queryset = TrechoDuto.objects.all()
     serializer_class = TrechoDutoSerializer
 
-class TrechoFerroviarioList(CreatorContext):
+class TrechoFerroviarioList(CreatorContextList):
 
     queryset = TrechoFerroviario.objects.all()
     serializer_class = TrechoFerroviarioSerializer
@@ -382,161 +370,161 @@ class TrechoFerroviarioDetail(APIViewDetailSpatialFunction):
     serializer_class = TrechoFerroviarioSerializer
 
 
-class TrechoHidroviarioList(CreatorContext):
+class TrechoHidroviarioList(CreatorContextList):
 
     queryset = TrechoHidroviario.objects.all()
     serializer_class = TrechoHidroviarioSerializer
 
-class TrechoRodoviarioList(CreatorContext):
+class TrechoRodoviarioList(CreatorContextList):
 
     queryset = TrechoRodoviario.objects.all()
     serializer_class = TrechoRodoviarioSerializer
 
-class TunelList(CreatorContext):
+class TunelList(CreatorContextList):
 
     queryset = Tunel.objects.all()
     serializer_class = TunelSerializer
 
-class BrejoPantanoList(CreatorContext):
+class BrejoPantanoList(CreatorContextList):
 
     queryset = BrejoPantano.objects.all()
     serializer_class = BrejoPantanoSerializer
 
-class MangueList(CreatorContext):
+class MangueList(CreatorContextList):
 
     queryset = Mangue.objects.all()
     serializer_class = MangueSerializer
 
-class VegRestingaList(CreatorContext):
+class VegRestingaList(CreatorContextList):
 
     queryset = VegRestinga.objects.all()
     serializer_class = VegRestingaSerializer
 
-class EdifPubMilitarList(CreatorContext):
+class EdifPubMilitarList(CreatorContextList):
 
     queryset = EdifPubMilitar.objects.all()
     serializer_class = EdifPubMilitarSerializer
 
-class PostoFiscalList(CreatorContext):
+class PostoFiscalList(CreatorContextList):
 
     queryset = PostoFiscal.objects.all()
     serializer_class = PostoFiscalSerializer
 
-class EdifAgropecExtVegetalPescaList(CreatorContext):
+class EdifAgropecExtVegetalPescaList(CreatorContextList):
 
     queryset = EdifAgropecExtVegetalPesca.objects.all()
     serializer_class = EdifAgropecExtVegetalPescaSerializer
 
-class EdifIndustrialList(CreatorContext):
+class EdifIndustrialList(CreatorContextList):
 
     queryset = EdifIndustrial.objects.all()
     serializer_class = EdifIndustrialSerializer
 
-class ExtMineralList(CreatorContext):
+class ExtMineralList(CreatorContextList):
 
     queryset = ExtMineral.objects.all()
     serializer_class = ExtMineralSerializer
 
-class EdifReligiosaList(CreatorContext):
+class EdifReligiosaList(CreatorContextList):
 
     queryset = EdifReligiosa.objects.all()
     serializer_class = EdifReligiosaSerializer
 
-class EstGeradEnergiaEletricaList(CreatorContext):
+class EstGeradEnergiaEletricaList(CreatorContextList):
 
     queryset = EstGeradEnergiaEletrica.objects.all()
     serializer_class = EstGeradEnergiaEletricaSerializer
 
-class HidreletricaList(CreatorContext):
+class HidreletricaList(CreatorContextList):
 
     queryset = Hidreletrica.objects.all()
     serializer_class = HidreletricaSerializer
 
-class TermeletricaList(CreatorContext):
+class TermeletricaList(CreatorContextList):
 
     queryset = Termeletrica.objects.all()
     serializer_class = TermeletricaSerializer
 
-class TorreEnergiaList(CreatorContext):
+class TorreEnergiaList(CreatorContextList):
 
     queryset = TorreEnergia.objects.all()
     serializer_class = TorreEnergiaSerializer
 
-class BancoAreiaList(CreatorContext):
+class BancoAreiaList(CreatorContextList):
 
     queryset = BancoAreia.objects.all()
     serializer_class = BancoAreiaSerializer
 
-class BarragemList(CreatorContext):
+class BarragemList(CreatorContextList):
 
     queryset = Barragem.objects.all()
     serializer_class = BarragemSerializer
 
-class CorredeiraList(CreatorContext):
+class CorredeiraList(CreatorContextList):
 
     queryset = Corredeira.objects.all()
     serializer_class = CorredeiraSerializer
 
-class FozMaritimaList(CreatorContext):
+class FozMaritimaList(CreatorContextList):
 
     queryset = FozMaritima.objects.all()
     serializer_class = FozMaritimaSerializer
 
-class IlhaList(CreatorContext):
+class IlhaList(CreatorContextList):
 
     queryset = Ilha.objects.all()
     serializer_class = IlhaSerializer
 
-class MassaDaguaList(CreatorContext):
+class MassaDaguaList(CreatorContextList):
 
     queryset = MassaDagua.objects.all()
     serializer_class = MassaDaguaSerializer
 
-class QuedaDaguaList(CreatorContext):
+class QuedaDaguaList(CreatorContextList):
 
     queryset = QuedaDagua.objects.all()
     serializer_class = QuedaDaguaSerializer
 
-class RecifeList(DefaultsMixin, ResourceListCreateFilteredByQueryParameters, CreatorContext):
+class RecifeList(HandleFunctionsList):
 
     #queryset = Recife.objects.all()
     serializer_class = RecifeSerializer
 
-class RochaEmAguaList(CreatorContext):
+class RochaEmAguaList(CreatorContextList):
 
     queryset = RochaEmAgua.objects.all()
     serializer_class = RochaEmAguaSerializer
 
-class SumidouroVertedouroList(CreatorContext):
+class SumidouroVertedouroList(CreatorContextList):
 
     queryset = SumidouroVertedouro.objects.all()
     serializer_class = SumidouroVertedouroSerializer
 
-class TerrenoSujeitoInundacaoList(CreatorContext):
+class TerrenoSujeitoInundacaoList(CreatorContextList):
 
     queryset = TerrenoSujeitoInundacao.objects.all()
     serializer_class = TerrenoSujeitoInundacaoSerializer
 
-class TrechoDrenagemList(CreatorContext):
+class TrechoDrenagemList(CreatorContextList):
 
     queryset = TrechoDrenagem.objects.all()
     serializer_class = TrechoDrenagemSerializer
 
-class TrechoMassaDaguaList(CreatorContext):
+class TrechoMassaDaguaList(CreatorContextList):
 
     queryset = TrechoMassaDagua.objects.all()
     serializer_class = TrechoMassaDaguaSerializer
 
-class AreaDesenvolvimentoControleList(CreatorContext):
+class AreaDesenvolvimentoControleList(CreatorContextList):
 
     queryset = AreaDesenvolvimentoControle.objects.all()
     serializer_class = AreaDesenvolvimentoControleSerializer
 
-class MarcoDeLimiteList(CreatorContext):
+class MarcoDeLimiteList(CreatorContextList):
 
     queryset = MarcoDeLimite.objects.all()
     serializer_class = MarcoDeLimiteSerializer
 
-class PontoExibicaoWgs84List(CreatorContext):
+class PontoExibicaoWgs84List(CreatorContextList):
     queryset = PontosExibicaoWgs84.objects.all()
     serializer_class = PontosExibicaoWgs84Serializer

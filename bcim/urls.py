@@ -7,19 +7,18 @@ from bcim import views
 urlpatterns = format_suffix_patterns([
     url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
-    #Detail estados
+    #unidades federativas
 
     url(r'^unidades-federativas/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
     url(r'^unidades-federativas/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
     url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
     url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
 
-    url(r'^unidades-federativas/$', views.UnidadeFederacaoListFilteredByQueryParameters.as_view(), name='uf_list'),
+    url(r'^unidades-federativas/$', views.UnidadeFederacaoList.as_view(), name='uf_list'),
+    url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoList.as_view(), name='uf_list_sigla_filtered'),
+    url(r'^unidades-federativas/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoList.as_view(), name='aldeia_uf_spatial_filtered'),
 
-    #Collection estados
-    # url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoFiltered.as_view(), name='uf_list_sigla_filtered'),
-    # url(r'^unidades-federativas/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoFiltered.as_view(), name='aldeia_uf_spatial_filtered'),
-
+    #aldeias indigenas
     url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_aldeia'),
     url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<attributes_functions>.*)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_si'),
     #url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<spatial_function_1>[A-Za-z]+)/(?P<param_1>.+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_with_param_sf'),
@@ -29,9 +28,23 @@ urlpatterns = format_suffix_patterns([
 
 
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
+    url(r'^municipios/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.MunicipioList.as_view(), name='municipio_list_functions'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/(?P<property>[A-Za-z]+)/', views.MunicipioDetailProperty.as_view(), name='municipio_detail_property'),
+
+    url(r'^capitais/$', views.CapitalList.as_view(), name='capital_list'),
+    url(r'^capitais/(?P<pk>\d+)/$', views.CapitalDetail.as_view(), name='capital_detail'),
+
+    #Trecho_ferroviario
+    url(r'^trechos-ferroviarios/$', views.TrechoFerroviarioList.as_view(), name='trecho_ferroviario_list'),
+    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_id_objeto'),
+    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/(?P<spatial_function_1>[A-Za-z]+)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_si'),
+    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/(?P<spatial_function_1>[A-Za-z]+)/(?P<param_1>.+)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_si_par'),
+
+    url(r'^trechos-hidroviarios/$', views.TrechoHidroviarioList.as_view(), name='trecho_hidroviario_list'),
+    #url(r'^trechos-rodoviarios/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list'),
+
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),
     url(r'^outros-limites-oficiais/$', views.OutrosLimitesOficiaisList.as_view(), name='outros_limites_oficiais_list'),
     url(r'^paises/$', views.PaisList.as_view(), name='pais_list'),
@@ -43,8 +56,6 @@ urlpatterns = format_suffix_patterns([
     url(r'^aglomerados-rurais-isolado/$', views.AglomeradoRuralIsoladoList.as_view(), name='aglomerado_rural_isolado_list'),
 
     url(r'^areas-edificadas/$', views.AreaEdificadaList.as_view(), name='area_edificada_list'),
-    url(r'^capitais/$', views.CapitalList.as_view(), name='capital_list'),
-    url(r'^capitais/(?P<pk>\d+)/$', views.CapitalDetail.as_view(), name='capital_detail'),
     url(r'^vilas/$', views.VilaList.as_view(), name='vila_list'),
     url(r'^curvas-batimetricas/$', views.CurvaBatimetricaList.as_view(), name='curva_batimetrica_list'),
     #url(r'^curvas-de-nivel/$', views.CurvaNivelList.as_view(), name='curva_nivel_list'), # nao carrega (muita informacao)
@@ -63,14 +74,6 @@ urlpatterns = format_suffix_patterns([
     url(r'^sinalizacaoes/$', views.SinalizacaoList.as_view(), name='sinalizacao_list'),
     url(r'^travessias/$', views.TravessiaList.as_view(), name='travessia_list'),
     url(r'^trechos-dutos/$', views.TrechoDutoList.as_view(), name='trecho_duto_list'),
-    #Trecho_ferroviario
-    url(r'^trechos-ferroviarios/$', views.TrechoFerroviarioList.as_view(), name='trecho_ferroviario_list'),
-    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_id_objeto'),
-    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/(?P<spatial_function_1>[A-Za-z]+)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_si'),
-    url(r'^trechos-ferroviarios/(?P<id_objeto>[0-9]*)/(?P<spatial_function_1>[A-Za-z]+)/(?P<param_1>.+)/$', views.TrechoFerroviarioDetail.as_view(), name='tf_detail_si_par'),
-
-    url(r'^trechos-hidroviarios/$', views.TrechoHidroviarioList.as_view(), name='trecho_hidroviario_list'),
-    #url(r'^trechos-rodoviarios/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list'),
     url(r'^tuneis/$', views.TunelList.as_view(), name='tunel_list'),
     url(r'^brejos-e-pantanos/$', views.BrejoPantanoList.as_view(), name='brejo_pantano_list'),
     url(r'^mangues/$', views.MangueList.as_view(), name='mangue_list'),
@@ -101,8 +104,6 @@ urlpatterns = format_suffix_patterns([
     url(r'^areas-de-desenvolvimento-de-controle/$', views.AreaDesenvolvimentoControleList.as_view(), name='area_desenvolvimento_controle_list'),
     url(r'^marcos-de-limite/$', views.MarcoDeLimiteList.as_view(), name='marco_de_limite_list'),
     url(r'^pontos-geodesicos/$', views.PontoExibicaoWgs84List.as_view(), name='ponto_exibicao_wgs84_list'),
-
-
 ])
 
  #Login and logout views for the browsable API

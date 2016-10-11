@@ -10,15 +10,16 @@ from rest_framework import status
 from context_api.utilities import *
 # Create your views here.
 
-class GeojsonOnContentType(APIView):
+class GeojsonOnContentType(object):
+
     def get(self, request, *args, **kwargs):
         response = super(GeojsonOnContentType, self).get(request, *args, **kwargs)
         if request.accepted_media_type != "text/html":
             response.content_type = "application/vnd.geo+json"
         return response
 
-class ContextView(APIView):
 
+class ContextView(APIView):
 
     def get(self, request, *args, **kwargs):
         classname = kwargs.get('classname')
@@ -37,32 +38,32 @@ class ContextView(APIView):
             response.content_type = "application/ld+json"
         return response
 
-class CreatorContext(GeojsonOnContentType, generics.ListCreateAPIView):
+class BaseContext(object):
 
     def options(self, request, *args, **kwargs):
-        classname = getClassnameByURL(request._request.path)
+        classname = self.getClassName(request)
         response = Response(getContextData(classname, request), status=status.HTTP_200_OK, content_type="application/ld+json")
         response = createLinkOfContext(classname, request, response)
         return response
 
     def get(self, request, *args, **kwargs):
-        response = super(CreatorContext, self).get(request, *args, **kwargs)
-        classname = getClassnameByURL(request._request.path)
+        response = super(BaseContext, self).get(request, *args, **kwargs)
+        classname = self.getClassName(request)
         response = createLinkOfContext(classname, request, response)
         return response
 
-class CreatorContextToRetrieve(GeojsonOnContentType, generics.RetrieveAPIView):
+    def getClassName(self, request):
+        if not hasattr(self, 'classname'):
+            classname = getClassnameByURL(request._request.path)
+        else:
+            classname = self.classname
+        return classname
 
-    def options(self, request, *args, **kwargs):
-        classname = getClassnameByURL(request._request.path)
-        response = Response(getContextData(classname, request), status=status.HTTP_200_OK, content_type="application/ld+json")
-        response = createLinkOfContext(classname, request, response)
-        return response
+class CreatorContextList(generics.ListCreateAPIView, BaseContext):
+    pass
 
-    def get(self, request, *args, **kwargs):
-        response = super(CreatorContextToRetrieve, self).get(request, *args, **kwargs)
-        classname = getClassnameByURL(request._request.path)
-        response = createLinkOfContext(classname, request, response)
-        return response
+class CreatorContextDetail(generics.RetrieveUpdateDestroyAPIView, BaseContext):
+    pass
+
 
 
