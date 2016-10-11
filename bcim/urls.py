@@ -28,10 +28,10 @@ urlpatterns = format_suffix_patterns([
 
 
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
-    url(r'^municipios/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.MunicipioList.as_view(), name='municipio_list_functions'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/(?P<property>[A-Za-z]+)/', views.MunicipioDetailProperty.as_view(), name='municipio_detail_property'),
+    url(r'^municipios/(?P<spatial_function>[A-Za-z]+)/(?P<geom>.*)/$', views.MunicipioList.as_view(), name='municipio_list_functions'),
 
     url(r'^capitais/$', views.CapitalList.as_view(), name='capital_list'),
     url(r'^capitais/(?P<pk>\d+)/$', views.CapitalDetail.as_view(), name='capital_detail'),

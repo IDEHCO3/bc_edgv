@@ -59,10 +59,10 @@ class BaseContext(object):
             classname = self.classname
         return classname
 
-class CreatorContextList(generics.ListCreateAPIView, BaseContext):
+class CreatorContextList(BaseContext, generics.ListCreateAPIView):
     pass
 
-class CreatorContextDetail(generics.RetrieveUpdateDestroyAPIView, BaseContext):
+class CreatorContextDetail(BaseContext, generics.RetrieveUpdateDestroyAPIView):
     pass
 
 
