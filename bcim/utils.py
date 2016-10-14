@@ -756,6 +756,9 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return self.response_of_request(object_model, attributes_functions_str)
 
+class HandleFunctionDetail(BaseContext, APIViewHypermedia):
+    pass
+
 class APIViewBasicSpatialFunction(APIView):
 
     def model_class(self):
@@ -893,3 +896,4 @@ class APIViewDetailSpatialFunction(APIViewBasicSpatialFunction):
 
         a_dict = {st_functions.__str__(): obj_geometry}
         return Response(a_dict)
+
