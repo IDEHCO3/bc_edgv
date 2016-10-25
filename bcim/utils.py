@@ -1,5 +1,7 @@
 import json
 
+import ast
+
 import requests
 from django.contrib.gis.gdal.geometries import Point, Polygon, OGRGeometry
 from django.contrib.gis.geos import GEOSGeometry
@@ -16,14 +18,30 @@ from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework import status
 
-import ast
+from rest_framework.negotiation import BaseContentNegotiation
+
 from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
 
 from context_api.views import *
 
+from image_generator.img_generator import BuilderPNG
+
 from rest_framework.compat import (
     INDENT_SEPARATORS, LONG_SEPARATORS, SHORT_SEPARATORS
 )
+
+class IgnoreClientContentNegotiation(BaseContentNegotiation):
+    def select_parser(self, request, parsers):
+        """
+        Select the first parser in the `.parser_classes` list.
+        """
+        return parsers[0]
+
+    def select_renderer(self, request, renderers, format_suffix):
+        """
+        Select the first renderer in the `.renderer_classes` list.
+        """
+        return (renderers[0], renderers[0].media_type)
 
 class JSONResponse(HttpResponse):
     """
@@ -460,6 +478,20 @@ def geometry_with_parameters_type():
 # In developing.
 class HandleFunctionsList(CreatorContextList):
 
+    content_negotiation_class = IgnoreClientContentNegotiation
+
+    def get_png(self, queryset):
+        wkt = "GEOMETRYCOLLECTION("
+        for i,e in enumerate(queryset):
+            wkt += e.geom.wkt #it is need to fix the case that the attribute is not called by geom
+            if i != len(queryset)-1:
+                wkt += ","
+            else:
+                wkt += ")"
+        geom_type = queryset[0].geom.geom_type
+        builder_png = BuilderPNG({'wkt': wkt, 'type': geom_type})
+        return builder_png.generate()
+
     def get_queryset(self):
         stFunction = self.kwargs.get("spatial_function", None)
         modelClass = self.serializer_class.Meta.model
@@ -468,17 +500,29 @@ class HandleFunctionsList(CreatorContextList):
             queryset = modelClass.objects.all()
             query_parameters = self.request.query_params
             dict = self.get_dict_with_spatialfunction_or_same_dict(query_parameters.dict())
-            queryset = queryset.filter(**dict)
-            return queryset
+            self.queryset = queryset.filter(**dict)
+
         else: # to get query from url
             geom_str_or_url = self.kwargs.get('geom')
             aKey = self.serializer_class.Meta.geo_field + '__' + stFunction
             aGeom = self.geos_geometry(geom_str_or_url)
 
             if stFunction is not None:
-                return modelClass.objects.filter(**({aKey: aGeom}))
+                self.queryset = modelClass.objects.filter(**({aKey: aGeom}))
 
-            return self.queryset
+        return self.queryset
+
+    def get(self, request, *args, **kwargs):
+        accept = request.META['HTTP_ACCEPT']
+        response = super(HandleFunctionsList, self).get(request, *args, **kwargs)
+
+        if accept.lower() == "image/png":
+            image = self.get_png(self.queryset)
+            #headers = response._headers
+            response = HttpResponse(image, content_type=accept.lower())
+            #headers.update(response._headers)
+            #response._headers = headers
+        return response
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):
         geoms = []
@@ -575,6 +619,7 @@ class BasicAPIViewHypermedia(APIView):
 
 class APIViewHypermedia(BasicAPIViewHypermedia):
 
+    content_negotiation_class = IgnoreClientContentNegotiation
 
     def get_object(self, a_dict):
         queryset = self.model_class().objects.all()
@@ -669,13 +714,14 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         for attr_name in attributes:
            obj = self._value_from_object(object_model, attr_name, [])
            if isinstance(obj, GEOSGeometry):
-                obj = json.loads( obj.geojson)
-                if len(attributes) == 1:
-                    return Response(obj,  content_type='application/vnd.geo+json')
+               geom = obj
+               obj = json.loads(obj.geojson)
+               if len(attributes) == 1:
+                   return (obj, 'application/vnd.geo+json', geom)
 
            a_dict[attr_name] = obj
 
-        return Response(a_dict, content_type='application/json')
+        return (a_dict, 'application/json')
 
     def attributes_functions_str_has_url(self, attributes_functions_str_url):
         return (attributes_functions_str_url.find('http:') > -1) or (attributes_functions_str_url.find('https:') > -1)\
@@ -725,36 +771,64 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])
 
         if isinstance(a_value, GEOSGeometry):
-           a_value = json.loads(a_value.geojson)
-           return Response(data=a_value, content_type='application/vnd.geo+json')
+            geom = a_value
+            a_value = json.loads(a_value.geojson)
+            return (a_value, 'application/vnd.geo+json', geom)
         else:
             a_value = {
                 self.function_name(att_funcs): a_value
             }
 
-        return Response(data=a_value, content_type='application/json')
+        return (a_value, 'application/json')
+
+    def get_png(self, queryset):
+        if isinstance(queryset, GEOSGeometry):
+            wkt = queryset.wkt
+            geom_type = queryset.geom_type
+        else:
+            wkt = queryset.geom.wkt
+            geom_type = queryset.geom.geom_type
+        builder_png = BuilderPNG({'wkt': wkt, 'type': geom_type})
+        return builder_png.generate()
 
     def get(self, request, *args, **kwargs):
         object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))
-
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
         if attributes_functions_str is None:
             serializer = self.serializer_class(object_model)
-            return Response(serializer.data,  content_type='application/vnd.geo+json')
+            output = (serializer.data, 'application/vnd.geo+json', object_model)
 
-        if self.has_only_attribute(object_model, attributes_functions_str):
-            return self.response_resquest_with_attributes(object_model, attributes_functions_str)
+        elif self.has_only_attribute(object_model, attributes_functions_str):
+            output = self.response_resquest_with_attributes(object_model, attributes_functions_str)
 
-        if self.attributes_functions_str_has_url(attributes_functions_str.lower()):
+        elif self.attributes_functions_str_has_url(attributes_functions_str.lower()):
             arr_of_two_url = self.attributes_functions_splitted_by_url(attributes_functions_str)
             resp = requests.get(arr_of_two_url[1])
             if resp.status_code == 404:
                 return Response({'Erro:' + str(resp.status_code)}, status=status.HTTP_404_NOT_FOUND)
             j = resp.text
             attributes_functions_str = arr_of_two_url[0] + j
+            output = self.response_of_request(object_model, attributes_functions_str)
+        else:
+            output = self.response_of_request(object_model, attributes_functions_str)
 
-        return self.response_of_request(object_model, attributes_functions_str)
+
+        response = Response(data=output[0], content_type=output[1])
+
+        accept = request.META['HTTP_ACCEPT']
+        if accept.lower() == "image/png":
+            if len(output) == 3:
+                queryset = output[2]
+                image = self.get_png(queryset)
+                #headers = response._headers
+                response = HttpResponse(image, content_type=accept.lower())
+                #headers.update(response._headers)
+                #response._headers = headers
+            else:
+                return Response({'Erro': 'The server can generate an image only from a geometry data'}, status=status.HTTP_404_NOT_FOUND)
+
+        return response
 
 class HandleFunctionDetail(BaseContext, APIViewHypermedia):
     pass

@@ -134,7 +134,7 @@ class MunicipioList(HandleFunctionsList):
         managed = False
         db_table = 'lim_municipio_a'
 
-class MunicipioFiltered(CreatorContextList):
+class MunicipioFiltered(HandleFunctionsList):
 
     queryset = Municipio.objects.all()
 
