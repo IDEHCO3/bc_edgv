@@ -190,9 +190,21 @@ class OutrasUnidProtegidasList(HandleFunctionsList):
     queryset = OutrasUnidProtegidas.objects.all()
     serializer_class = OutrasUnidProtegidasSerializer
 
+class OutrasUnidProtegidas(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = OutrasUnidProtegidasSerializer
+
 class OutrosLimitesOficiaisList(HandleFunctionsList):
 
     queryset = OutrosLimitesOficiais.objects.all()
+    serializer_class = OutrosLimitesOficiaisSerializer
+
+class OutrosLimitesOficiaisDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = OutrosLimitesOficiaisSerializer
 
 class PaisList(HandleFunctionsList):
@@ -200,9 +212,21 @@ class PaisList(HandleFunctionsList):
     queryset = Pais.objects.all()
     serializer_class = PaisSerializer
 
+class PaisDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = PaisSerializer
+
 class TerraIndigenaList(HandleFunctionsList):
 
     queryset = TerraIndigena.objects.all()
+    serializer_class = TerraIndigenaSerializer
+
+class TerraIndiginaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = TerraIndigenaSerializer
 
 class UnidadeConservacaoNaoSnucList(HandleFunctionsList):
@@ -210,9 +234,21 @@ class UnidadeConservacaoNaoSnucList(HandleFunctionsList):
     queryset = UnidadeConservacaoNaoSnuc.objects.all()
     serializer_class = UnidadeConservacaoNaoSnucSerializer
 
+class UnidadeConservacaoNaoSnucDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = UnidadeConservacaoNaoSnucSerializer
+
 class UnidadeProtecaoIntegralList(HandleFunctionsList):
 
     queryset = UnidadeProtecaoIntegral.objects.all()
+    serializer_class = UnidadeProtecaoIntegralSerializer
+
+class UnidadeProtecaoIntegralDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = UnidadeProtecaoIntegralSerializer
 
 class UnidadeUsoSustentavelList(HandleFunctionsList):
@@ -220,14 +256,32 @@ class UnidadeUsoSustentavelList(HandleFunctionsList):
     queryset = UnidadeUsoSustentavel.objects.all()
     serializer_class = UnidadeUsoSustentavelSerializer
 
+class UnidadeUsoSustentavelDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = UnidadeUsoSustentavelSerializer
+
 class AglomeradoRuralDeExtensaoUrbanaList(HandleFunctionsList):
 
     queryset = AglomeradoRuralDeExtensaoUrbana.objects.all()
     serializer_class = AglomeradoRuralDeExtensaoUrbanaSerializer
 
+class AglomeradoRuralDeExtensaoUrbanaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = AglomeradoRuralDeExtensaoUrbanaSerializer
+
 class AglomeradoRuralIsoladoList(HandleFunctionsList):
 
     queryset = AglomeradoRuralIsolado.objects.all()
+    serializer_class = AglomeradoRuralIsoladoSerializer
+
+class AglomeradoRuralIsoladoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = AglomeradoRuralIsoladoSerializer
 
 class AldeiaIndigenaList(HandleFunctionsList):
@@ -251,6 +305,12 @@ class AreaEdificadaList(HandleFunctionsList):
     queryset = AreaEdificada.objects.all()
     serializer_class = AreaEdificadaSerializer
 
+class AreaEdificadaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = AreaEdificadaSerializer
+
 class CapitalList(HandleFunctionsList):
 
     queryset = Capital.objects.all()
@@ -267,9 +327,21 @@ class CidadeList(HandleFunctionsList):
     queryset = Cidade.objects.all()
     serializer_class = CidadeSerializer
 
+class CidadeDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = CidadeSerializer
+
 class VilaList(HandleFunctionsList):
 
     queryset = Vila.objects.all()
+    serializer_class = VilaSerializer
+
+class VilaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = VilaSerializer
 
 class CurvaBatimetricaList(HandleFunctionsList):
@@ -277,9 +349,21 @@ class CurvaBatimetricaList(HandleFunctionsList):
     queryset = CurvaBatimetrica.objects.all()
     serializer_class = CurvaBatimetricaSerializer
 
+class CurvaBatimetricaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = CurvaBatimetricaSerializer
+
 class CurvaNivelList(HandleFunctionsList):
 
     queryset = CurvaNivel.objects.all()
+    serializer_class = CurvaNivelSerializer
+
+class CurvaNivelDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = CurvaNivelSerializer
 
 class DunaList(HandleFunctionsList):
@@ -287,9 +371,21 @@ class DunaList(HandleFunctionsList):
     queryset = Duna.objects.all()
     serializer_class = DunaSerializer
 
+class DunaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = DunaSerializer
+
 class ElementoFisiograficoNaturalList(HandleFunctionsList):
 
     queryset = ElementoFisiograficoNatural.objects.all()
+    serializer_class = ElementoFisiograficoNaturalSerializer
+
+class ElementoFIsiograficoNaturalDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = ElementoFisiograficoNaturalSerializer
 
 class PicoList(HandleFunctionsList):
@@ -297,9 +393,21 @@ class PicoList(HandleFunctionsList):
     queryset = Pico.objects.all()
     serializer_class = PicoSerializer
 
+class PicoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = PicoSerializer
+
 class PontoCotadoAltimetricoList(HandleFunctionsList):
 
     queryset = PontoCotadoAltimetrico.objects.all()
+    serializer_class = PontoCotadoAltimetricoSerializer
+
+class PontoCotadoAltimetricoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = PontoCotadoAltimetricoSerializer
 
 class PontoCotadoBatimetricoList(HandleFunctionsList):
@@ -307,9 +415,21 @@ class PontoCotadoBatimetricoList(HandleFunctionsList):
     queryset = PontoCotadoBatimetrico.objects.all()
     serializer_class = PontoCotadoBatimetricoSerializer
 
+class PontoCotadoBatimetricoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = PontoCotadoBatimetricoSerializer
+
 class EclusaList(HandleFunctionsList):
 
     queryset = Eclusa.objects.all()
+    serializer_class = EclusaSerializer
+
+class EclusaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = EclusaSerializer
 
 class EdifConstPortuariaList(HandleFunctionsList):
@@ -317,14 +437,32 @@ class EdifConstPortuariaList(HandleFunctionsList):
     queryset = EdifConstPortuaria.objects.all()
     serializer_class = EdifConstPortuariaSerializer
 
+class EdifConstPortuariaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = EdifConstPortuariaSerializer
+
 class EdifConstrAeroportuariaList(HandleFunctionsList):
 
     queryset = EdifConstrAeroportuaria.objects.all()
     serializer_class = EdifConstrAeroportuariaSerializer
 
+class EdifConstrAeroportuariaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = EdifConstPortuariaSerializer
+
 class EdifMetroFerroviariaList(HandleFunctionsList):
 
     queryset = EdifMetroFerroviaria.objects.all()
+    serializer_class = EdifMetroFerroviariaSerializer
+
+class EdifMetroFerroviaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = EdifMetroFerroviariaSerializer
 
 class FundeadouroList(HandleFunctionsList):
@@ -332,9 +470,21 @@ class FundeadouroList(HandleFunctionsList):
     queryset = Fundeadouro.objects.all()
     serializer_class = FundeadouroSerializer
 
+class FundeadouroDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = FundeadouroSerializer
+
 class PistaPontoPousoList(HandleFunctionsList):
 
     queryset = PistaPontoPouso.objects.all()
+    serializer_class = PistaPontoPousoSerializer
+
+class PistaPontoPousoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = PistaPontoPousoSerializer
 
 class PonteList(HandleFunctionsList):
@@ -342,9 +492,21 @@ class PonteList(HandleFunctionsList):
     queryset = Ponte.objects.all()
     serializer_class = PonteSerializer
 
+class PonteDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = PonteSerializer
+
 class SinalizacaoList(HandleFunctionsList):
 
     queryset = Sinalizacao.objects.all()
+    serializer_class = SinalizacaoSerializer
+
+class SinalizacaoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = SinalizacaoSerializer
 
 class TravessiaList(HandleFunctionsList):
@@ -352,9 +514,21 @@ class TravessiaList(HandleFunctionsList):
     queryset = Travessia.objects.all()
     serializer_class = TravessiaSerializer
 
+class TravessiaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = TravessiaSerializer
+
 class TrechoDutoList(HandleFunctionsList):
 
     queryset = TrechoDuto.objects.all()
+    serializer_class = TrechoDutoSerializer
+
+class TrechoDutoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = TrechoDutoSerializer
 
 class TrechoFerroviarioList(HandleFunctionsList):
@@ -362,7 +536,7 @@ class TrechoFerroviarioList(HandleFunctionsList):
     queryset = TrechoFerroviario.objects.all()
     serializer_class = TrechoFerroviarioSerializer
 
-class TrechoFerroviarioDetail(APIViewDetailSpatialFunction):
+class TrechoFerroviarioDetail(HandleFunctionDetail):
     """
     Retrieve, update or delete a unidades da federacao instance.
     """
@@ -374,9 +548,21 @@ class TrechoHidroviarioList(HandleFunctionsList):
     queryset = TrechoHidroviario.objects.all()
     serializer_class = TrechoHidroviarioSerializer
 
+class TrechoHidroviarioDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = TrechoHidroviarioSerializer
+
 class TrechoRodoviarioList(HandleFunctionsList):
 
     queryset = TrechoRodoviario.objects.all()
+    serializer_class = TrechoRodoviarioSerializer
+
+class TrechoRodoviarioDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = TrechoRodoviarioSerializer
 
 class TunelList(HandleFunctionsList):
@@ -384,9 +570,21 @@ class TunelList(HandleFunctionsList):
     queryset = Tunel.objects.all()
     serializer_class = TunelSerializer
 
+class TunelDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = TunelSerializer
+
 class BrejoPantanoList(HandleFunctionsList):
 
     queryset = BrejoPantano.objects.all()
+    serializer_class = BrejoPantanoSerializer
+
+class BrejoPantanoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = BrejoPantanoSerializer
 
 class MangueList(HandleFunctionsList):
@@ -394,9 +592,21 @@ class MangueList(HandleFunctionsList):
     queryset = Mangue.objects.all()
     serializer_class = MangueSerializer
 
+class MangueDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = MangueSerializer
+
 class VegRestingaList(HandleFunctionsList):
 
     queryset = VegRestinga.objects.all()
+    serializer_class = VegRestingaSerializer
+
+class VegRestingaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = VegRestingaSerializer
 
 class EdifPubMilitarList(HandleFunctionsList):
@@ -404,9 +614,22 @@ class EdifPubMilitarList(HandleFunctionsList):
     queryset = EdifPubMilitar.objects.all()
     serializer_class = EdifPubMilitarSerializer
 
+class EdifPubMilitarDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = EdifPubMilitarSerializer
+
 class PostoFiscalList(HandleFunctionsList):
 
     queryset = PostoFiscal.objects.all()
+    serializer_class = PostoFiscalSerializer
+
+
+class PostoFiscalDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = PostoFiscalSerializer
 
 class EdifAgropecExtVegetalPescaList(HandleFunctionsList):
@@ -414,9 +637,21 @@ class EdifAgropecExtVegetalPescaList(HandleFunctionsList):
     queryset = EdifAgropecExtVegetalPesca.objects.all()
     serializer_class = EdifAgropecExtVegetalPescaSerializer
 
+class EdifAgropecExtVegetalPescaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = EdifAgropecExtVegetalPescaSerializer
+
 class EdifIndustrialList(HandleFunctionsList):
 
     queryset = EdifIndustrial.objects.all()
+    serializer_class = EdifIndustrialSerializer
+
+class EdifIndustrialDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = EdifIndustrialSerializer
 
 class ExtMineralList(HandleFunctionsList):
@@ -424,9 +659,21 @@ class ExtMineralList(HandleFunctionsList):
     queryset = ExtMineral.objects.all()
     serializer_class = ExtMineralSerializer
 
+class ExtMineralDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = ExtMineralSerializer
+
 class EdifReligiosaList(HandleFunctionsList):
 
     queryset = EdifReligiosa.objects.all()
+    serializer_class = EdifReligiosaSerializer
+
+class EdifReligiosaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = EdifReligiosaSerializer
 
 class EstGeradEnergiaEletricaList(HandleFunctionsList):
@@ -434,9 +681,21 @@ class EstGeradEnergiaEletricaList(HandleFunctionsList):
     queryset = EstGeradEnergiaEletrica.objects.all()
     serializer_class = EstGeradEnergiaEletricaSerializer
 
+class EstGeradEnergiaEletricaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = EstGeradEnergiaEletricaSerializer
+
 class HidreletricaList(HandleFunctionsList):
 
     queryset = Hidreletrica.objects.all()
+    serializer_class = HidreletricaSerializer
+
+class HidreletricaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = HidreletricaSerializer
 
 class TermeletricaList(HandleFunctionsList):
@@ -444,9 +703,21 @@ class TermeletricaList(HandleFunctionsList):
     queryset = Termeletrica.objects.all()
     serializer_class = TermeletricaSerializer
 
+class TermeletricaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = TermeletricaSerializer
+
 class TorreEnergiaList(HandleFunctionsList):
 
     queryset = TorreEnergia.objects.all()
+    serializer_class = TorreEnergiaSerializer
+
+class TorreEnergiaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = TorreEnergiaSerializer
 
 class BancoAreiaList(HandleFunctionsList):
@@ -454,9 +725,21 @@ class BancoAreiaList(HandleFunctionsList):
     queryset = BancoAreia.objects.all()
     serializer_class = BancoAreiaSerializer
 
+class BancoAreiaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = BancoAreiaSerializer
+
 class BarragemList(HandleFunctionsList):
 
     queryset = Barragem.objects.all()
+    serializer_class = BarragemSerializer
+
+class BarragemDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = BarragemSerializer
 
 class CorredeiraList(HandleFunctionsList):
@@ -464,9 +747,21 @@ class CorredeiraList(HandleFunctionsList):
     queryset = Corredeira.objects.all()
     serializer_class = CorredeiraSerializer
 
+class CorredeiraDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = CorredeiraSerializer
+
 class FozMaritimaList(HandleFunctionsList):
 
     queryset = FozMaritima.objects.all()
+    serializer_class = FozMaritimaSerializer
+
+class FozMaritimaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = FozMaritimaSerializer
 
 class IlhaList(HandleFunctionsList):
@@ -474,9 +769,21 @@ class IlhaList(HandleFunctionsList):
     queryset = Ilha.objects.all()
     serializer_class = IlhaSerializer
 
+class IlhaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = IlhaSerializer
+
 class MassaDaguaList(HandleFunctionsList):
 
     queryset = MassaDagua.objects.all()
+    serializer_class = MassaDaguaSerializer
+
+class MassaDaguaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = MassaDaguaSerializer
 
 class QuedaDaguaList(HandleFunctionsList):
@@ -484,9 +791,21 @@ class QuedaDaguaList(HandleFunctionsList):
     queryset = QuedaDagua.objects.all()
     serializer_class = QuedaDaguaSerializer
 
+class QuedaDaguaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = QuedaDaguaSerializer
+
 class RecifeList(HandleFunctionsList):
 
     #queryset = Recife.objects.all()
+    serializer_class = RecifeSerializer
+
+class RecifeDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = RecifeSerializer
 
 class RochaEmAguaList(HandleFunctionsList):
@@ -494,9 +813,21 @@ class RochaEmAguaList(HandleFunctionsList):
     queryset = RochaEmAgua.objects.all()
     serializer_class = RochaEmAguaSerializer
 
+class RochaEmAguaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = RochaEmAguaSerializer
+
 class SumidouroVertedouroList(HandleFunctionsList):
 
     queryset = SumidouroVertedouro.objects.all()
+    serializer_class = SumidouroVertedouroSerializer
+
+class SumidouroVertedouroDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = SumidouroVertedouroSerializer
 
 class TerrenoSujeitoInundacaoList(HandleFunctionsList):
@@ -504,9 +835,21 @@ class TerrenoSujeitoInundacaoList(HandleFunctionsList):
     queryset = TerrenoSujeitoInundacao.objects.all()
     serializer_class = TerrenoSujeitoInundacaoSerializer
 
+class TerrenoSujeitoInundacaoDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = TerrenoSujeitoInundacaoSerializer
+
 class TrechoDrenagemList(HandleFunctionsList):
 
     queryset = TrechoDrenagem.objects.all()
+    serializer_class = TrechoDrenagemSerializer
+
+class TrechoDrenagemDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = TrechoDrenagemSerializer
 
 class TrechoMassaDaguaList(HandleFunctionsList):
@@ -514,9 +857,21 @@ class TrechoMassaDaguaList(HandleFunctionsList):
     queryset = TrechoMassaDagua.objects.all()
     serializer_class = TrechoMassaDaguaSerializer
 
+class TrechoMassaDaguaDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = TrechoMassaDaguaSerializer
+
 class AreaDesenvolvimentoControleList(HandleFunctionsList):
 
     queryset = AreaDesenvolvimentoControle.objects.all()
+    serializer_class = AreaDesenvolvimentoControleSerializer
+
+class AreaDesenvolvimentoControleDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = AreaDesenvolvimentoControleSerializer
 
 class MarcoDeLimiteList(HandleFunctionsList):
@@ -524,6 +879,18 @@ class MarcoDeLimiteList(HandleFunctionsList):
     queryset = MarcoDeLimite.objects.all()
     serializer_class = MarcoDeLimiteSerializer
 
+class MarcoDeLimiteDetail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
+    serializer_class = MarcoDeLimiteSerializer
+
 class PontoExibicaoWgs84List(HandleFunctionsList):
     queryset = PontosExibicaoWgs84.objects.all()
+    serializer_class = PontosExibicaoWgs84Serializer
+
+class PontoExibicaoWgs84Detail(HandleFunctionDetail):
+    """
+    Retrieve, update or delete a unidades da federacao instance.
+    """
     serializer_class = PontosExibicaoWgs84Serializer
