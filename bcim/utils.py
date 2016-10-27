@@ -1,7 +1,7 @@
 import json
 
 import ast
-
+import re
 import requests
 from django.contrib.gis.gdal.geometries import Point, Polygon, OGRGeometry
 from django.contrib.gis.geos import GEOSGeometry
@@ -534,6 +534,7 @@ class HandleFunctionsList(CreatorContextList):
 
     def geos_geometry(self, geom_str_or_url):
         a_geom = geom_str_or_url
+        geom_str_or_url = re.sub(r':/+', '://', geom_str_or_url) #this is just because one slash disappears when the code gets here. This is a magic problem.
         str1 = (geom_str_or_url[0:5]).lower()
         https = ['http:', 'https']
         if (str1 in https):
