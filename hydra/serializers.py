@@ -18,6 +18,9 @@ class HydraSerializer(HydraClassSerializer):
             property_serializer.addProperty(name=property.property, required=property.required, readable=property.readable, writeable=property.writeable)
 
     def createMethods(self, method_serializer):
+        if self.classobject.name == "geometry":
+            return
+
         for method in self.classobject.supported_operations.all():
             method_serializer.addCustomOperation(type=method.type, title=method.title, httpMethod=method.method, expects=self.getURLClass(method.expects), returns=self.getURLClass(method.returns))
 
