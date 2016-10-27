@@ -297,7 +297,7 @@ class AldeiaIndigenaListFiltered(HandleFunctionsList):
 class AldeiaIndigenaListFilteredByQueryParameters(HandleFunctionsList):
     serializer_class = AldeiaIndigenaSerializer
 
-class AldeiaIndigenaDetail(APIViewDetailSpatialFunction):
+class AldeiaIndigenaDetail(HandleFunctionDetail):
     serializer_class = AldeiaIndigenaSerializer
 
 class AreaEdificadaList(HandleFunctionsList):
