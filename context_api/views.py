@@ -48,15 +48,15 @@ class BaseContext(object):
 
     def get(self, request, *args, **kwargs):
         response = super(BaseContext, self).get(request, *args, **kwargs)
-        classname = self.getClassName(request)
+        classname = self.getClassName(request, *args, **kwargs)
         response = createLinkOfContext(classname, request, response)
         return response
 
-    def getClassName(self, request):
-        if not hasattr(self, 'classname'):
-            classname = getClassnameByURL(request._request.path)
+    def getClassName(self, request, *args, **kwargs):
+        if not hasattr(self, 'contextclassname'):
+            classname = getClassnameByURL(request, *args, **kwargs)
         else:
-            classname = self.classname
+            classname = self.contextclassname
         return classname
 
 class CreatorContextList(BaseContext, generics.ListCreateAPIView):

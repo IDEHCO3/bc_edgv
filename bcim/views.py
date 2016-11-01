@@ -103,11 +103,13 @@ class APIRoot(APIView):
 
 class UnidadeFederacaoDetail(HandleFunctionDetail):
     serializer_class = UnidadeFederacaoSerializer
+    contextclassname = 'unidades-federativas'
 
 class UnidadeFederacaoList(HandleFunctionsList):
 
     queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
+    contextclassname = 'unidades-federativas'
 
     def get_queryset(self):
 

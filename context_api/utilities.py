@@ -25,13 +25,23 @@ def getContextData(classname, request):
     contextdata.update(hydradata)
     return contextdata
 
-def getClassnameByURL(path):
+def getClassnameByURL(request, *args, **kwargs):
+    path = request._request.path
     if path[-1] != '/':
             path += '/'
     list_path = path.split('/')
     classname = ""
-    for i,e in enumerate(list_path):
-        if e == "bcim":
-            classname = list_path[i+1]
-            break
+    kwargs_list = [x[1] for x in kwargs.items()]
+    for i in range(len(list_path)):
+        e = list_path[i]
+        if e in args or e in kwargs_list:
+            if i > 0:
+                classname = list_path[i-1]
+                break
+    if classname == "":
+        size = len(list_path)
+        if list_path[size-1] == '':
+            classname = list_path[-2]
+        else:
+            classname = list_path[-1]
     return classname
