@@ -45,16 +45,24 @@ urlpatterns = format_suffix_patterns([
 
     url(r'^trechos-hidroviarios/$', views.TrechoHidroviarioList.as_view(), name='trecho_hidroviario_list'),
     url(r'^trechos-hidroviarios/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.TrechoHidroviarioList.as_view(), name='trecho_hidroviario_list_fn'),
+    url(r'^trechos-hidroviarios/(?P<id_objeto>[0-9]*)/$', views.TrechoHidroviarioDetail.as_view(), name='th_detail_id_objeto'),
+    url(r'^trechos-hidroviarios/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.TrechoHidroviarioDetail.as_view(), name='th_detail_si'),
     #url(r'^trechos-rodoviarios/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list'),
 
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),
     url(r'^outras-unidades-protegidas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list_fn'),
+    url(r'^outras-unidades-protegidas/(?P<id_objeto>[0-9]*)/$', views.OutrasUnidProtegidasDetail.as_view(), name='outras_unid_protegidas_detail'),
+    url(r'^outras_unidades_protegidas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.OutrasUnidProtegidasDetail.as_view(), name='outras_unid_protegidas_si'),
 
     url(r'^outros-limites-oficiais/$', views.OutrosLimitesOficiaisList.as_view(), name='outros_limites_oficiais_list'),
     url(r'^outros-limites-oficiais/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.OutrosLimitesOficiaisList.as_view(), name='outros_limites_oficiais_list_fn'),
+    url(r'^outros-limites-oficiais/(?P<id_objeto>[0-9]*)/$', views.OutrosLimitesOficiaisDetail.as_view(), name='outros_limites_oficiais_detail_id_objeto'),
+    url(r'^outros-limites-oficiais/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.OutrosLimitesOficiaisDetail.as_view(), name='outros_limites_oficiais_detail_si'),
 
     url(r'^paises/$', views.PaisList.as_view(), name='pais_list'),
     url(r'^paises/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.PaisList.as_view(), name='pais_list_fn'),
+    url(r'^paises/(?P<id_objeto>[0-9]*)/$', views.PaisDetail.as_view(), name='pais_detail_id_objeto'),
+    url(r'^paises/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.PaisDetail.as_view(), name='pais_detail_si'),
 
     url(r'^terras-indigenas/$', views.TerraIndigenaList.as_view(), name='terra_indigena_list'),
     url(r'^terras-indigenas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.TerraIndigenaList.as_view(), name='terra_indigena_list_fn'),

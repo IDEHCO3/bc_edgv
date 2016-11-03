@@ -192,7 +192,7 @@ class OutrasUnidProtegidasList(HandleFunctionsList):
     queryset = OutrasUnidProtegidas.objects.all()
     serializer_class = OutrasUnidProtegidasSerializer
 
-class OutrasUnidProtegidas(HandleFunctionDetail):
+class OutrasUnidProtegidasDetail(HandleFunctionDetail):
     """
     Retrieve, update or delete a unidades da federacao instance.
     """
