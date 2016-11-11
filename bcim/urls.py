@@ -66,38 +66,60 @@ urlpatterns = format_suffix_patterns([
 
     url(r'^terras-indigenas/$', views.TerraIndigenaList.as_view(), name='terra_indigena_list'),
     url(r'^terras-indigenas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.TerraIndigenaList.as_view(), name='terra_indigena_list_fn'),
+    url(r'^terras-indigenas/(?P<id_objeto>[0-9]*)/$', views.TerraIndigenaDetail.as_view(), name='terra_indigena_detail_id_objeto'),
 
     url(r'^unidades-de-conservacao-nao-snuc/$', views.UnidadeConservacaoNaoSnucList.as_view(), name='unidade_conservacao_nao_snuc_list'),
     url(r'^unidades-de-conservacao-nao-snuc/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeConservacaoNaoSnucList.as_view(), name='unidade_conservacao_nao_snuc_list'),
+    url(r'^unidades-de-conservacao-nao-snuc/(?P<id_objeto>[0-9]*)/$', views.UnidadeConservacaoNaoSnucDetail.as_view(), name='unidade_conservacao_nao_snuc_detail_id_objeto'),
+    url(r'^unidades-de-conservacao-nao-snuc/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.UnidadeConservacaoNaoSnucDetail.as_view(), name='unidade_conservacao_nao_snuc_detail_si'),
 
     url(r'^unidades-de-protecao-integral/$', views.UnidadeProtecaoIntegralList.as_view(), name='unidade_protecao_integral_list'),
     url(r'^unidades-de-protecao-integral/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeProtecaoIntegralList.as_view(), name='unidade_protecao_integral_list'),
 
     url(r'^unidades-de-uso-sustentavel/$', views.UnidadeUsoSustentavelList.as_view(), name='unidade_uso_sustentavel_list'),
     url(r'^unidades-de-uso-sustentavel/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeUsoSustentavelList.as_view(), name='unidade_uso_sustentavel_list'),
+    url(r'^unidades-de-uso-sustentavel/(?P<id_objeto>[0-9]*)/$', views.UnidadeUsoSustentavelDetail.as_view(), name='unidade_uso_sustentavel_detail_id_objeto'),
+    url(r'^unidades-de-uso-sustentavel/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.UnidadeUsoSustentavelDetail.as_view(), name='unidade_uso_sustentavel_detail_id_objeto'),
+
 
     url(r'^aglomerados-rurais-de-extensao-urbana/$', views.AglomeradoRuralDeExtensaoUrbanaList.as_view(), name='aglomerado_rural_de_extensao_urbana_list'),
     url(r'^aglomerados-rurais-de-extensao-urbana/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.AglomeradoRuralDeExtensaoUrbanaList.as_view(), name='aglomerado_rural_de_extensao_urbana_list'),
+    url(r'^aglomerados-rurais-de-extensao-urbana/(?P<id_objeto>[0-9]*)/$', views.AglomeradoRuralDeExtensaoUrbanaDetail.as_view(), name='aglomerado_rural_de_extensao_urbana_detail_id_objeto'),
+    url(r'^aglomerados-rurais-de-extensao-urbana/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.AglomeradoRuralDeExtensaoUrbanaDetail.as_view(), name='aglomerado_rural_de_extensao_urbana_detail_id_objeto'),
+
 
     url(r'^aglomerados-rurais-isolado/$', views.AglomeradoRuralIsoladoList.as_view(), name='aglomerado_rural_isolado_list'),
     url(r'^aglomerados-rurais-isolado/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.AglomeradoRuralIsoladoList.as_view(), name='aglomerado_rural_isolado_list'),
+    url(r'^aglomerados-rurais-isolado/(?P<id_objeto>[0-9]*)/$', views.AglomeradoRuralIsoladoDetail.as_view(), name='aglomerado_rural_isolado_detail_id_objeto'),
+    url(r'^aglomerados-rurais-isolado/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.AglomeradoRuralIsoladoDetail.as_view(), name='aglomerado_rural_isolado_detail_si'),
+
 
     url(r'^areas-edificadas/$', views.AreaEdificadaList.as_view(), name='area_edificada_list'),
     url(r'^areas-edificadas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.AreaEdificadaList.as_view(), name='area_edificada_list'),
+    url(r'^areas-edificadas/(?P<id_objeto>[0-9]*)/$', views.AreaEdificadaDetail.as_view(), name='area_edificada_detail_id_objeto'),
+    url(r'^areas-edificadas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.AreaEdificadaDetail.as_view(), name='area_edificada_detail_af'),
+
 
     url(r'^vilas/$', views.VilaList.as_view(), name='vila_list'),
     url(r'^vilas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.VilaList.as_view(), name='vila_list'),
+    url(r'^vilas/(?P<id_objeto>[0-9]*)/$', views.VilaDetail.as_view(), name='vila_detail_id_objeto'),
+    url(r'^vilas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.VilaDetail.as_view(), name='vila_detail_af'),
 
     url(r'^curvas-batimetricas/$', views.CurvaBatimetricaList.as_view(), name='curva_batimetrica_list'),
     url(r'^curvas-batimetricas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.CurvaBatimetricaList.as_view(), name='curva_batimetrica_list'),
+    url(r'^curvas-batimetricas/(?P<id_objeto>[0-9]*)/$', views.CurvaBatimetricaDetail.as_view(), name='curva_batimetrica_detail_id_objeto'),
+    url(r'^curvas-batimetricas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.CurvaBatimetricaDetail.as_view(), name='curva_batimetrica_detail_af'),
 
     #url(r'^curvas-de-nivel/$', views.CurvaNivelList.as_view(), name='curva_nivel_list'), # nao carrega (muita informacao)
 
     url(r'^dunas/$', views.DunaList.as_view(), name='duna_list'),
     url(r'^dunas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.DunaList.as_view(), name='duna_list'),
+    url(r'^dunas/(?P<id_objeto>[0-9]*)/$', views.DunaDetail.as_view(), name='duna_detail_id_objeto'),
+    url(r'^dunas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.DunaDetail.as_view(), name='duna_detail_af'),
 
     url(r'^elementos-fisiografico-natural/$', views.ElementoFisiograficoNaturalList.as_view(), name='elemento_fisiografico_natural_list'),
     url(r'^elementos-fisiografico-natural/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.ElementoFisiograficoNaturalList.as_view(), name='elemento_fisiografico_natural_list'),
+    url(r'^elementos-fisiografico-natural/(?P<id_objeto>[0-9]*)/$', views.ElementoFisiograficoNaturalDetail.as_view(), name='elemento_fisiografico_natural_detail_id_objeto'),
 
     url(r'^picos/$', views.PicoList.as_view(), name='pico_list'),
     url(r'^picos/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.PicoList.as_view(), name='pico_list'),
