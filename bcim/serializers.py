@@ -94,7 +94,7 @@ class UnidadeProtecaoIntegralSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = UnidadeProtecaoIntegral
         geo_field = 'geom'
-        fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'sigla', 'areaoficial', 'administracao', 'tipounidprotinteg', 'atolegal']
+        fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada','anocriacao', 'sigla', 'areaoficial', 'administracao','atolegal', 'tipounidprotinteg', 'geom']
         # 'anocriacao'
 
         identifiers = ['id_objeto']
@@ -544,7 +544,7 @@ class TrechoDrenagemSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = TrechoDrenagem
         geo_field = 'geom'
-        fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'pronfudidademedia', 'coincidecomdentrode', 'compartilhado', 'eixoprincipal', 'navegabilidade', 'regime', 'caladomax', 'larguramedia', 'velocidademedcorrente', 'dentrodepoligono']
+        fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'profundidademedia', 'coincidecomdentrode', 'compartilhado', 'eixoprincipal', 'navegabilidade', 'regime', 'caladomax', 'larguramedia', 'velocidademedcorrente', 'dentrodepoligono']
 
 
         identifiers = ['id_objeto']

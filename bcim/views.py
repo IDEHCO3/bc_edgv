@@ -423,7 +423,7 @@ class EdifMetroFerroviariaList(HandleFunctionsList):
     queryset = EdifMetroFerroviaria.objects.all()
     serializer_class = EdifMetroFerroviariaSerializer
 
-class EdifMetroFerroviaDetail(HandleFunctionDetail):
+class EdifMetroFerroviariaDetail(HandleFunctionDetail):
     """
     Retrieve, update or delete a unidades da federacao instance.
     """
@@ -853,7 +853,7 @@ class PontoExibicaoWgs84List(HandleFunctionsList):
     queryset = PontosExibicaoWgs84.objects.all()
     serializer_class = PontosExibicaoWgs84Serializer
 
-class PontoExibicaoWgs84Detail(HandleFunctionDetail):
+class PontosExibicaoWgs84Detail(HandleFunctionDetail):
     """
     Retrieve, update or delete a unidades da federacao instance.
     """
