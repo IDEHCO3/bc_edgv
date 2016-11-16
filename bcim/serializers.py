@@ -326,7 +326,7 @@ class TrechoRodoviarioSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = TrechoRodoviario
         geo_field = 'geom'
-        fields = ['id_objeto', 'codtrechorodov', 'tipotrechorod', 'revestimento', 'situacaofisica', 'operacional', 'nrpistas', 'nrfaixas', 'trafego', 'canteirodivisorio', 'capaccarga', 'jurisdicao', 'administracao', 'concessionaria']
+        fields = ['id_objeto', 'codtrechorodov', 'tipotrechorod', 'jurisdicao', 'administracao','concessionaria', 'revestimento', 'operacional', 'situacaofisica', 'nrpistas', 'nrfaixas', 'trafego', 'canteirodivisorio', 'capaccarga']
 
         identifiers = ['id_objeto']
 

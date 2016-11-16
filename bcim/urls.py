@@ -37,6 +37,11 @@ urlpatterns = format_suffix_patterns([
     url(r'^capitais/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.CapitalList.as_view(), name='capital_list_fn'),
     url(r'^capitais/(?P<pk>\d+)/$', views.CapitalDetail.as_view(), name='capital_detail'),
 
+    url(r'^cidades/$', views.CidadeList.as_view(), name = 'cidade_list'),
+    url(r'^cidades/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.CidadeList.as_view(), name='cidade_list_fn'),
+    url(r'^cidades/(?P<id_objeto>[0-9]*)/$', views.CidadeDetail.as_view(), name='cidade_detail_id_objeto'),
+    url(r'^cidades/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.CidadeDetail.as_view(), name='cidade_detail_si'),
+
     #Trecho_ferroviario
     url(r'^trechos-ferroviarios/$', views.TrechoFerroviarioList.as_view(), name='trecho_ferroviario_list'),
     url(r'^trechos-ferroviarios/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.TrechoFerroviarioList.as_view(), name='trecho_ferroviario_list_fn'),
@@ -47,7 +52,12 @@ urlpatterns = format_suffix_patterns([
     url(r'^trechos-hidroviarios/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.TrechoHidroviarioList.as_view(), name='trecho_hidroviario_list_fn'),
     url(r'^trechos-hidroviarios/(?P<id_objeto>[0-9]*)/$', views.TrechoHidroviarioDetail.as_view(), name='th_detail_id_objeto'),
     url(r'^trechos-hidroviarios/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.TrechoHidroviarioDetail.as_view(), name='th_detail_si'),
+
     #url(r'^trechos-rodoviarios/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list'),
+    url(r'^trechos-rodoviarios/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list'),
+    url(r'^trechos-rodoviarios/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.TrechoRodoviarioList.as_view(), name='trecho_rodoviario_list_fn'),
+    url(r'^trechos-rodoviarios/(?P<id_objeto>[0-9]*)/$', views.TrechoRodoviarioDetail.as_view(), name='trecho_rodoviario_detail_id_objeto'),
+    url(r'^trechos-rodoviarios/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.TrechoRodoviarioDetail.as_view(), name='trecho_rodoviario_detail_si'),
 
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),
     url(r'^outras-unidades-protegidas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list_fn'),
@@ -113,6 +123,11 @@ urlpatterns = format_suffix_patterns([
     url(r'^curvas-batimetricas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.CurvaBatimetricaDetail.as_view(), name='curva_batimetrica_detail_af'),
 
     #url(r'^curvas-de-nivel/$', views.CurvaNivelList.as_view(), name='curva_nivel_list'), # nao carrega (muita informacao)
+    url(r'^curvas-de-nivel/$', views.CurvaNivelList.as_view(), name = 'curva_nivel_list'),
+    url(r'^curvas-de-nivel/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.CurvaNivelList.as_view(), name='curva_nivel_list_fn'),
+    url(r'^curvas-de-nivel/(?P<id_objeto>[0-9]*)/$', views.CurvaNivelDetail.as_view(), name='curva_nivel_id_objeto'),
+    url(r'^curvas-de-nivel/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.CurvaNivelDetail.as_view(), name='curva_nivel_detail_si'),
+
 
     url(r'^dunas/$', views.DunaList.as_view(), name='duna_list'),
     url(r'^dunas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.DunaList.as_view(), name='duna_list'),
