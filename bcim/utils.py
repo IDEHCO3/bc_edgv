@@ -691,12 +691,28 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return paramsConveted
 
+    def make_geometrycollection_from_featurecollection(self, feature_collection):
+        geoms = []
+        features = ast.literal_eval(feature_collection)
+        for feature in features['features']:
+            feature_geom = feature['geometry']
+            geoms.append(GEOSGeometry(feature_geom))
+        return GeometryCollection(tuple(geoms))
+
     def all_parameters_converted(self, attribute_or_function_name, parameters):
         parameters_converted = []
         if self.is_spatial_and_has_parameters(attribute_or_function_name):
             parameters_type = geometry_with_parameters_type()[attribute_or_function_name]
             for i in range(0, len(parameters)):
-                parameters_converted.append(parameters_type[i](parameters[i]))
+                geometry_dict = json.loads(parameters[i])
+                if geometry_dict['type'].lower() == 'feature':
+                    parameters_converted.append(parameters_type[i](json.dumps(geometry_dict['geometry'])))
+                elif geometry_dict['type'].lower() == 'featurecollection':
+                    geometry_collection = self.make_geometrycollection_from_featurecollection(parameters[i])
+                    parameters_converted.append(parameters_type[i](geometry_collection))
+                else:
+                    parameters_converted.append(parameters_type[i](parameters[i]))
+
             return parameters_converted
 
         return self.parametersConverted(parameters)
@@ -804,6 +820,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
             output = self.response_resquest_with_attributes(object_model, attributes_functions_str)
 
         elif self.attributes_functions_str_has_url(attributes_functions_str.lower()):
+            attributes_functions_str = re.sub(r':/+', '://', attributes_functions_str)
             arr_of_two_url = self.attributes_functions_splitted_by_url(attributes_functions_str)
             resp = requests.get(arr_of_two_url[1])
             if resp.status_code == 404:
