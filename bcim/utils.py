@@ -704,14 +704,18 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         if self.is_spatial_and_has_parameters(attribute_or_function_name):
             parameters_type = geometry_with_parameters_type()[attribute_or_function_name]
             for i in range(0, len(parameters)):
-                geometry_dict = json.loads(parameters[i])
-                if geometry_dict['type'].lower() == 'feature':
-                    parameters_converted.append(parameters_type[i](json.dumps(geometry_dict['geometry'])))
-                elif geometry_dict['type'].lower() == 'featurecollection':
-                    geometry_collection = self.make_geometrycollection_from_featurecollection(parameters[i])
-                    parameters_converted.append(parameters_type[i](geometry_collection))
+                if GEOSGeometry == parameters_type[i]:
+                    geometry_dict = json.loads(parameters[i])
+                    if isinstance(geometry_dict, dict) and geometry_dict['type'].lower() == 'feature':
+                        parameters_converted.append(parameters_type[i](json.dumps(geometry_dict['geometry'])))
+                    elif isinstance(geometry_dict, dict) and geometry_dict['type'].lower() == 'featurecollection':
+                        geometry_collection = self.make_geometrycollection_from_featurecollection(parameters[i])
+                        parameters_converted.append(parameters_type[i](geometry_collection))
+                    else:
+                        parameters_converted.append(parameters_type[i](parameters[i]))
                 else:
                     parameters_converted.append(parameters_type[i](parameters[i]))
+
 
             return parameters_converted
 
