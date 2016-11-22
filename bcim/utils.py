@@ -476,9 +476,16 @@ def geometry_with_parameters_type():
     return dic
 
 # In developing.
-class HandleFunctionsList(CreatorContextList):
+class HandleFunctionsList(generics.ListCreateAPIView):
 
     content_negotiation_class = IgnoreClientContentNegotiation
+
+    def __init__(self):
+        super(HandleFunctionsList, self).__init__()
+        self.base_context = BaseContext(self.contextclassname)
+
+    def options(self, request, *args, **kwargs):
+        return self.base_context.options(request)
 
     def get_png(self, queryset):
         wkt = "GEOMETRYCOLLECTION("
@@ -522,7 +529,7 @@ class HandleFunctionsList(CreatorContextList):
             response = HttpResponse(image, content_type=accept.lower())
             #headers.update(response._headers)
             #response._headers = headers
-        return response
+        return self.base_context.addContext(request, response)
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):
         geoms = []
@@ -852,6 +859,15 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return response
 
-class HandleFunctionDetail(BaseContext, APIViewHypermedia):
-    pass
+class HandleFunctionDetail(APIViewHypermedia):
 
+    def __init__(self):
+        super(HandleFunctionDetail, self).__init__()
+        self.base_context = BaseContext(self.contextclassname)
+
+    def get(self, request, *args, **kwargs):
+        res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
+        return self.base_context.addContext(request, res)
+
+    def options(self, request, *args, **kwargs):
+        return self.base_context.options(request)

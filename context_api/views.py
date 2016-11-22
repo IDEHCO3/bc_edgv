@@ -40,30 +40,39 @@ class ContextView(APIView):
 
 class BaseContext(object):
 
-    def options(self, request, *args, **kwargs):
-        classname = self.getClassName(request)
-        response = Response(getContextData(classname, request), status=status.HTTP_200_OK, content_type="application/ld+json")
-        response = createLinkOfContext(classname, request, response)
+    def __init__(self, contextclassname):
+        self.contextclassname = contextclassname
+
+    def options(self, request):
+        response = Response(self.getContextData(request), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = self.createLinkOfContext(request, response)
         return response
 
-    def get(self, request, *args, **kwargs):
-        response = super(BaseContext, self).get(request, *args, **kwargs)
-        classname = self.getClassName(request, *args, **kwargs)
-        response = createLinkOfContext(classname, request, response)
-        return response
+    def addContext(self, request, response):
+        return self.createLinkOfContext(request, response)
 
-    def getClassName(self, request, *args, **kwargs):
-        if not hasattr(self, 'contextclassname'):
-            classname = getClassnameByURL(request, *args, **kwargs)
+    def createLinkOfContext(self, request, response, properties=None):
+        if properties is None:
+            url = reverse('context:detail', args=[self.contextclassname], request=request)
         else:
-            classname = self.contextclassname
-        return classname
+            url = reverse('context:detail-property', args=[self.contextclassname, ",".join(properties)], request=request)
+        response['Link'] = '<'+url+'>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\";'
+        return response
 
-class CreatorContextList(BaseContext, generics.ListCreateAPIView):
-    pass
+    def getContextData(self, request):
+        try:
+            classobject = Class.objects.get(name=self.contextclassname)
+        except:
+            return ""
+        serializer = ContextSerializer(classobject)
+        contextdata = serializer.data
+        hydradata = getHydraData(self.contextclassname, request)
+        if "@context" in hydradata:
+            hydradata["@context"].update(contextdata["@context"])
+        contextdata.update(hydradata)
+        return contextdata
 
-class CreatorContextDetail(BaseContext, generics.RetrieveUpdateDestroyAPIView):
-    pass
+
 
 
 

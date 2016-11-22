@@ -90,19 +90,23 @@ def get_root_response(request):
 
 class APIRoot(APIView):
 
+    def __init__(self):
+        super(APIRoot, self).__init__()
+        self.base_context = BaseContext('api-root')
+
     def options(self, request, *args, **kwargs):
-        context = getContextData('api-root', request)
+        context = self.base_context.getContextData(request)
         root_links = get_root_response(request)
         context.update(root_links)
         response = Response(context, status=status.HTTP_200_OK, content_type="application/ld+json")
-        response = createLinkOfContext('api-root', request, response)
+        response = self.base_context.addContext(request, response)
         return response
 
     def get(self, request, *args, **kwargs):
         root_links = get_root_response(request)
         response = Response(root_links)
-        response = createLinkOfContext('api-root', request, response)
-        return response
+        return self.base_context.addContext(request, response)
+
 
 class UnidadeFederacaoDetail(HandleFunctionDetail):
 
@@ -168,30 +172,6 @@ class MunicipioDetail(HandleFunctionDetail):
     serializer_class = MunicipioSerializer
     contextclassname = 'municipios'
     lookup_field = "geocodigo"
-
-class MunicipioDetailProperty(CreatorContextDetail):
-
-    queryset = Municipio.objects.all()
-    serializer_class = MunicipioSerializer
-    contextclassname = 'municipios'
-    lookup_field = "geocodigo"
-
-
-    def get(self, request, *args, **kwargs):
-        response = super(MunicipioDetailProperty, self).get(request, *args, **kwargs)
-
-        property_name = self.kwargs.get("property")
-        property_value = response.data['properties'].get(property_name)
-        property_type = Municipio._meta.get_field(property_name).get_internal_type()
-
-        if property_type == "GeometryField":
-            del response.data["properties"]
-            return response
-
-        filtered_data = {}
-        filtered_data[property_name] = property_value
-        response.data = filtered_data
-        return response
 
 
 class OutrasUnidProtegidasList(HandleFunctionsList):
