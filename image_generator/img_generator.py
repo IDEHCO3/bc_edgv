@@ -6,8 +6,8 @@ import os
 try:
     import mapnik
 except:
-    print '\n\nThe mapnik library and python bindings must have been compiled and \
-installed successfully before running this script.\n\n'
+    print ('\n\nThe mapnik library and python bindings must have been compiled and \
+installed successfully before running this script.\n\n')
     sys.exit(1)
 
 STYLE_XML = 'image_generator/style.xml'
