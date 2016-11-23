@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
@@ -6,8 +7,6 @@ from context_api.models import *
 from context_api.serializers import ContextSerializer
 from hydra.serializers import HydraSerializer
 from rest_framework import status
-
-from context_api.utilities import *
 # Create your views here.
 
 class GeojsonOnContentType(object):
@@ -59,6 +58,11 @@ class BaseContext(object):
         response['Link'] = '<'+url+'>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\";'
         return response
 
+    def getHydraData(self, request):
+        classobject = Class.objects.get(name=self.contextclassname)
+        serializerHydra = HydraSerializer(classobject, request)
+        return serializerHydra.data
+
     def getContextData(self, request):
         try:
             classobject = Class.objects.get(name=self.contextclassname)
@@ -66,11 +70,12 @@ class BaseContext(object):
             return ""
         serializer = ContextSerializer(classobject)
         contextdata = serializer.data
-        hydradata = getHydraData(self.contextclassname, request)
+        hydradata = self.getHydraData(request)
         if "@context" in hydradata:
             hydradata["@context"].update(contextdata["@context"])
         contextdata.update(hydradata)
         return contextdata
+
 
 
 
