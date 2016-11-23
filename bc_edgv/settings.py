@@ -108,7 +108,7 @@ DATABASES = {
    'default': {
        'ENGINE': 'django.contrib.gis.db.backends.postgis',
        'OPTIONS': {
-               'options': '-c search_path=public,bcim,idehco3',
+               'options': '-c search_path=public,bcim,idehco3,anp',
 
        },
 

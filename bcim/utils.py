@@ -26,6 +26,8 @@ from context_api.views import *
 
 from image_generator.img_generator import BuilderPNG
 
+from serializers import serializers_dict
+
 from rest_framework.compat import (
     INDENT_SEPARATORS, LONG_SEPARATORS, SHORT_SEPARATORS
 )
@@ -475,6 +477,7 @@ def geometry_with_parameters_type():
     dic['z'] = []
     return dic
 
+
 # In developing.
 class HandleFunctionsList(generics.ListCreateAPIView):
 
@@ -482,9 +485,18 @@ class HandleFunctionsList(generics.ListCreateAPIView):
 
     def __init__(self):
         super(HandleFunctionsList, self).__init__()
-        self.base_context = BaseContext(self.contextclassname)
+        if hasattr(self, 'contextclassname'):
+            self.base_context = BaseContext(self.contextclassname)
+
+    def setSerializer(self, kwargs):
+        keyModel = 'model_class'
+        if keyModel in kwargs and kwargs.get(keyModel) in serializers_dict:
+            self.serializer_class = serializers_dict.get(kwargs.get(keyModel)).get('serializer')
+            self.contextclassname = kwargs.get(keyModel)
+            self.base_context = BaseContext(self.contextclassname)
 
     def options(self, request, *args, **kwargs):
+        self.setSerializer(kwargs)
         return self.base_context.options(request)
 
     def get_png(self, queryset):
@@ -520,6 +532,8 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         return self.queryset
 
     def get(self, request, *args, **kwargs):
+        self.setSerializer(kwargs)
+
         accept = request.META['HTTP_ACCEPT']
         response = super(HandleFunctionsList, self).get(request, *args, **kwargs)
 
@@ -863,11 +877,23 @@ class HandleFunctionDetail(APIViewHypermedia):
 
     def __init__(self):
         super(HandleFunctionDetail, self).__init__()
-        self.base_context = BaseContext(self.contextclassname)
+        if hasattr(self, 'contextclassname'):
+            self.base_context = BaseContext(self.contextclassname)
+
+    def setSerializer(self, kwargs):
+        keyModel = 'model_class'
+        if keyModel in kwargs and kwargs.get(keyModel) in serializers_dict:
+            self.serializer_class = serializers_dict.get(kwargs.get(keyModel)).get('serializer')
+            kwargs[self.serializer_class.Meta.identifier] = kwargs['id_objeto']
+            del kwargs['id_objeto']
+            self.contextclassname = kwargs.get(keyModel)
+            self.base_context = BaseContext(self.contextclassname)
 
     def get(self, request, *args, **kwargs):
+        self.setSerializer(kwargs)
         res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
         return self.base_context.addContext(request, res)
 
     def options(self, request, *args, **kwargs):
+        self.setSerializer(kwargs)
         return self.base_context.options(request)

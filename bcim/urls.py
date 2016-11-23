@@ -62,7 +62,7 @@ urlpatterns = format_suffix_patterns([
     url(r'^outras-unidades-protegidas/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list'),
     url(r'^outras-unidades-protegidas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.OutrasUnidProtegidasList.as_view(), name='outras_unid_protegidas_list_fn'),
     url(r'^outras-unidades-protegidas/(?P<id_objeto>[0-9]*)/$', views.OutrasUnidProtegidasDetail.as_view(), name='outras_unid_protegidas_detail'),
-    url(r'^outras_unidades_protegidas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.OutrasUnidProtegidasDetail.as_view(), name='outras_unid_protegidas_si'),
+    url(r'^outras-unidades-protegidas/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.OutrasUnidProtegidasDetail.as_view(), name='outras_unid_protegidas_si'),
 
     url(r'^outros-limites-oficiais/$', views.OutrosLimitesOficiaisList.as_view(), name='outros_limites_oficiais_list'),
     url(r'^outros-limites-oficiais/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.OutrosLimitesOficiaisList.as_view(), name='outros_limites_oficiais_list_fn'),
@@ -355,6 +355,13 @@ urlpatterns = format_suffix_patterns([
     url(r'^pontos-geodesicos/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.PontoExibicaoWgs84List.as_view(), name='ponto_exibicao_wgs84_list'),
     url(r'^pontos-geodesicos/(?P<id_objeto>[0-9]*)/$', views.PontosExibicaoWgs84Detail.as_view(), name='ponto_exibicao_wgs84_id_objeto'),
     url(r'^pontos-geodesicos/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.PontosExibicaoWgs84Detail.as_view(), name='ponto_exibicao_wgs84_detail_af'),
+
+    # urls generalized
+    url(r'^(?P<model_class>[\w\-]+)/$', views.HandleFunctionsList.as_view()),
+    url(r'^(?P<model_class>[\w\-]+)/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.HandleFunctionsList.as_view()),
+    url(r'^(?P<model_class>[\w\-]+)/(?P<id_objeto>[0-9]*)/$', views.HandleFunctionDetail.as_view()),
+    url(r'^(?P<model_class>[\w\-]+)/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.HandleFunctionDetail.as_view()),
+
 ])
 
  #Login and logout views for the browsable API

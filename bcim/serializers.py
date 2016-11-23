@@ -12,6 +12,8 @@ from .models import UnidadeFederacao, Municipio, OutrasUnidProtegidas, OutrosLim
     RochaEmAgua, SumidouroVertedouro, TerrenoSujeitoInundacao, TrechoDrenagem, TrechoMassaDagua, AreaDesenvolvimentoControle, \
     MarcoDeLimite, PontosExibicaoWgs84
 
+from .models import *
+
 
 class DynamicFieldsModelSerializer(serializers.ModelSerializer):
     """
@@ -579,5 +581,29 @@ class PontosExibicaoWgs84Serializer(GeoFeatureModelSerializer):
     class Meta:
         model = PontosExibicaoWgs84
         geo_field = 'geom'
-        fields = [ 'id_gps', 'long_decimal', 'lat_decimal', 'sistema_geodesico']
-        identifiers = ['id_objeto']
+        fields = ['id_gps', 'long_decimal', 'lat_decimal', 'sistema_geodesico']
+        identifiers = ['id_gps']
+
+class BlocoR9Serializer(GeoFeatureModelSerializer):
+
+    class Meta:
+        model = BlocoR9
+        geo_field = 'geom'
+        fields = ['gid', 'nomenclatu', 'situacao_b', 'indice_blo', 'nome_bacia', 'nome_setor', 'id4', 'area_bloco']
+        identifiers = ['gid']
+        identifier = 'gid'
+
+serializers_dict = {
+    'outras-unidades-protegidas': {
+        'name': "outras unidades protegidas",
+        'serializer': OutrasUnidProtegidasSerializer
+    },
+    'outros-limites-oficiais': {
+        'name': "outros limites oficiais",
+        'serializer': OutrosLimitesOficiaisSerializer
+    },
+    'blocos': {
+        'name': "Blocos",
+        'serializer': BlocoR9Serializer
+    }
+}

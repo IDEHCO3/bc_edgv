@@ -1387,5 +1387,18 @@ class PontosExibicaoWgs84(models.Model):
         managed = False
         db_table = 'pontos_exibicao_wgs84'
 
-class Blob():
-    name = None
+class BlocoR9(models.Model):
+    gid = models.AutoField(primary_key=True)
+    nomenclatu = models.CharField(max_length=50, blank=True, null=True)
+    situacao_b = models.CharField(max_length=1, blank=True, null=True)
+    indice_blo = models.IntegerField(blank=True, null=True)
+    nome_bacia = models.CharField(max_length=50, blank=True, null=True)
+    nome_setor = models.CharField(max_length=50, blank=True, null=True)
+    id4 = models.IntegerField(blank=True, null=True)
+    area_bloco = models.FloatField(blank=True, null=True)
+    geom = models.MultiPolygonField(blank=True, null=True)
+    objects = models.GeoManager()
+
+    class Meta:
+        managed = False
+        db_table = 'bloco_r9'
