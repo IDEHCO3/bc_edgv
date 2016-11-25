@@ -1,39 +1,6 @@
 from rest_framework import serializers
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-[]
-from .models import UnidadeFederacao, Municipio, OutrasUnidProtegidas, OutrosLimitesOficiais, Pais, TerraIndigena, \
-    UnidadeConservacaoNaoSnuc, UnidadeProtecaoIntegral, UnidadeUsoSustentavel, AglomeradoRuralDeExtensaoUrbana, \
-    AglomeradoRuralIsolado, AldeiaIndigena, AreaEdificada, Capital, Cidade, Vila, CurvaBatimetrica, CurvaNivel, Duna, \
-    ElementoFisiograficoNatural, Pico, PontoCotadoAltimetrico, PontoCotadoBatimetrico, Eclusa, EdifConstPortuaria, \
-    EdifConstrAeroportuaria, EdifMetroFerroviaria, Fundeadouro, PistaPontoPouso, Ponte, Sinalizacao, Travessia, TrechoDuto, \
-    TrechoFerroviario, TrechoHidroviario, TrechoRodoviario, Tunel, BrejoPantano, Mangue, VegRestinga, EdifPubMilitar, \
-    PostoFiscal, EdifAgropecExtVegetalPesca, EdifIndustrial, ExtMineral, EdifReligiosa, EstGeradEnergiaEletrica, Hidreletrica, \
-    Termeletrica, TorreEnergia, BancoAreia, Barragem, Corredeira, FozMaritima, Ilha, MassaDagua, QuedaDagua, Recife, \
-    RochaEmAgua, SumidouroVertedouro, TerrenoSujeitoInundacao, TrechoDrenagem, TrechoMassaDagua, AreaDesenvolvimentoControle, \
-    MarcoDeLimite, PontosExibicaoWgs84
-
 from .models import *
-
-
-class DynamicFieldsModelSerializer(serializers.ModelSerializer):
-    """
-    A ModelSerializer that takes an additional `fields` argument that
-    controls which fields should be displayed.
-    """
-
-    def __init__(self, *args, **kwargs):
-        # Instantiate the superclass normally
-        super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
-
-        fields = self.context['request'].QUERY_PARAMS.get('fields')
-        if fields:
-            fields = fields.split(',')
-            # Drop any fields that are not specified in the `fields` argument.
-            allowed = set(fields)
-            existing = set(self.fields.keys())
-            for field_name in existing - allowed:
-                self.fields.pop(field_name)
-
 
 class UnidadeFederacaoSerializer(GeoFeatureModelSerializer):
     class Meta:
