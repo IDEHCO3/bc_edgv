@@ -41,6 +41,7 @@ class UnidadeFederacaoSerializer(GeoFeatureModelSerializer):
         geo_field = 'geom'
         fields = ['id_objeto', 'nome', 'nomeabrev', 'sigla', 'geocodigo']
         identifiers = ['id_objeto', 'nome', 'nomeabrev', 'sigla', 'geocodigo']
+        identifier = 'id_objeto'
 
 
 class MunicipioSerializer(GeoFeatureModelSerializer):
@@ -49,6 +50,7 @@ class MunicipioSerializer(GeoFeatureModelSerializer):
         geo_field = 'geom'
         fields = ['id_objeto', 'nome', 'nomeabrev',  'geocodigo']
         identifiers = ['id_objeto', 'geocodigo']
+        identifier = 'id_objeto'
 
 class OutrasUnidProtegidasSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -56,6 +58,7 @@ class OutrasUnidProtegidasSerializer(GeoFeatureModelSerializer):
         geo_field = 'geom'
         fields = ['id_objeto', 'nome', 'nomeabrev',  'geometriaaproximada', 'sigla', 'areaoficial','administracao', 'tipooutunidprot', 'historicomodificacao']
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class OutrosLimitesOficiaisSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -65,6 +68,7 @@ class OutrosLimitesOficiaisSerializer(GeoFeatureModelSerializer):
         # 'extensao'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PaisSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -73,6 +77,7 @@ class PaisSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'sigla', 'geometriaaproximada', 'codiso3166' ]
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TerraIndigenaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -82,6 +87,7 @@ class TerraIndigenaSerializer(GeoFeatureModelSerializer):
         # 'perimetrooficial', 'areaoficialha'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class UnidadeConservacaoNaoSnucSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -91,6 +97,7 @@ class UnidadeConservacaoNaoSnucSerializer(GeoFeatureModelSerializer):
         # 'anocriacao'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class UnidadeProtecaoIntegralSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -100,6 +107,7 @@ class UnidadeProtecaoIntegralSerializer(GeoFeatureModelSerializer):
         # 'anocriacao'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class UnidadeUsoSustentavelSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -109,6 +117,7 @@ class UnidadeUsoSustentavelSerializer(GeoFeatureModelSerializer):
         # 'anocriacao'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class AglomeradoRuralDeExtensaoUrbanaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -117,6 +126,7 @@ class AglomeradoRuralDeExtensaoUrbanaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class AglomeradoRuralIsoladoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -125,6 +135,7 @@ class AglomeradoRuralIsoladoSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipoaglomrurisol']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class AldeiaIndigenaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -133,6 +144,7 @@ class AldeiaIndigenaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'codigofunai', 'terraindigena', 'etnia']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class AreaEdificadaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -141,6 +153,7 @@ class AreaEdificadaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'geocodigo']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class CapitalSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -149,6 +162,7 @@ class CapitalSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipocapital']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class CidadeSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -157,6 +171,7 @@ class CidadeSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class VilaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -165,6 +180,7 @@ class VilaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class CurvaBatimetricaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -173,6 +189,7 @@ class CurvaBatimetricaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'profundidade']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class CurvaNivelSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -181,6 +198,7 @@ class CurvaNivelSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'cota', 'depressao', 'geometriaaproximada', 'indice']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class DunaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -189,6 +207,7 @@ class DunaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'fixa']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class ElementoFisiograficoNaturalSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -197,6 +216,7 @@ class ElementoFisiograficoNaturalSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipoelemnat']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PicoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -205,6 +225,7 @@ class PicoSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PontoCotadoAltimetricoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -213,6 +234,7 @@ class PontoCotadoAltimetricoSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'geometriaaproximada', 'cota', 'cotacomprovada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PontoCotadoBatimetricoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -221,6 +243,7 @@ class PontoCotadoBatimetricoSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'profundidade']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EclusaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -230,6 +253,7 @@ class EclusaSerializer(GeoFeatureModelSerializer):
         # 'calado'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifConstPortuariaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -238,6 +262,7 @@ class EdifConstPortuariaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipoedifport', 'administracao', 'matconstr', 'operacional', 'situacaofisica']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifConstrAeroportuariaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -246,6 +271,7 @@ class EdifConstrAeroportuariaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'operacional', 'situacaofisica', 'administracao', 'matconstr', 'tipoedifaero']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifMetroFerroviariaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -254,6 +280,7 @@ class EdifMetroFerroviariaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'multimodal', 'funcaoedifmetroferrov', 'operacional', 'situacaofisica', 'administracao', 'matconstr']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class FundeadouroSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -262,6 +289,7 @@ class FundeadouroSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'administracao', 'destinacaofundeadouro']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PistaPontoPousoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -271,6 +299,7 @@ class PistaPontoPousoSerializer(GeoFeatureModelSerializer):
         # 'extensao', 'largura'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PonteSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -280,6 +309,7 @@ class PonteSerializer(GeoFeatureModelSerializer):
         # 'extensao', 'largura', 'vaolivrehoriz', 'vaovertical', 'cargasuportmaxima', 'nrpistas', 'nrfaixas'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class SinalizacaoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -288,6 +318,7 @@ class SinalizacaoSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'situacaofisica', 'operacional', 'tiposinal']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TravessiaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -296,6 +327,7 @@ class TravessiaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipotravessia']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TrechoDutoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -305,6 +337,7 @@ class TrechoDutoSerializer(GeoFeatureModelSerializer):
         # 'nrdutos'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TrechoFerroviarioSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -314,6 +347,7 @@ class TrechoFerroviarioSerializer(GeoFeatureModelSerializer):
         # 'cargasuportmaxima'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TrechoHidroviarioSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -323,6 +357,7 @@ class TrechoHidroviarioSerializer(GeoFeatureModelSerializer):
         # 'caladomaxseca', 'extensaotrecho'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TrechoRodoviarioSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -331,6 +366,7 @@ class TrechoRodoviarioSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'codtrechorodov', 'tipotrechorod', 'jurisdicao', 'administracao','concessionaria', 'revestimento', 'operacional', 'situacaofisica', 'nrpistas', 'nrfaixas', 'trafego', 'canteirodivisorio', 'capaccarga']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TunelSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -340,6 +376,7 @@ class TunelSerializer(GeoFeatureModelSerializer):
         # 'extensao', 'largura', 'altura', 'nrpistas', 'nrfaixas'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class BrejoPantanoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -349,6 +386,7 @@ class BrejoPantanoSerializer(GeoFeatureModelSerializer):
         # 'alturamediaindividuos'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class MangueSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -358,6 +396,7 @@ class MangueSerializer(GeoFeatureModelSerializer):
         # 'alturamediaindividuos'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class VegRestingaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -367,6 +406,7 @@ class VegRestingaSerializer(GeoFeatureModelSerializer):
         # 'alturamediaindividuos'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifPubMilitarSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -375,6 +415,7 @@ class EdifPubMilitarSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipoedifmil', 'tipousoedif', 'situacaofisica', 'operacional', 'matconstr']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PostoFiscalSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -383,6 +424,7 @@ class PostoFiscalSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipopostofisc', 'situacaofisica', 'operacional']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifAgropecExtVegetalPescaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -391,6 +433,7 @@ class EdifAgropecExtVegetalPescaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipoedifagropec', 'situacaofisica', 'operacional', 'matconstr']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifIndustrialSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -399,6 +442,7 @@ class EdifIndustrialSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipodivisaocnae', 'situacaofisica', 'operacional', 'matconstr', 'chamine']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class ExtMineralSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -407,6 +451,7 @@ class ExtMineralSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tiposecaocnae', 'situacaofisica', 'operacional', 'tipoextmin', 'tipoprodutoresiduo', 'tipopocomina', 'procextracao', 'formaextracao', 'atividade']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EdifReligiosaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -415,6 +460,7 @@ class EdifReligiosaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'religiao', 'situacaofisica', 'operacional', 'tipoedifrelig', 'ensino', 'matconstr']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class EstGeradEnergiaEletricaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -424,6 +470,7 @@ class EstGeradEnergiaEletricaSerializer(GeoFeatureModelSerializer):
         # 'potenciaoutorgada', 'potenciafiscalizada'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class HidreletricaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -433,6 +480,7 @@ class HidreletricaSerializer(GeoFeatureModelSerializer):
         # 'potenciaoutorgada', 'potenciafiscalizada'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TermeletricaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -442,6 +490,7 @@ class TermeletricaSerializer(GeoFeatureModelSerializer):
         # 'potenciaoutorgada', 'potenciafiscalizada'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TorreEnergiaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -451,6 +500,7 @@ class TorreEnergiaSerializer(GeoFeatureModelSerializer):
         # 'alturaestimada'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class BancoAreiaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -459,6 +509,7 @@ class BancoAreiaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipobanco', 'situacaoemagua', 'materialpredominante']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class BarragemSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -467,6 +518,7 @@ class BarragemSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'usoprincipal', 'situacaofisica', 'operacional', 'matconstr']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class CorredeiraSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -475,6 +527,7 @@ class CorredeiraSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class FozMaritimaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -483,6 +536,7 @@ class FozMaritimaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class IlhaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -491,6 +545,7 @@ class IlhaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipoilha']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class MassaDaguaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -499,6 +554,7 @@ class MassaDaguaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipomassadagua', 'salinidade', 'regime']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class QuedaDaguaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -508,6 +564,7 @@ class QuedaDaguaSerializer(GeoFeatureModelSerializer):
         # 'altura'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class RecifeSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -516,6 +573,7 @@ class RecifeSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tiporecife', 'situamare', 'situacaocosta']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class RochaEmAguaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -525,6 +583,7 @@ class RochaEmAguaSerializer(GeoFeatureModelSerializer):
         # 'alturalamina'
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class SumidouroVertedouroSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -533,6 +592,7 @@ class SumidouroVertedouroSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'causa', 'tiposumvert']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TerrenoSujeitoInundacaoSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -541,6 +601,7 @@ class TerrenoSujeitoInundacaoSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'periodicidadeinunda']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TrechoDrenagemSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -550,6 +611,7 @@ class TrechoDrenagemSerializer(GeoFeatureModelSerializer):
 
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class TrechoMassaDaguaSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -558,6 +620,7 @@ class TrechoMassaDaguaSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'tipotrechomassa', 'salinidade', 'regime']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class AreaDesenvolvimentoControleSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -566,6 +629,7 @@ class AreaDesenvolvimentoControleSerializer(GeoFeatureModelSerializer):
         fields = ['id_objeto', 'nome', 'nomeabrev', 'geometriaaproximada', 'classificacao']
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
     class Meta:
@@ -576,6 +640,7 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
 
 
         identifiers = ['id_objeto']
+        identifier = 'id_objeto'
 
 class PontosExibicaoWgs84Serializer(GeoFeatureModelSerializer):
     class Meta:
@@ -583,6 +648,7 @@ class PontosExibicaoWgs84Serializer(GeoFeatureModelSerializer):
         geo_field = 'geom'
         fields = ['id_gps', 'long_decimal', 'lat_decimal', 'sistema_geodesico']
         identifiers = ['id_gps']
+        identifier = 'id_gps'
 
 class BlocoR9Serializer(GeoFeatureModelSerializer):
 
