@@ -86,6 +86,11 @@ def get_root_response(request):
         'marcos de limite': reverse('bcim_v1:marco_de_limite_list', request=request, format=format),
         'pontos geodesicos': reverse('bcim_v1:ponto_exibicao_wgs84_list', request=request, format=format),
     }
+
+    for key in serializers_dict:
+        name = serializers_dict[key].get('name')
+        root_links[name] = reverse('bcim_v1:general_list', request=request, format=format, kwargs={'model_class': key})
+
     ordered_dict_of_link = OrderedDict(sorted(root_links.items(), key=lambda t: t[0]))
     return ordered_dict_of_link
 

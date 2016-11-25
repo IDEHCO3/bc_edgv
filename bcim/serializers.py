@@ -603,7 +603,7 @@ serializers_dict = {
         'serializer': OutrosLimitesOficiaisSerializer
     },
     'blocos': {
-        'name': "Blocos",
+        'name': "blocos",
         'serializer': BlocoR9Serializer
     }
 }
