@@ -220,7 +220,6 @@ class TerraIndigenaList(HandleFunctionsList):
     contextclassname = 'terras-indigenas'
 
 class TerraIndigenaDetail(HandleFunctionDetail):
-
     serializer_class = TerraIndigenaSerializer
     contextclassname = 'terras-indigenas'
 
