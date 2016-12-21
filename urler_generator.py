@@ -1,21 +1,22 @@
+import inspect, sys
 import os
-import sys, inspect
-import django
 import re
+import django
+
 
 def convert_camel_case_to_hifen(camel_case_string):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', camel_case_string)
     return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
-def detect_primary_key_field(fields_of_model_class):
 
+def detect_primary_key_field(fields_of_model_class):
     return next((field for field in fields_of_model_class if field.primary_key), [None])
 
 def generate_snippets_to_url(model_class_name, model_class):
 
-    context_name = convert_camel_case_to_hifen(model_class_name)
+    context_name = convert_camel_case_to_hifen(model_class_name) + '-list'
     primary_key_name = detect_primary_key_field(model_class._meta.get_fields()).name
     arr = []
-    arr.append((' ' * 4) + 'url(r' +"'"+  context_name + '/(?P<'+ primary_key_name +'>[0-9]+)/$' +"'"+ ', views.' +
+    arr.append((' ' * 4) + 'url(r' +"'"+  context_name +'/(?P<'+ primary_key_name +'>[0-9]+)/$' +"'"+ ', views.' +
                model_class_name + 'Detail.as_view(), name=' + "'" + model_class_name +'_detail' +"'" + '),\n')
     arr.append((' ' * 4) + 'url(r' + "'" + context_name + '/(?P<' + primary_key_name +
                '>[0-9]+)/(?P<attributes_functions>.*)/$' + "'" + ', views.' +
@@ -39,7 +40,8 @@ def generate_file(package_name, default_name='urls.py'):
     with open(default_name, 'w+') as sr:
         for import_str in imports_str_as_array(package_name):
             sr.write(import_str)
-        sr.write( 'urlpatterns = format_suffix_patterns([\n\n')
+        sr.write( 'urlpatterns = format_suffix_patterns([\n')
+        sr.write(('' * 4) + 'url(r' +"'"+'^$'+"'"+', views.APIRoot.as_view(), name='+"'"+'api_root'+"'"+'),\n\n')
         for model_class_arr in classes_from:
             for str in generate_snippets_to_url(model_class_arr[0], model_class_arr[1]):
                 sr.write(str)

@@ -112,11 +112,7 @@ DATABASES = {
 
        },
 
-       'HOST': ip_sgbd,
-       'PORT': port_sgbd,
-       'NAME': db_name,
-       'USER': user,
-       'PASSWORD': password,
+       
    }
 }
 

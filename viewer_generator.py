@@ -3,6 +3,14 @@ import sys, inspect
 import django
 import re
 
+def generate_get_root_response(a_name_space, model_class_name):
+
+    context_name = convert_camel_case_to_hifen(model_class_name) + '-list'
+
+    return "'"+ context_name +"'"+': reverse(' + "'" +a_name_space +'_v1:'+ model_class_name+'_list'+"'"+' , request=request, format=format),\n'
+
+
+
 def convert_camel_case_to_hifen(camel_case_string):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', camel_case_string)
     return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
@@ -24,6 +32,7 @@ def generate_snippets_to_view(model_class_name):
 
 def imports_str_as_array(a_name):
     arr = []
+    arr.append("from collections import OrderedDict\n")
     arr.append("from " + a_name + ".utils import *\n")
     arr.append("from " + a_name + ".models import *\n")
     arr.append("from " + a_name + ".serializers import *\n\n")
@@ -34,6 +43,30 @@ def generate_file(package_name, default_name='views.py'):
     with open(default_name, 'w+') as sr:
         for import_str in imports_str_as_array(package_name):
             sr.write(import_str)
+        sr.write('def get_root_response(request):\n')
+        sr.write((' ' * 4) + 'format = None\n')
+        sr.write((' ' * 4) + 'root_links = {\n\n')
+        for model_class_arr in classes_from:
+            get_root_str = generate_get_root_response(package_name ,model_class_arr[0])
+            sr.write((' ' * 6) + get_root_str)
+        sr.write((' ' * 4) + '}\n\n')
+        sr.write((' ' * 4) + 'ordered_dict_of_link = OrderedDict(sorted(root_links.items(), key=lambda t: t[0]))\n')
+        sr.write((' ' * 4) + 'return ordered_dict_of_link\n\n')
+        sr.write('class APIRoot(APIView):\n\n')
+        sr.write((' ' * 4) + 'def __init__(self):\n')
+        sr.write((' ' * 8) +'super(APIRoot, self).__init__()\n')
+        sr.write((' ' * 8) +'self.base_context = BaseContext('+"'"+'api-root'+"'"+')\n\n')
+        sr.write((' ' * 4) +'def options(self, request, *args, **kwargs):\n')
+        sr.write((' ' * 8) +'context = self.base_context.getContextData(request)\n')
+        sr.write((' ' * 8) +'root_links = get_root_response(request)\n')
+        sr.write((' ' * 8) +'context.update(root_links)\n')
+        sr.write((' ' * 8) +'response = Response(context, status=status.HTTP_200_OK, content_type="application/ld+json")\n')
+        sr.write((' ' * 8) +'response = self.base_context.addContext(request, response)\n')
+        sr.write((' ' * 8) +'return response\n\n')
+        sr.write((' ' * 4) +'def get(self, request, *args, **kwargs):\n')
+        sr.write((' ' * 8) +'root_links = get_root_response(request)\n')
+        sr.write((' ' * 8) +'response = Response(root_links)\n')
+        sr.write((' ' * 8) +'return self.base_context.addContext(request, response)\n\n')
         for model_class_arr in classes_from:
             for str in generate_snippets_to_view(model_class_arr[0]):
                 sr.write(str)
