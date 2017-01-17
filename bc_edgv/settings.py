@@ -105,15 +105,18 @@ user = os.environ['DB_USERNAME']
 password = os.environ['DB_PASSWORD']
 
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.contrib.gis.db.backends.postgis',
-       'OPTIONS': {
-               'options': '-c search_path=public,bcim,idehco3,anp',
+    'default': {
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'OPTIONS': {
+            'options': '-c search_path=public,bcim,idehco3,anp',
+        },
 
-       },
-
-       
-   }
+        'HOST': ip_sgbd,
+        'PORT': port_sgbd,
+        'NAME': db_name,
+        'USER': user,
+        'PASSWORD': password
+    }
 }
 
 # Internationalization
