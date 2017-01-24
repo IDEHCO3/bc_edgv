@@ -20,3 +20,6 @@ static_root/*
 #media
 bc_edgv/media_root/*
 media_root/*
+
+#nginx
+nginx/*
