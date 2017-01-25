@@ -3,13 +3,13 @@ from hydra.urls import getHydraVocabURLPatterns
 
 urlpatterns = [
 
-    url(r'^cartographicbase/ibge/bcim/', include('bcim.urls', namespace='bcim_v1')),
-    url(r'^cartographicbase/contexts/', include('context_api.urls', namespace='context')),
+    url(r'^instituicoes/ibge/bcim/', include('bcim.urls', namespace='bcim_v1')),
+    url(r'^instituicoes/ibge/contexts/', include('context_api.urls', namespace='context')),
     getHydraVocabURLPatterns(r'^cartographicbase/hydra/'),
 
 
 ]
 urlpatterns += [
-    url(r'^cartographicbase/api-auth/', include('rest_framework.urls',
+    url(r'^instituicoes/ibge/api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
 ]
