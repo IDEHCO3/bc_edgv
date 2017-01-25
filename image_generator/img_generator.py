@@ -69,7 +69,7 @@ class BuilderPNG(IBuilderImage):
         self.layer = mapnik.Layer('Provinces')
         self.layer.srs =self.spatialReference[self.srs]
         #sym = mapnik.PointSymbolizer("imgs/marker-icon.png", "png", 16, 16)
-        self.layer.datasource = mapnik.CSV(inline='wkt\n"'+self.wkt+'"')
+        self.layer.datasource = mapnik.CSV(inline='wkt\n"'+self.wkt+'"', filesize_max=100)
 
         # to use other datasources. The GeoJSON as datasource doesn't generate the image and we don't know why.
         #self.layer.datasource = mapnik.PostGIS(
