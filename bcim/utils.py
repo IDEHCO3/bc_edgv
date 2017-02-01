@@ -497,7 +497,10 @@ class HandleFunctionsList(generics.ListCreateAPIView):
 
     def options(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
-        return self.base_context.options(request)
+        parent_url = self.get_parent_url(request, kwargs)
+        response = self.base_context.options(request)
+        response = self.add_parent_url_in_header(parent_url, response)
+        return response
 
     def get_png(self, queryset):
         wkt = "GEOMETRYCOLLECTION("
@@ -531,11 +534,41 @@ class HandleFunctionsList(generics.ListCreateAPIView):
 
         return self.queryset
 
+    def get_parent_url(self, request, kwargs):
+        url = request._request.path
+        parts = url.split("/")
+        index = -1
+        if kwargs.get("attributes_functions", None) is not None:
+            index = -2
+
+        if parts[-1] == "":
+            parent_url = "/".join(parts[:index-1])
+        else:
+            parent_url = "/".join(parts[:index])
+
+        if "http" not in parent_url:
+            parent_url += "/"
+            host = request.get_host()
+            parent_url = "http://" + host + parent_url
+
+        return parent_url
+
+    def add_parent_url_in_header(self, parent_url, response):
+        link = ' <'+parent_url+'>; rel=\"http://www.w3.org/MarkUp/Forms/wiki/Json\"; type=\"application/json\" '
+        if "Link" not in response:
+            response['Link'] = link
+        else:
+            response['Link'] += "," + link
+        return response
+
     def get(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
 
-        accept = request.META['HTTP_ACCEPT']
+        parent_url = self.get_parent_url(request, kwargs)
+
         response = super(HandleFunctionsList, self).get(request, *args, **kwargs)
+
+        accept = request.META['HTTP_ACCEPT']
 
         if accept.lower() == "image/png":
             image = self.get_png(self.queryset)
@@ -543,6 +576,9 @@ class HandleFunctionsList(generics.ListCreateAPIView):
             response = HttpResponse(image, content_type=accept.lower())
             #headers.update(response._headers)
             #response._headers = headers
+
+        response = self.add_parent_url_in_header(parent_url, response)
+
         return self.base_context.addContext(request, response)
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):

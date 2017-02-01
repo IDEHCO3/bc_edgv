@@ -55,7 +55,13 @@ class BaseContext(object):
             url = reverse('context:detail', args=[self.contextclassname], request=request)
         else:
             url = reverse('context:detail-property', args=[self.contextclassname, ",".join(properties)], request=request)
-        response['Link'] = '<'+url+'>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\";'
+
+        context_link = ' <'+url+'>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\" '
+        if "Link" not in response:
+            response['Link'] = context_link
+        else:
+            response['Link'] += "," + context_link
+
         return response
 
     def getHydraData(self, request):
