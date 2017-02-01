@@ -5,7 +5,7 @@ urlpatterns = [
 
     url(r'^instituicoes/ibge/bcim/', include('bcim.urls', namespace='bcim_v1')),
     url(r'^instituicoes/ibge/contexts/', include('context_api.urls', namespace='context')),
-    getHydraVocabURLPatterns(r'^cartographicbase/hydra/'),
+    getHydraVocabURLPatterns(r'^instituicoes/ibge/hydra/'),
 
 
 ]
