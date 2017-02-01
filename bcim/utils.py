@@ -502,7 +502,11 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         response = self.add_parent_url_in_header(parent_url, response)
         return response
 
-    def get_png(self, queryset):
+    def get_style_file(self, request):
+        return None
+
+    def get_png(self, queryset, request):
+        style = self.get_style_file(request)
         wkt = "GEOMETRYCOLLECTION("
         for i,e in enumerate(queryset):
             wkt += e.geom.wkt #it is need to fix the case that the attribute is not called by geom
@@ -511,7 +515,11 @@ class HandleFunctionsList(generics.ListCreateAPIView):
             else:
                 wkt += ")"
         geom_type = queryset[0].geom.geom_type
-        builder_png = BuilderPNG({'wkt': wkt, 'type': geom_type})
+
+        config = {'wkt': wkt, 'type': geom_type}
+        if style is not None:
+            config["style"] = style
+        builder_png = BuilderPNG(config)
         return builder_png.generate()
 
     def get_queryset(self):
@@ -571,7 +579,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         accept = request.META['HTTP_ACCEPT']
 
         if accept.lower() == "image/png":
-            image = self.get_png(self.queryset)
+            image = self.get_png(self.queryset, request)
             #headers = response._headers
             response = HttpResponse(image, content_type=accept.lower())
             #headers.update(response._headers)
@@ -859,14 +867,23 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return (a_value, 'application/json')
 
-    def get_png(self, queryset):
+    def get_style_file(self, request):
+        return None
+
+    def get_png(self, queryset, request):
+        style = self.get_style_file(request)
+
         if isinstance(queryset, GEOSGeometry):
             wkt = queryset.wkt
             geom_type = queryset.geom_type
         else:
             wkt = queryset.geom.wkt
             geom_type = queryset.geom.geom_type
-        builder_png = BuilderPNG({'wkt': wkt, 'type': geom_type})
+
+        config = {'wkt': wkt, 'type': geom_type}
+        if style is not None:
+            config["style"] = style
+        builder_png = BuilderPNG(config)
         return builder_png.generate()
 
     def get(self, request, *args, **kwargs):
@@ -899,7 +916,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         if accept.lower() == "image/png":
             if len(output) == 3:
                 queryset = output[2]
-                image = self.get_png(queryset)
+                image = self.get_png(queryset, request)
                 #headers = response._headers
                 response = HttpResponse(image, content_type=accept.lower())
                 #headers.update(response._headers)
