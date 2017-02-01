@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from bcim import views
 
 
-urlpatterns = format_suffix_patterns([
+urlpatterns = [
     url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
     #unidades federativas
@@ -35,7 +35,9 @@ urlpatterns = format_suffix_patterns([
 
     url(r'^capitais/$', views.CapitalList.as_view(), name='capital_list'),
     url(r'^capitais/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.CapitalList.as_view(), name='capital_list_fn'),
-    url(r'^capitais/(?P<pk>\d+)/$', views.CapitalDetail.as_view(), name='capital_detail'),
+    url(r'^capitais/(?P<id_objeto>[0-9]*)/$', views.CapitalDetail.as_view(), name='capital_detail_id_objeto'),
+    url(r'^capitais/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.CapitalDetail.as_view(), name='capital_detail_si'),
+
 
     url(r'^cidades/$', views.CidadeList.as_view(), name = 'cidade_list'),
     url(r'^cidades/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.CidadeList.as_view(), name='cidade_list_fn'),
@@ -362,9 +364,4 @@ urlpatterns = format_suffix_patterns([
     url(r'^(?P<model_class>[\w\-]+)/(?P<id_objeto>[0-9]*)/$', views.HandleFunctionDetail.as_view()),
     url(r'^(?P<model_class>[\w\-]+)/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.HandleFunctionDetail.as_view()),
 
-])
-
- #Login and logout views for the browsable API
-urlpatterns += [
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

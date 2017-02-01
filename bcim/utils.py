@@ -925,11 +925,48 @@ class HandleFunctionDetail(APIViewHypermedia):
             self.contextclassname = kwargs.get(keyModel)
             self.base_context = BaseContext(self.contextclassname)
 
+    def get_parent_url(self, request, kwargs):
+        url = request._request.path
+        parts = url.split("/")
+        index = -1
+        attributes_functions = kwargs.get("attributes_functions", None)
+        if attributes_functions is not None:
+            funcs = attributes_functions.split("/")
+            for i in xrange(-1, -(len(funcs)+1), -1):
+                if self.is_spatial_operation(funcs[i]):
+                    index = i
+                    break
+
+        if parts[-1] == "":
+            parent_url = "/".join(parts[:index-1])
+        else:
+            parent_url = "/".join(parts[:index])
+
+        if "http" not in parent_url:
+            parent_url += "/"
+            host = request.get_host()
+            parent_url = "http://" + host + parent_url
+
+        return parent_url
+
+    def add_parent_url_in_header(self, parent_url, response):
+        link = ' <'+parent_url+'>; rel=\"http://www.w3.org/MarkUp/Forms/wiki/Json\"; type=\"application/json\" '
+        if "Link" not in response:
+            response['Link'] = link
+        else:
+            response['Link'] += "," + link
+        return response
+
     def get(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
+        parent_url = self.get_parent_url(request, kwargs)
         res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
+        res = self.add_parent_url_in_header(parent_url, res)
         return self.base_context.addContext(request, res)
 
     def options(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
-        return self.base_context.options(request)
+        parent_url = self.get_parent_url(request, kwargs)
+        response = self.base_context.options(request)
+        res = self.add_parent_url_in_header(parent_url, res)
+        return response

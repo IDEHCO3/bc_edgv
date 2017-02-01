@@ -318,7 +318,7 @@ class CapitalList(HandleFunctionsList):
     contextclassname = 'capitais'
 
 
-class CapitalDetail(generics.RetrieveDestroyAPIView):
+class CapitalDetail(HandleFunctionDetail):
 
     queryset = Capital.objects.all()
     serializer_class = CapitalSerializer

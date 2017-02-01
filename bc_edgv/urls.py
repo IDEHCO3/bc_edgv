@@ -9,7 +9,3 @@ urlpatterns = [
 
 
 ]
-urlpatterns += [
-    url(r'^instituicoes/ibge/api-auth/', include('rest_framework.urls',
-                               namespace='rest_framework')),
-]
