@@ -3,6 +3,7 @@ import json
 import ast
 import re
 import requests
+import random
 from django.contrib.gis.gdal.geometries import Point, Polygon, OGRGeometry
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.db import models
@@ -502,7 +503,19 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         response = self.add_parent_url_in_header(parent_url, response)
         return response
 
+    def generate_tmp_file(self, suffix='', length_name=10):
+        return ''.join([random.choice('0123456789ABCDEF') for i in range(length_name)]) + suffix
+
     def get_style_file(self, request):
+        if 'HTTP_LAYERSTYLE' in request.META:
+            layer_style_url = request.META['HTTP_LAYERSTYLE']
+            response = requests.get(layer_style_url)
+            if response.status_code == 200:
+                file_name = self.generate_tmp_file(suffix="_tmp_style.xml")
+                with open(file_name, "w+") as st:
+                    st.write(response.text.encode('UTF-8'))
+                    st.close()
+                return file_name
         return None
 
     def get_png(self, queryset, request):
@@ -519,6 +532,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         config = {'wkt': wkt, 'type': geom_type}
         if style is not None:
             config["style"] = style
+            config["deleteStyle"] = True
         builder_png = BuilderPNG(config)
         return builder_png.generate()
 
@@ -867,7 +881,19 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         return (a_value, 'application/json')
 
+    def generate_tmp_file(self, suffix='', length_name=10):
+        return ''.join([random.choice('0123456789ABCDEF') for i in range(length_name)]) + suffix
+
     def get_style_file(self, request):
+        if 'HTTP_LAYERSTYLE' in request.META:
+            layer_style_url = request.META['HTTP_LAYERSTYLE']
+            response = requests.get(layer_style_url)
+            if response.status_code == 200:
+                file_name = self.generate_tmp_file(suffix="_tmp_style.xml")
+                with open(file_name, "w+") as st:
+                    st.write(response.text.encode('UTF-8'))
+                    st.close()
+                return file_name
         return None
 
     def get_png(self, queryset, request):
@@ -883,6 +909,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         config = {'wkt': wkt, 'type': geom_type}
         if style is not None:
             config["style"] = style
+            config["deleteStyle"] = True
         builder_png = BuilderPNG(config)
         return builder_png.generate()
 

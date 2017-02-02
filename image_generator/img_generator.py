@@ -36,6 +36,10 @@ class IBuilderImage:
         else:
             self.geom_type = "polygon"
 
+        self.deleteStyle = False
+        if "deleteStyle" in layer:
+            self.deleteStyle = layer['deleteStyle']
+
         self.bbox = bbox
         self.srs = srs
         self.width = width
@@ -99,5 +103,7 @@ class BuilderPNG(IBuilderImage):
         image_file.close()
 
         os.remove(image_complete_name)
+        if self.deleteStyle:
+            os.remove(self.style)
 
         return image_out
