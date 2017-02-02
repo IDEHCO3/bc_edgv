@@ -365,3 +365,5 @@ urlpatterns = [
     url(r'^(?P<model_class>[\w\-]+)/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.HandleFunctionDetail.as_view()),
 
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'png'])

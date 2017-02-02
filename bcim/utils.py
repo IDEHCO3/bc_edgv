@@ -592,10 +592,10 @@ class HandleFunctionsList(generics.ListCreateAPIView):
 
         accept = request.META['HTTP_ACCEPT']
 
-        if accept.lower() == "image/png":
+        if accept.lower() == "image/png" or kwargs.get('format', None) == 'png':
             image = self.get_png(self.queryset, request)
             #headers = response._headers
-            response = HttpResponse(image, content_type=accept.lower())
+            response = HttpResponse(image, content_type="image/png")
             #headers.update(response._headers)
             #response._headers = headers
 
@@ -940,12 +940,12 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         response = Response(data=output[0], content_type=output[1])
 
         accept = request.META['HTTP_ACCEPT']
-        if accept.lower() == "image/png":
+        if accept.lower() == "image/png" or kwargs.get('format', None) == 'png':
             if len(output) == 3:
                 queryset = output[2]
                 image = self.get_png(queryset, request)
                 #headers = response._headers
-                response = HttpResponse(image, content_type=accept.lower())
+                response = HttpResponse(image, content_type="image/png")
                 #headers.update(response._headers)
                 #response._headers = headers
             else:
