@@ -41,7 +41,7 @@ def generate_file(package_name, default_name='urls.py'):
         for import_str in imports_str_as_array(package_name):
             sr.write(import_str)
         sr.write( 'urlpatterns = format_suffix_patterns([\n')
-        sr.write(('' * 4) + 'url(r' +"'"+'^$'+"'"+', views.APIRoot.as_view(), name='+"'"+'api_root'+"'"+'),\n\n')
+        sr.write((' ' * 4) + 'url(r' +"'"+'^$'+"'"+', views.APIRoot.as_view(), name='+"'"+'api_root'+"'"+'),\n\n')
         for model_class_arr in classes_from:
             for str in generate_snippets_to_url(model_class_arr[0], model_class_arr[1]):
                 sr.write(str)

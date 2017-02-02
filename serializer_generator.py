@@ -40,7 +40,7 @@ def generate_snippets_to_serializer(model_class_name, model_class):
     arr.append((' ' * 8) + "identifiers = '[" + identifier + "]'\n\n\n")
     return arr
 
-def generate_file(package_name, default_name='serializers.py'):
+def generate_file(package_name, default_name= '\serializers.py'):
     classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
     with open(default_name, 'w+') as sr:
         sr.write("from "+package_name+".models import *\n")
