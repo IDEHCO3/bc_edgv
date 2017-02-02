@@ -1012,5 +1012,5 @@ class HandleFunctionDetail(APIViewHypermedia):
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
-        res = self.add_parent_url_in_header(parent_url, res)
+        response = self.add_parent_url_in_header(parent_url, response)
         return response
