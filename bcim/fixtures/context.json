@@ -868,5 +868,16 @@
   {"model": "context_api.Context", "pk": 1166, "fields": {"attribute": "long_decimal", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 228}},
   {"model": "context_api.Context", "pk": 1166, "fields": {"attribute": "lat_decimal", "means": "http://schema.org/Thing", "type": "http://schema.org/Float", "classname": 228}},
   {"model": "context_api.Context", "pk": 1167, "fields": {"attribute": "sistema_geodesico", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 228}},
-  {"model": "context_api.Context", "pk": 1177, "fields": {"attribute": "geom", "means": "http://schema.org/geo", "type": "http://schema.org/GeoCoordinates", "classname": 228}}
+  {"model": "context_api.Context", "pk": 1177, "fields": {"attribute": "geom", "means": "http://schema.org/geo", "type": "http://schema.org/GeoCoordinates", "classname": 228}},
+
+
+  {"model": "context_api.Class", "pk": 230, "fields": {"name": "aldeias-indigenas", "spatial": "geometry"}},
+
+  {"model": "context_api.Context", "pk": 1187, "fields": {"attribute": "nome", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 230}},
+  {"model": "context_api.Context", "pk": 1188, "fields": {"attribute": "geometriaaproximada", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 230}},
+  {"model": "context_api.Context", "pk": 1189, "fields": {"attribute": "nomeabrev", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 230}},
+  {"model": "context_api.Context", "pk": 1190, "fields": {"attribute": "codigofunai", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 230}},
+  {"model": "context_api.Context", "pk": 1191, "fields": {"attribute": "terraindigena", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 230}},
+  {"model": "context_api.Context", "pk": 1192, "fields": {"attribute": "etnia", "means": "http://schema.org/Thing", "type": "http://schema.org/Text", "classname": 230}},
+  {"model": "context_api.Context", "pk": 1177, "fields": {"attribute": "geom", "means": "http://schema.org/geo", "type": "http://schema.org/GeoCoordinates", "classname": 230}}
 ]

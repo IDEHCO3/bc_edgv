@@ -731,5 +731,14 @@
   {"model": "hydra.SupportedProperty", "pk": 1184, "fields": {"property": "long_decimal", "required": true, "readable": true, "writeable": true, "hydra_class": 228}},
   {"model": "hydra.SupportedProperty", "pk": 1185, "fields": {"property": "lat_decimal", "required": true, "readable": true, "writeable": true, "hydra_class": 228}},
   {"model": "hydra.SupportedProperty", "pk": 1186, "fields": {"property": "sistema_geodesico", "required": true, "readable": true, "writeable": true, "hydra_class": 228}},
-  {"model": "hydra.SupportedProperty", "pk": 1187, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 228}}
+  {"model": "hydra.SupportedProperty", "pk": 1187, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 228}},
+
+
+  {"model": "hydra.SupportedProperty", "pk": 1197, "fields": {"property": "nome", "required": true, "readable": true, "writeable": true, "hydra_class": 230}},
+  {"model": "hydra.SupportedProperty", "pk": 1198, "fields": {"property": "nomeabrev", "required": true, "readable": true, "writeable": true, "hydra_class": 230}},
+  {"model": "hydra.SupportedProperty", "pk": 1199, "fields": {"property": "geometriaaproximada", "required": true, "readable": true, "writeable": true, "hydra_class": 230}},
+  {"model": "hydra.SupportedProperty", "pk": 1200, "fields": {"property": "codigofunai", "required": true, "readable": true, "writeable": true, "hydra_class": 230}},
+  {"model": "hydra.SupportedProperty", "pk": 1201, "fields": {"property": "terraindigena", "required": true, "readable": true, "writeable": true, "hydra_class": 230}},
+  {"model": "hydra.SupportedProperty", "pk": 1202, "fields": {"property": "etnia", "required": true, "readable": true, "writeable": true, "hydra_class": 230}},
+  {"model": "hydra.SupportedProperty", "pk": 1203, "fields": {"property": "geom", "required": true, "readable": true, "writeable": true, "hydra_class": 230}}
 ]
