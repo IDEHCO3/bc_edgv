@@ -65,7 +65,7 @@ class HydraReservedWords():
         self.method = self.HYDRA_PREFIX + self.CONNECTOR + "method"
         self.expects = self.HYDRA_PREFIX + self.CONNECTOR + "expects"
         self.returns = self.HYDRA_PREFIX + self.CONNECTOR + "returns"
-        self.possibleStatus = self.HYDRA_PREFIX + self.CONNECTOR + "possibleStatus"
+        self.possibleStatus = self.HYDRA_PREFIX + self.CONNECTOR + "statusCode"
 
         self.createResourceOperation = self.HYDRA_PREFIX + self.CONNECTOR + "CreateResourceOperation"
         self.replaceResourceOperation = self.HYDRA_PREFIX + self.CONNECTOR + "ReplaceResourceOperation"
