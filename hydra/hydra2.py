@@ -37,6 +37,7 @@ def getHydraVocab():
                 "@id": "rdfs:range",
                 "@type": "@id"
             },
+            "Operation": "hydra:Operation",
             "subClassOf": {
                 "@id": "rdfs:subClassOf",
                 "@type": "@id"
@@ -69,6 +70,7 @@ class HydraReservedWords():
         self.createResourceOperation = self.HYDRA_PREFIX + self.CONNECTOR + "CreateResourceOperation"
         self.replaceResourceOperation = self.HYDRA_PREFIX + self.CONNECTOR + "ReplaceResourceOperation"
         self.deleteResourceOperation = self.HYDRA_PREFIX + self.CONNECTOR + "DeleteResourceOperation"
+        self.resourceOperation = self.HYDRA_PREFIX + self.CONNECTOR + "Operation"
 
         self.Class = self.HYDRA_PREFIX + self.CONNECTOR + "Class"
         self.description = self.HYDRA_PREFIX + self.CONNECTOR + "description"
@@ -188,7 +190,7 @@ class HydraMethodSerializer:
     def addCustomOperation(self, id="", type="", title="Default", httpMethod="GET", expects="", returns="", possible_status=[]):
         method = {
             #"@id": id,
-            "@type": type,
+            "@type": self.h.resourceOperation,
             self.h.title: title,
             self.h.method: httpMethod,
             self.h.expects: expects,
