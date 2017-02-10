@@ -917,6 +917,8 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
+        self.iri_metadata = object_model.iri_metadata
+
         if attributes_functions_str is None:
             serializer = self.serializer_class(object_model)
             output = (serializer.data, 'application/vnd.geo+json', object_model)
@@ -957,6 +959,7 @@ class HandleFunctionDetail(APIViewHypermedia):
 
     def __init__(self):
         super(HandleFunctionDetail, self).__init__()
+        self.iri_metadata = None
         if hasattr(self, 'contextclassname'):
             self.base_context = BaseContext(self.contextclassname)
 
@@ -1001,11 +1004,21 @@ class HandleFunctionDetail(APIViewHypermedia):
             response['Link'] += "," + link
         return response
 
+    def add_metadata_url_in_header(self, metadata_url, response):
+        link = ' <'+metadata_url+'>; rel=\"metadata\" '
+        if "Link" not in response:
+            response['Link'] = link
+        else:
+            response['Link'] += "," + link
+        return response
+
     def get(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
         res = self.add_parent_url_in_header(parent_url, res)
+        if self.iri_metadata is not None:
+            res = self.add_metadata_url_in_header(self.iri_metadata, res)
         return self.base_context.addContext(request, res)
 
     def options(self, request, *args, **kwargs):
@@ -1013,4 +1026,6 @@ class HandleFunctionDetail(APIViewHypermedia):
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
         response = self.add_parent_url_in_header(parent_url, response)
+        if self.iri_metadata is not None:
+            response = self.add_metadata_url_in_header(self.iri_metadata, response)
         return response

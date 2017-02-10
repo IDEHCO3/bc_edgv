@@ -25,6 +25,7 @@ class EdifPubMilitar(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'adm_edif_pub_militar_a'
@@ -43,6 +44,7 @@ class AdmEdifPubMilitarP(models.Model): #precisa juntar as tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'adm_edif_pub_militar_p'
@@ -59,6 +61,7 @@ class PostoFiscal(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'adm_posto_fiscal_p'
@@ -77,6 +80,7 @@ class EdifAgropecExtVegetalPesca(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'eco_edif_agropec_ext_vegetal_pesca_p'
@@ -95,6 +99,7 @@ class EdifIndustrial(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'eco_edif_industrial_p'
@@ -117,6 +122,7 @@ class ExtMineral(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'eco_ext_mineral_a'
@@ -139,6 +145,7 @@ class EcoExtMineralP(models.Model):  #precisa juntar as tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'eco_ext_mineral_p'
@@ -158,6 +165,7 @@ class EdifReligiosa(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'edu_edif_religiosa_p'
@@ -168,6 +176,7 @@ class Employee(models.Model):
     name = models.CharField(max_length=30, blank=True, null=True)
     hire_date = models.DateField(blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'employee'
@@ -188,6 +197,7 @@ class EstGeradEnergiaEletrica(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'enc_est_gerad_energia_eletrica_p'
@@ -206,6 +216,7 @@ class Hidreletrica(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'enc_hidreletrica_p'
@@ -227,6 +238,7 @@ class Termeletrica(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'enc_termeletrica_p'
@@ -246,6 +258,7 @@ class TorreEnergia(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'enc_torre_energia_p'
@@ -262,6 +275,7 @@ class BancoAreia(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_banco_areia_a'
@@ -279,6 +293,7 @@ class Barragem(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_barragem_l'
@@ -292,6 +307,7 @@ class Corredeira(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_corredeira_l'
@@ -305,6 +321,7 @@ class HidCorredeiraP(models.Model): #precisa juntar as tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_corredeira_p'
@@ -318,6 +335,7 @@ class FozMaritima(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_foz_maritima_l'
@@ -332,6 +350,7 @@ class Ilha(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_ilha_a'
@@ -348,6 +367,7 @@ class MassaDagua(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_massa_dagua_a'
@@ -363,6 +383,7 @@ class QuedaDagua(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_queda_dagua_l'
@@ -378,6 +399,7 @@ class HidQuedaDaguaP(models.Model): #precisa juntar tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_queda_dagua_p'
@@ -394,6 +416,7 @@ class Recife(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_recife_a'
@@ -410,6 +433,7 @@ class HidRecifeP(models.Model): #precisa juntar tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_recife_p'
@@ -425,6 +449,7 @@ class RochaEmAgua(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_rocha_em_agua_a'
@@ -440,6 +465,7 @@ class HidRochaEmAguaP(models.Model): #precisa juntar tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_rocha_em_agua_p'
@@ -455,6 +481,7 @@ class SumidouroVertedouro(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_sumidouro_vertedouro_p'
@@ -469,6 +496,7 @@ class TerrenoSujeitoInundacao(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_terreno_sujeito_inundacao_a'
@@ -492,6 +520,7 @@ class TrechoDrenagem(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_trecho_drenagem_l'
@@ -508,6 +537,7 @@ class TrechoMassaDagua(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'hid_trecho_massa_dagua_a'
@@ -522,6 +552,7 @@ class AreaDesenvolvimentoControle(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_area_desenvolvimento_controle_a'
@@ -544,6 +575,7 @@ class MarcoDeLimite(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_marco_de_limite_p'
@@ -559,6 +591,7 @@ class Municipio(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_municipio_a'
@@ -578,6 +611,7 @@ class OutrasUnidProtegidas(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_outras_unid_protegidas_a'
@@ -595,6 +629,7 @@ class OutrosLimitesOficiais(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_outros_limites_oficiais_l'
@@ -610,6 +645,7 @@ class Pais(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_pais_a'
@@ -630,6 +666,7 @@ class TerraIndigena(models.Model):
     codigofunai = models.IntegerField(blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_terra_indigena_a'
@@ -650,6 +687,7 @@ class LimTerraIndigenaP(models.Model): #precisa juntar as tabelas
     codigofunai = models.IntegerField(blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_terra_indigena_p'
@@ -669,6 +707,7 @@ class UnidadeConservacaoNaoSnuc(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_unidade_conservacao_nao_snuc_a'
@@ -684,6 +723,8 @@ class UnidadeFederacao(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_unidade_federacao_a'
@@ -703,6 +744,7 @@ class UnidadeProtecaoIntegral(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_unidade_protecao_integral_a'
@@ -722,6 +764,7 @@ class UnidadeUsoSustentavel(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'lim_unidade_uso_sustentavel_a'
@@ -735,6 +778,7 @@ class AglomeradoRuralDeExtensaoUrbana(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_aglomerado_rural_de_extensao_urbana_p'
@@ -749,6 +793,7 @@ class AglomeradoRuralIsolado(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_aglomerado_rural_isolado_p'
@@ -765,6 +810,7 @@ class AldeiaIndigena(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_aldeia_indigena_p'
@@ -779,6 +825,7 @@ class AreaEdificada(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_area_edificada_a'
@@ -793,6 +840,7 @@ class Capital(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_capital_p'
@@ -806,6 +854,7 @@ class Cidade(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_cidade_p'
@@ -819,6 +868,7 @@ class Vila(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'loc_vila_p'
@@ -829,6 +879,7 @@ class Orderpart(models.Model):
     part_id = models.IntegerField(blank=True, null=True)
     quantity = models.IntegerField(blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'orderpart'
@@ -841,6 +892,7 @@ class Part(models.Model):
     weight = models.FloatField(blank=True, null=True)
     employee_id = models.IntegerField(blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'part'
@@ -852,6 +904,7 @@ class CurvaBatimetrica(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_curva_batimetrica_l'
@@ -866,6 +919,7 @@ class CurvaNivel(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_curva_nivel_l'
@@ -880,6 +934,7 @@ class Duna(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_duna_a'
@@ -894,6 +949,7 @@ class ElementoFisiograficoNatural(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_elemento_fisiografico_natural_l'
@@ -908,6 +964,7 @@ class RelElementoFisiograficoNaturalP(models.Model): #precisa juntar as tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_elemento_fisiografico_natural_p'
@@ -921,6 +978,7 @@ class Pico(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_pico_p'
@@ -934,6 +992,7 @@ class PontoCotadoAltimetrico(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_ponto_cotado_altimetrico_p'
@@ -945,6 +1004,7 @@ class PontoCotadoBatimetrico(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'rel_ponto_cotado_batimetrico_p'
@@ -958,6 +1018,7 @@ class Salesorder(models.Model):
     ship_date = models.DateField(blank=True, null=True)
     payment = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'salesorder'
@@ -969,6 +1030,7 @@ class Salesorder1(models.Model):
     employee_oid = models.TextField(blank=True, null=True)  # This field type is a guess.
     part_oid = models.TextField(blank=True, null=True)  # This field type is a guess.
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'salesorder1'
@@ -1007,6 +1069,7 @@ class TLogradouro(models.Model):
     cod_indicador_finalidade_const = models.CharField(max_length=1, blank=True, null=True)
     cod_indicador_const_endereco2 = models.CharField(max_length=1, blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 't_logradouro'
@@ -1027,6 +1090,7 @@ class Eclusa(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_eclusa_l'
@@ -1045,6 +1109,7 @@ class EdifConstPortuaria(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_edif_const_portuaria_p'
@@ -1063,6 +1128,7 @@ class EdifConstrAeroportuaria(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_edif_constr_aeroportuaria_p'
@@ -1082,6 +1148,7 @@ class EdifMetroFerroviaria(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_edif_metro_ferroviaria_p'
@@ -1097,6 +1164,7 @@ class Fundeadouro(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_fundeadouro_p'
@@ -1118,6 +1186,7 @@ class PistaPontoPouso(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_pista_ponto_pouso_p'
@@ -1144,6 +1213,7 @@ class Ponte(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_ponte_l'
@@ -1160,6 +1230,7 @@ class Sinalizacao(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_sinalizacao_p'
@@ -1174,6 +1245,7 @@ class Travessia(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_travessia_l'
@@ -1188,6 +1260,7 @@ class TraTravessiaP(models.Model): #precisa juntar as tabelas
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_travessia_p'
@@ -1210,6 +1283,7 @@ class TrechoDuto(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_trecho_duto_l'
@@ -1236,6 +1310,7 @@ class TrechoFerroviario(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_trecho_ferroviario_l'
@@ -1254,6 +1329,7 @@ class TrechoHidroviario(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_trecho_hidroviario_l'
@@ -1277,6 +1353,7 @@ class TrechoRodoviario(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_trecho_rodoviario_l'
@@ -1301,6 +1378,7 @@ class Tunel(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'tra_tunel_l'
@@ -1309,6 +1387,7 @@ class Tunel(models.Model):
 class VDescricao(models.Model):
     description = models.TextField(blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'v_descricao'
@@ -1327,6 +1406,7 @@ class BrejoPantano(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'veg_brejo_pantano_a'
@@ -1344,6 +1424,7 @@ class Mangue(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'veg_mangue_a'
@@ -1361,6 +1442,7 @@ class VegRestinga(models.Model):
     geom = models.GeometryField(srid=4326, blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'veg_veg_restinga_a'
@@ -1370,6 +1452,7 @@ class Vegetable(models.Model):
     animal_id = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=20, blank=True, null=True)
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'vegetable'
@@ -1383,6 +1466,7 @@ class PontosExibicaoWgs84(models.Model):
     geom = models.PointField(blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'pontos_exibicao_wgs84'
@@ -1399,6 +1483,7 @@ class BlocoR9(models.Model):
     geom = models.MultiPolygonField(blank=True, null=True)
     objects = models.GeoManager()
 
+    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'bloco_r9'
