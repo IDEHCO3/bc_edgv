@@ -917,8 +917,6 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
-        self.iri_metadata = object_model.iri_metadata
-
         if attributes_functions_str is None:
             serializer = self.serializer_class(object_model)
             output = (serializer.data, 'application/vnd.geo+json', object_model)
@@ -960,8 +958,14 @@ class HandleFunctionDetail(APIViewHypermedia):
     def __init__(self):
         super(HandleFunctionDetail, self).__init__()
         self.iri_metadata = None
+        self.iri_style = None
         if hasattr(self, 'contextclassname'):
             self.base_context = BaseContext(self.contextclassname)
+
+    def getLinks(self, kwargs):
+        object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))
+        self.iri_metadata = object_model.iri_metadata
+        self.iri_style = object_model.iri_style
 
     def setSerializer(self, kwargs):
         keyModel = 'model_class'
@@ -1006,18 +1010,24 @@ class HandleFunctionDetail(APIViewHypermedia):
 
     def get(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
+        self.getLinks(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
         res = self.add_url_in_header(parent_url, res, "parent")
         if self.iri_metadata is not None:
             res = self.add_url_in_header(self.iri_metadata, res, "metadata")
+        if self.iri_style is not None:
+            res = self.add_url_in_header(self.iri_style, res, "style")
         return self.base_context.addContext(request, res)
 
     def options(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
+        self.getLinks(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
         response = self.add_url_in_header(parent_url, response, "parent")
         if self.iri_metadata is not None:
             response = self.add_url_in_header(self.iri_metadata, response, "metadata")
+        if self.iri_style is not None:
+            response = self.add_url_in_header(self.iri_style, response, "style")
         return response
