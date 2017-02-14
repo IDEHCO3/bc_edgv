@@ -5,19 +5,12 @@ import re
 import requests
 import random
 from django.contrib.gis.gdal.geometries import Point, Polygon, OGRGeometry
-from django.contrib.gis.geos import GEOSGeometry
-from django.contrib.gis.db import models
+from django.contrib.gis.gdal import SpatialReference
 from django.contrib.gis.geos.prepared import PreparedGeometry
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.utils import six
 from requests.exceptions import HTTPError, ConnectionError
-from rest_framework import generics
-from rest_framework.renderers import JSONRenderer
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import permissions
-from rest_framework import status
 
 from rest_framework.negotiation import BaseContentNegotiation
 
@@ -28,10 +21,6 @@ from context_api.views import *
 from image_generator.img_generator import BuilderPNG
 
 from serializers import serializers_dict
-
-from rest_framework.compat import (
-    INDENT_SEPARATORS, LONG_SEPARATORS, SHORT_SEPARATORS
-)
 
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
     def select_parser(self, request, parsers):
@@ -323,7 +312,6 @@ class FeatureModel(models.Model):
             self.dic['coords'] = Type_Called('coords', None, tuple)
             self.dic['count'] = Type_Called('count', None, int)
             self.dic['crosses'] = Type_Called('crosses', [GEOSGeometry], bool)
-            from django.contrib.gis.gdal import SpatialReference
             self.dic['crs'] = Type_Called('crs', None, SpatialReference)
             self.dic['difference'] = Type_Called('difference', [GEOSGeometry], GEOSGeometry)
             self.dic['dims'] = Type_Called('dims', None, int)
@@ -500,7 +488,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
-        response = self.add_parent_url_in_header(parent_url, response)
+        response = self.add_url_in_header(parent_url, response, "parent")
         return response
 
     def generate_tmp_file(self, suffix='', length_name=10):
@@ -585,22 +573,15 @@ class HandleFunctionsList(generics.ListCreateAPIView):
 
     def get(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
-
         parent_url = self.get_parent_url(request, kwargs)
-
         response = super(HandleFunctionsList, self).get(request, *args, **kwargs)
-
         accept = request.META['HTTP_ACCEPT']
 
         if accept.lower() == "image/png" or kwargs.get('format', None) == 'png':
             image = self.get_png(self.queryset, request)
-            #headers = response._headers
             response = HttpResponse(image, content_type="image/png")
-            #headers.update(response._headers)
-            #response._headers = headers
 
         response = self.add_url_in_header(parent_url, response, "parent")
-
         return self.base_context.addContext(request, response)
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):
@@ -870,10 +851,14 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
 
         a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])
 
-        if isinstance(a_value, GEOSGeometry):
+        if isinstance(a_value, GEOSGeometry) or isinstance(a_value, OGRGeometry):
             geom = a_value
             a_value = json.loads(a_value.geojson)
             return (a_value, 'application/vnd.geo+json', geom)
+        elif isinstance(a_value, SpatialReference):
+            a_value = {
+                self.function_name(att_funcs): a_value.wkt
+            }
         else:
             a_value = {
                 self.function_name(att_funcs): a_value
