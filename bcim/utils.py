@@ -575,8 +575,8 @@ class HandleFunctionsList(generics.ListCreateAPIView):
 
         return parent_url
 
-    def add_parent_url_in_header(self, parent_url, response):
-        link = ' <'+parent_url+'>; rel=\"http://www.w3.org/MarkUp/Forms/wiki/Json\"; type=\"application/json\" '
+    def add_url_in_header(self, url, response, rel):
+        link = ' <'+url+'>; rel=\"'+rel+'\" '
         if "Link" not in response:
             response['Link'] = link
         else:
@@ -599,7 +599,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
             #headers.update(response._headers)
             #response._headers = headers
 
-        response = self.add_parent_url_in_header(parent_url, response)
+        response = self.add_url_in_header(parent_url, response, "parent")
 
         return self.base_context.addContext(request, response)
 
@@ -996,16 +996,8 @@ class HandleFunctionDetail(APIViewHypermedia):
 
         return parent_url
 
-    def add_parent_url_in_header(self, parent_url, response):
-        link = ' <'+parent_url+'>; rel=\"http://www.w3.org/MarkUp/Forms/wiki/Json\"; type=\"application/json\" '
-        if "Link" not in response:
-            response['Link'] = link
-        else:
-            response['Link'] += "," + link
-        return response
-
-    def add_metadata_url_in_header(self, metadata_url, response):
-        link = ' <'+metadata_url+'>; rel=\"metadata\" '
+    def add_url_in_header(self, url, response, rel):
+        link = ' <'+url+'>; rel=\"'+rel+'\" '
         if "Link" not in response:
             response['Link'] = link
         else:
@@ -1016,16 +1008,16 @@ class HandleFunctionDetail(APIViewHypermedia):
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
-        res = self.add_parent_url_in_header(parent_url, res)
+        res = self.add_url_in_header(parent_url, res, "parent")
         if self.iri_metadata is not None:
-            res = self.add_metadata_url_in_header(self.iri_metadata, res)
+            res = self.add_url_in_header(self.iri_metadata, res, "metadata")
         return self.base_context.addContext(request, res)
 
     def options(self, request, *args, **kwargs):
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
-        response = self.add_parent_url_in_header(parent_url, response)
+        response = self.add_url_in_header(parent_url, response, "parent")
         if self.iri_metadata is not None:
-            response = self.add_metadata_url_in_header(self.iri_metadata, response)
+            response = self.add_url_in_header(self.iri_metadata, response, "metadata")
         return response
