@@ -352,7 +352,7 @@ class FeatureModel(models.Model):
             self.dic['overlaps'] = Type_Called('overlaps',[GEOSGeometry],  bool)
             self.dic['point_on_surface'] = Type_Called('point_on_surface',None,  Point)
             self.dic['pop'] = Type_Called('pop',None,  tuple)
-            self.dic['prepared'] = Type_Called('prepared',None,  PreparedGeometry)
+            #self.dic['prepared'] = Type_Called('prepared',None,  PreparedGeometry)
             self.dic['relate'] = Type_Called('relate',[GEOSGeometry],  str)
             self.dic['relate_pattern'] = Type_Called('relate_pattern',[GEOSGeometry, str],  str)
             self.dic['ring'] = Type_Called('ring',None,  bool)
@@ -434,7 +434,7 @@ def geometry_with_parameters_type():
     dic['overlaps'] = [GEOSGeometry]
     dic['point_on_surface'] = []
     dic['pop'] = []
-    dic['prepared'] = []
+    #dic['prepared'] = []
     dic['ptr'] = []
     dic['ptr_type'] = []
     dic['relate'] = [GEOSGeometry]

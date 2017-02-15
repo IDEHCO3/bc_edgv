@@ -279,7 +279,7 @@
   {"model": "hydra.SupportedOperation", "pk": 50, "fields": {"identifier": "", "type": "Operation", "title": "pop", "method": "GET", "expects": null, "returns": 44, "possible_status": "", "hydra_class": 1}},
 
 
-  {"model": "hydra.SupportedOperation", "pk": 51, "fields": {"identifier": "", "type": "Operation", "title": "prepared", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
+  //{"model": "hydra.SupportedOperation", "pk": 51, "fields": {"identifier": "", "type": "Operation", "title": "prepared", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
 
 
   {"model": "context_api.Class", "pk": 45, "fields": {"name": "relate", "spatial": null}},
