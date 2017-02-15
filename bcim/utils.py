@@ -488,7 +488,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
-        response = self.add_url_in_header(parent_url, response, "parent")
+        response = self.add_url_in_header(parent_url, response, "up")
         return response
 
     def generate_tmp_file(self, suffix='', length_name=10):
@@ -581,7 +581,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
             image = self.get_png(self.queryset, request)
             response = HttpResponse(image, content_type="image/png")
 
-        response = self.add_url_in_header(parent_url, response, "parent")
+        response = self.add_url_in_header(parent_url, response, "up")
         return self.base_context.addContext(request, response)
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):
@@ -998,7 +998,7 @@ class HandleFunctionDetail(APIViewHypermedia):
         self.getLinks(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         res = super(HandleFunctionDetail, self).get(request, *args, **kwargs)
-        res = self.add_url_in_header(parent_url, res, "parent")
+        res = self.add_url_in_header(parent_url, res, "up")
         if self.iri_metadata is not None:
             res = self.add_url_in_header(self.iri_metadata, res, "metadata")
         if self.iri_style is not None:
@@ -1010,7 +1010,7 @@ class HandleFunctionDetail(APIViewHypermedia):
         self.getLinks(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = self.base_context.options(request)
-        response = self.add_url_in_header(parent_url, response, "parent")
+        response = self.add_url_in_header(parent_url, response, "up")
         if self.iri_metadata is not None:
             response = self.add_url_in_header(self.iri_metadata, response, "metadata")
         if self.iri_style is not None:
