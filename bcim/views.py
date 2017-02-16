@@ -136,6 +136,8 @@ class UnidadeFederacaoList(HandleFunctionsList):
     queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
     contextclassname = 'unidades-federativas'
+    iri_metadata = 'http://www.metadados.geo.ibge.gov.br/geonetwork_ibge/srv/por/csw?request=GetRecordById&service=CSW&version=2.0.2&elementSetName=full&id=ff2d4215-9843-4137-bad9-c15f2a8caa9e'
+    iri_style = 'http://styles.idehco4.tk/styles/unidade_federacao.sld'
 
     def get_queryset(self):
 
@@ -158,6 +160,8 @@ class MunicipioList(HandleFunctionsList):
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
     contextclassname = 'municipios'
+    iri_metadata = 'http://www.metadados.geo.ibge.gov.br/geonetwork_ibge/srv/por/csw?request=GetRecordById&service=CSW&version=2.0.2&elementSetName=full&id=3cd8176c-2f59-4eab-8232-3da978d0ecf3'
+    iri_style = 'http://styles.idehco4.tk/styles/municipio.sld'
 
     class Meta:
         managed = False
