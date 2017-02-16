@@ -100,17 +100,29 @@ class APIRoot(APIView):
         super(APIRoot, self).__init__()
         self.base_context = BaseContext('api-root')
 
+    def add_url_in_header(self, url, response, rel):
+        link = ' <'+url+'>; rel=\"'+rel+'\" '
+        if "Link" not in response:
+            response['Link'] = link
+        else:
+            response['Link'] += "," + link
+        return response
+
     def options(self, request, *args, **kwargs):
         context = self.base_context.getContextData(request)
         root_links = get_root_response(request)
         context.update(root_links)
         response = Response(context, status=status.HTTP_200_OK, content_type="application/ld+json")
+        entry_pointURL = reverse('bcim_v1:api_root', request=request)
+        response = self.add_url_in_header(entry_pointURL, response, 'http://schema.org/EntryPoint')
         response = self.base_context.addContext(request, response)
         return response
 
     def get(self, request, *args, **kwargs):
         root_links = get_root_response(request)
         response = Response(root_links)
+        entry_pointURL = reverse('bcim_v1:api_root', request=request)
+        response = self.add_url_in_header(entry_pointURL, response, 'http://schema.org/EntryPoint')
         return self.base_context.addContext(request, response)
 
 
