@@ -57,6 +57,9 @@ ROOT_URLCONF = 'bc_edgv.urls'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
+CORS_EXPOSE_HEADERS = (
+    'link',
+)
 
 TEMPLATES = [
     {
