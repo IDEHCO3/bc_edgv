@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
+    url(r'^municipios/(?P<id_objeto>[0-9]*)/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/(?P<attributes_functions>.*)/$', views.MunicipioDetail.as_view(), name='municipios_si'),
     url(r'^municipios/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.MunicipioList.as_view(), name='municipio_list_functions'),
 

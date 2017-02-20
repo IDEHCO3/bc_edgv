@@ -795,12 +795,16 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         return self.parametersConverted(parameters)
 
     def _value_from_object(self, object, attribute_or_function_name, parameters):
+        obj = getattr(object, attribute_or_function_name)
 
         if len(parameters):
             params = self.all_parameters_converted(attribute_or_function_name, parameters)
-            return getattr(object, attribute_or_function_name)(*params)
+            return obj(*params)
 
-        return getattr(object, attribute_or_function_name)
+        if callable(obj):
+            return obj()
+
+        return obj
 
     def response_resquest_with_attributes(self, object_model, attributes_functions_name):
         a_dict ={}
