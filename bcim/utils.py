@@ -497,7 +497,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         if self.iri_metadata is not None:
             response = self.add_url_in_header(self.iri_metadata, response, "metadata")
         if self.iri_style is not None:
-            response = self.add_url_in_header(self.iri_style, response, "style")
+            response = self.add_url_in_header(self.iri_style, response, "stylesheet")
         return response
 
     def generate_tmp_file(self, suffix='', length_name=10):
@@ -594,7 +594,7 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         if self.iri_metadata is not None:
             response = self.add_url_in_header(self.iri_metadata, response, "metadata")
         if self.iri_style is not None:
-            response = self.add_url_in_header(self.iri_style, response, "style")
+            response = self.add_url_in_header(self.iri_style, response, "stylesheet")
         return self.base_context.addContext(request, response)
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):
@@ -1019,7 +1019,7 @@ class HandleFunctionDetail(APIViewHypermedia):
         if self.iri_metadata is not None:
             res = self.add_url_in_header(self.iri_metadata, res, "metadata")
         if self.iri_style is not None:
-            res = self.add_url_in_header(self.iri_style, res, "style")
+            res = self.add_url_in_header(self.iri_style, res, "stylesheet")
         return self.base_context.addContext(request, res)
 
     def options(self, request, *args, **kwargs):
@@ -1031,5 +1031,5 @@ class HandleFunctionDetail(APIViewHypermedia):
         if self.iri_metadata is not None:
             response = self.add_url_in_header(self.iri_metadata, response, "metadata")
         if self.iri_style is not None:
-            response = self.add_url_in_header(self.iri_style, response, "style")
+            response = self.add_url_in_header(self.iri_style, response, "stylesheet")
         return response
