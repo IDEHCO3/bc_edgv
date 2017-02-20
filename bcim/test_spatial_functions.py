@@ -49,19 +49,19 @@ class EDGVDetailTestCase(SimpleTestCase):
 class UnidadeFederacaoDetailSpatialQueryTestCase(EDGVDetailTestCase):
     #testa se uma feature(multipoligon) contém um ponto dado em WKT
     def test_uf_sigla_contains_point(self):
-        an_url = self.host_base + '/ibge/bcim/estados/RJ/contains/POINT(-42 -21)/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/RJ/contains/POINT(-42 -21)/'
         req = requests.get(an_url)
         is_true = req.json().values().__iter__().__next__()== True
         self.assertTrue(is_true)
     #testa se uma feature(multipolygon) contém um ponto dado em geojson
     def test_uf_sigla_contains_point_as_geojson(self):
-        an_url = self.host_base + '/ibge/bcim/estados/RJ/contains/{ "type": "Point", "coordinates": [ -42, -21]}/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/RJ/contains/{ "type": "Point", "coordinates": [ -42, -21]}/'
         req = requests.get(an_url)
         is_true = req.json().values().__iter__().__next__()== True
         self.assertTrue(is_true)
 
     def test_uf_sigla_transform_area(self):
-        an_url = self.host_base + '/ibge/bcim/estados/RJ/transform/3857&True/area'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/RJ/transform/3857&True/area'
         req = requests.get(an_url)
         is_true = isinstance(req.json().values().__iter__().__next__(), float)
         self.assertTrue(is_true)
@@ -69,45 +69,45 @@ class UnidadeFederacaoDetailSpatialQueryTestCase(EDGVDetailTestCase):
     #testa se a boundary de uma feature(multipolygon) responde multilinestring
     #testa se a boundary de uma feature(polygon) responde linestring
     def test_uf_sigla_boundery(self):
-        an_url = self.host_base +  '/ibge/bcim/estados/RJ/boundary/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/RJ/boundary/'
         req = requests.get(an_url)
         self.assertEquals(req.json()['type'], self.multilineString)
-        an_url = self.host_base + '/ibge/bcim/estados/MG/boundary/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/MG/boundary/'
         req = requests.get(an_url)
         self.assertEquals(req.json()['type'], self.lineString)
 
     #testa se o envelope de uma feature(polygon) responde um polygon
     def test_uf_sigla_envelope(self):
-        an_url = self.host_base +  '/ibge/bcim/estados/MG/envelope/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/MG/envelope/'
         req = requests.get(an_url)
         self.assertEquals(req.json()['type'], self.polygonString)
 
     #testa o centroid de uma feature(polygon)
     #primeiro obtém o centroid no formato geojson
     def test_uf_sigla_centroid(self):
-        an_url = self.host_base +  '/ibge/bcim/estados/MG/centroid/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/MG/centroid/'
         req = requests.get(an_url)
         self.assertEquals(req.json()['type'], self.pointString)
-        an_url = self.host_base +  '/ibge/bcim/estados/MG/contains/' + self.host_base + '/ibge/bcim/estados/MG/centroid/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/MG/contains/' + self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/MG/centroid/'
         req = requests.get(an_url)
         self.assertTrue(req.json().values().__iter__().__next__()== True)
 
 class AldeiaIndigenaDetailTestCase(EDGVDetailTestCase):
     #testa se a url requisitada responde uma feature
     def test_adeia_indigena(self):
-        an_url = self.host_base + '/ibge/bcim/aldeias-indigenas/587'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/aldeias-indigenas/587'
         req = requests.get(an_url)
         self.assertEquals(req.json()['type'], self.featureString)
 
     #testa se o evenvolpe de um ponto responde um ponto
     def test_adeia_indigena_envelope(self):
-        an_url = self.host_base + '/ibge/bcim/aldeias-indigenas/587/envelope/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/aldeias-indigenas/587/envelope/'
         req = requests.get(an_url)
         self.assertEquals(req.json()['type'], self.pointString)
 
     # testa se um ponto está dentro de um envelope criado a partir de uma url
     def test_adeia_indigena_within_envelope_by_url(self):
-        an_url = self.host_base + '/ibge/bcim/aldeias-indigenas/587/within/' + self.host_base + '/ibge/bcim/estados/ES/envelope/'
+        an_url = self.host_base + '/instituicoes/ibge/bcim/aldeias-indigenas/587/within/' + self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/ES/envelope/'
         req = requests.get(an_url)
         self.assertTrue(req.json().values().__iter__().__next__()== True)
 
@@ -115,7 +115,7 @@ class AldeiaIndigenaDetailTestCase(EDGVDetailTestCase):
 class TrechoFerroviarioDetailTestCase(EDGVDetailTestCase):
     #usado no test_feature para verificar se a url requisitada responde uma feature
     def url_feature(self):
-        return '/ibge/bcim/trechos-ferroviarios/12711/'
+        return '/instituicoes/ibge/bcim/trechos-ferroviarios/12711/'
 
 """
 class UnidadeFederacaoListSpatialQueryTestCase(SimpleTestCase):
