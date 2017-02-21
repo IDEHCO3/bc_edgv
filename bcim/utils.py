@@ -303,7 +303,7 @@ class FeatureModel(models.Model):
 
         if len(self.dic) == 0:
             self.dic['area'] = Type_Called('area', None, float)
-            self.dic['boundary'] = Type_Called('boundary', None, float)
+            self.dic['boundary'] = Type_Called('boundary', None, GEOSGeometry)
             self.dic['buffer'] = Type_Called('buffer', [float], GEOSGeometry)
             self.dic['centroid'] = Type_Called('centroid', None, Point)
             self.dic['contains'] = Type_Called('contains', [GEOSGeometry], bool)

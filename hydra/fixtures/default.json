@@ -11,7 +11,7 @@
 
 
   {"model": "context_api.Class", "pk": 3, "fields": {"name": "boundary", "spatial": null}},
-  {"model": "context_api.Context", "pk": 3, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/Float", "classname": 3}},
+  {"model": "context_api.Context", "pk": 3, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/geo", "classname": 3}},
   {"model": "hydra.SupportedProperty", "pk": 4, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 3}},
   {"model": "hydra.SupportedOperation", "pk": 2, "fields": {"identifier": "", "type": "Operation", "title": "boundary", "method": "GET", "expects": null, "returns": 3, "possible_status": "", "hydra_class": 1}},
 
@@ -277,9 +277,6 @@
   {"model": "context_api.Context", "pk": 45, "fields": {"attribute": "r1", "means": "", "type": "http://schema.org/ItemList", "classname": 44}},
   {"model": "hydra.SupportedProperty", "pk": 46, "fields": {"property": "r1", "required": false, "readable": true, "writeable": false, "hydra_class": 44}},
   {"model": "hydra.SupportedOperation", "pk": 50, "fields": {"identifier": "", "type": "Operation", "title": "pop", "method": "GET", "expects": null, "returns": 44, "possible_status": "", "hydra_class": 1}},
-
-
-  //{"model": "hydra.SupportedOperation", "pk": 51, "fields": {"identifier": "", "type": "Operation", "title": "prepared", "method": "GET", "expects": null, "returns": 1, "possible_status": "", "hydra_class": 1}},
 
 
   {"model": "context_api.Class", "pk": 45, "fields": {"name": "relate", "spatial": null}},
