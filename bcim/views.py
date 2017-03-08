@@ -131,6 +131,11 @@ class UnidadeFederacaoDetail(HandleFunctionDetail):
     serializer_class = UnidadeFederacaoSerializer
     contextclassname = 'unidades-federativas'
 
+    def get(self, request, *args, **kwargs):
+        if kwargs.get('sigla') is not None:
+            kwargs['sigla'] = kwargs.get('sigla').upper()
+        return super(UnidadeFederacaoDetail, self).get(request, *args, **kwargs)
+
 class UnidadeFederacaoList(HandleFunctionsList):
 
     queryset = UnidadeFederacao.objects.all()
