@@ -962,7 +962,7 @@ class HandleFunctionDetail(APIViewHypermedia):
         self.iri_metadata = None
         self.iri_style = None
         if hasattr(self, 'contextclassname'):
-            self.base_context = BaseContext(self.contextclassname)
+            self.base_context = BaseContext(self.contextclassname, serializer_object=self.serializer_class)
 
     def getLinks(self, kwargs):
         object_model = self.get_object(self.dic_with_only_identitier_field(kwargs))

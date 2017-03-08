@@ -136,6 +136,11 @@ class UnidadeFederacaoDetail(HandleFunctionDetail):
             kwargs['sigla'] = kwargs.get('sigla').upper()
         return super(UnidadeFederacaoDetail, self).get(request, *args, **kwargs)
 
+    def options(self, request, *args, **kwargs):
+        if kwargs.get('sigla') is not None:
+            kwargs['sigla'] = kwargs.get('sigla').upper()
+        return super(UnidadeFederacaoDetail, self).options(request, *args, **kwargs)
+
 class UnidadeFederacaoList(HandleFunctionsList):
 
     queryset = UnidadeFederacao.objects.all()

@@ -39,7 +39,8 @@ class ContextView(APIView):
 
 class BaseContext(object):
 
-    def __init__(self, contextclassname):
+    def __init__(self, contextclassname, serializer_object=None):
+        self.serializer_object = serializer_object
         self.contextclassname = contextclassname
 
     def options(self, request):
@@ -69,6 +70,34 @@ class BaseContext(object):
         serializerHydra = HydraSerializer(classobject, request)
         return serializerHydra.data
 
+    def addIriTamplate(self, context, request, serializer_object):
+        url = request.build_absolute_uri()
+        iriTemplate = {
+            "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+            "@type": "IriTemplate",
+            "template": url if url[-1] != '/' else url[:-1] +"{/attribute}",
+            "variableRepresentation": "BasicRepresentation",
+            "mapping": []
+        }
+        if serializer_object is not None:
+            for attr in serializer_object.Meta.fields:
+                iriTemplate['mapping'].append({
+                    "@type": "IriTemplateMapping",
+                    "variable": "attribute",
+                    "property": attr,
+                    "required": True
+                })
+        else:
+            iriTemplate['mapping'].append({
+                "@type": "IriTemplateMapping",
+                "variable": "attribute",
+                "property": "hydra:supportedProperties",
+                "required": True
+            })
+
+        context['iriTemplate'] = iriTemplate
+        return context
+
     def getContextData(self, request):
         try:
             classobject = Class.objects.get(name=self.contextclassname)
@@ -80,6 +109,7 @@ class BaseContext(object):
         if "@context" in hydradata:
             hydradata["@context"].update(contextdata["@context"])
         contextdata.update(hydradata)
+        contextdata = self.addIriTamplate(contextdata, request, self.serializer_object)
         return contextdata
 
 
