@@ -367,4 +367,4 @@ urlpatterns = [
 
 ]
 
-urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'png'])
+urlpatterns = format_suffix_patterns(urlpatterns, allowed=['json', 'png', 'jsonld'])

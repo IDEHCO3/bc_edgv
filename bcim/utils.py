@@ -581,6 +581,9 @@ class HandleFunctionsList(generics.ListCreateAPIView):
         return response
 
     def get(self, request, *args, **kwargs):
+        if kwargs.get('format') == 'jsonld':
+            return self.options(request, *args, **kwargs)
+
         self.setSerializer(kwargs)
         parent_url = self.get_parent_url(request, kwargs)
         response = super(HandleFunctionsList, self).get(request, *args, **kwargs)
@@ -1011,6 +1014,9 @@ class HandleFunctionDetail(APIViewHypermedia):
         return response
 
     def get(self, request, *args, **kwargs):
+        if kwargs.get('format') == 'jsonld':
+            return self.options(request, *args, **kwargs)
+
         self.setSerializer(kwargs)
         self.getLinks(kwargs)
         parent_url = self.get_parent_url(request, kwargs)

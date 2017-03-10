@@ -52,10 +52,13 @@ class BaseContext(object):
         return self.createLinkOfContext(request, response)
 
     def createLinkOfContext(self, request, response, properties=None):
-        if properties is None:
-            url = reverse('context:detail', args=[self.contextclassname], request=request)
-        else:
-            url = reverse('context:detail-property', args=[self.contextclassname, ",".join(properties)], request=request)
+        # if properties is None:
+        #     url = reverse('context:detail', args=[self.contextclassname], request=request)
+        # else:
+        #     url = reverse('context:detail-property', args=[self.contextclassname, ",".join(properties)], request=request)
+        url = request.build_absolute_uri()
+        url = url if url[-1] != '/' else url[:-1]
+        url = url + ".jsonld"
 
         context_link = ' <'+url+'>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\" '
         if "Link" not in response:
@@ -80,7 +83,7 @@ class BaseContext(object):
             "mapping": []
         }
         if serializer_object is not None:
-            for attr in serializer_object.Meta.fields:
+            for attr in serializer_object.Meta.identifiers:
                 iriTemplate['mapping'].append({
                     "@type": "IriTemplateMapping",
                     "variable": "attribute",
