@@ -4,6 +4,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework import status
 
+from bcim.contexts import UnidadeFederacaoContext
 from bcim.utils import *
 
 from rest_framework import permissions
@@ -13,6 +14,8 @@ from bcim.serializers import *
 
 
 from context_api.views import *
+from hyper_resource.views import *
+
 
 def get_root_response(request):
     format = None
@@ -84,7 +87,7 @@ def get_root_response(request):
         'trechos de massa dagua': reverse('bcim_v1:trecho_massa_dagua_list', request=request, format=format),
         'areas de desenvolvimento de controle': reverse('bcim_v1:area_desenvolvimento_controle_list', request=request, format=format),
         'marcos de limite': reverse('bcim_v1:marco_de_limite_list', request=request, format=format),
-        'pontos geodesicos': reverse('bcim_v1:ponto_exibicao_wgs84_list', request=request, format=format),
+        #'pontos geodesicos': reverse('bcim_v1:ponto_exibicao_wgs84_list', request=request, format=format),
     }
 
     for key in serializers_dict:
@@ -126,11 +129,15 @@ class APIRoot(APIView):
         return self.base_context.addContext(request, response)
 
 
-class UnidadeFederacaoDetail(HandleFunctionDetail):
+class UnidadeFederacaoDetail(FeatureResource):
 
     serializer_class = UnidadeFederacaoSerializer
     contextclassname = 'unidades-federativas'
 
+<<<<<<< HEAD
+    def initialize_context(self):
+        self.context_resource = UnidadeFederacaoContext()
+=======
     def get(self, request, *args, **kwargs):
         if kwargs.get('sigla') is not None:
             kwargs['sigla'] = kwargs.get('sigla').upper()
@@ -140,6 +147,7 @@ class UnidadeFederacaoDetail(HandleFunctionDetail):
         if kwargs.get('sigla') is not None:
             kwargs['sigla'] = kwargs.get('sigla').upper()
         return super(UnidadeFederacaoDetail, self).options(request, *args, **kwargs)
+>>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
 
 class UnidadeFederacaoList(HandleFunctionsList):
 
@@ -912,13 +920,3 @@ class MarcoDeLimiteDetail(HandleFunctionDetail):
     serializer_class = MarcoDeLimiteSerializer
     contextclassname = 'marcos-de-limite'
 
-class PontoExibicaoWgs84List(HandleFunctionsList):
-    
-    queryset = PontosExibicaoWgs84.objects.all()
-    serializer_class = PontosExibicaoWgs84Serializer
-    contextclassname = 'pontos-geodesicos'
-
-class PontosExibicaoWgs84Detail(HandleFunctionDetail):
-
-    serializer_class = PontosExibicaoWgs84Serializer
-    contextclassname = 'pontos-geodesicos'

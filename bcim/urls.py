@@ -3,16 +3,17 @@ from django.conf.urls import include,  url
 from rest_framework.urlpatterns import format_suffix_patterns
 from bcim import views
 
-
+print(views.UnidadeFederacaoDetail.contextclassname)
 urlpatterns = [
     url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
     #unidades federativas
 
-    url(r'^unidades-federativas/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
-    url(r'^unidades-federativas/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
-    url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
-    url(r'^unidades-federativas/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
+    url(r'^' + views.UnidadeFederacaoDetail.contextclassname + '/(?P<geocodigo>[0-9]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
+    url(r'^' + views.UnidadeFederacaoDetail.contextclassname + '/(?P<geocodigo>[0-9]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_geocodigo'),
+    url(r'^' + views.UnidadeFederacaoDetail.contextclassname + '/(?P<id_objeto>[0-9]*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_id_objeto'),
+    url(r'^' + views.UnidadeFederacaoDetail.contextclassname + '/(?P<sigla>[A-Za-z]{2})/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_sigla'),
+    url(r'^' + views.UnidadeFederacaoDetail.contextclassname + '/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
 
     url(r'^unidades-federativas/$', views.UnidadeFederacaoList.as_view(), name='uf_list'),
     url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoList.as_view(), name='uf_list_sigla_filtered'),
@@ -354,10 +355,6 @@ urlpatterns = [
     url(r'^marcos-de-limite/(?P<id_objeto>[0-9]*)/$', views.MarcoDeLimiteDetail.as_view(), name='marco_de_limite_detail_id_objeto'),
     url(r'^marcos-de-limite/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.MarcoDeLimiteDetail.as_view(), name='marco_de_limite_detail_af'),
 
-    url(r'^pontos-geodesicos/$', views.PontoExibicaoWgs84List.as_view(), name='ponto_exibicao_wgs84_list'),
-    url(r'^pontos-geodesicos/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.PontoExibicaoWgs84List.as_view(), name='ponto_exibicao_wgs84_list'),
-    url(r'^pontos-geodesicos/(?P<id_objeto>[0-9]*)/$', views.PontosExibicaoWgs84Detail.as_view(), name='ponto_exibicao_wgs84_id_objeto'),
-    url(r'^pontos-geodesicos/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.PontosExibicaoWgs84Detail.as_view(), name='ponto_exibicao_wgs84_detail_af'),
 
     # urls generalized
     url(r'^(?P<model_class>[\w\-]+)/$', views.HandleFunctionsList.as_view(), name="general_list"),

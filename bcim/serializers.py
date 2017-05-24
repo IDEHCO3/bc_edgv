@@ -609,22 +609,6 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
         identifiers = ['id_objeto']
         identifier = 'id_objeto'
 
-class PontosExibicaoWgs84Serializer(GeoFeatureModelSerializer):
-    class Meta:
-        model = PontosExibicaoWgs84
-        geo_field = 'geom'
-        fields = ['id_gps', 'long_decimal', 'lat_decimal', 'sistema_geodesico']
-        identifiers = ['id_gps']
-        identifier = 'id_gps'
-
-class BlocoR9Serializer(GeoFeatureModelSerializer):
-
-    class Meta:
-        model = BlocoR9
-        geo_field = 'geom'
-        fields = ['gid', 'nomenclatu', 'situacao_b', 'indice_blo', 'nome_bacia', 'nome_setor', 'id4', 'area_bloco']
-        identifiers = ['gid']
-        identifier = 'gid'
 
 serializers_dict = {
     'outras-unidades-protegidas': {
@@ -635,8 +619,4 @@ serializers_dict = {
         'name': "outros limites oficiais",
         'serializer': OutrosLimitesOficiaisSerializer
     },
-    'blocos': {
-        'name': "blocos",
-        'serializer': BlocoR9Serializer
-    }
 }

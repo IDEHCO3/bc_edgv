@@ -18,9 +18,9 @@ from django.contrib.gis.geos import GeometryCollection, GEOSGeometry
 
 from context_api.views import *
 
-from image_generator.img_generator import BuilderPNG
+#from image_generator.img_generator import BuilderPNG
 
-from serializers import serializers_dict
+from .serializers import  serializers_dict
 
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
     def select_parser(self, request, parsers):
@@ -465,7 +465,6 @@ def geometry_with_parameters_type():
     dic['y'] = []
     dic['z'] = []
     return dic
-
 
 # In developing.
 class HandleFunctionsList(generics.ListCreateAPIView):

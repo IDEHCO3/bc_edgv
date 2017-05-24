@@ -1,14 +1,12 @@
-
 # This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-#
-# Also note: You'll have to insert the output of 'django-admin sqlcustom [app_label]'
-# into your database.
 from __future__ import unicode_literals
+
 from django.contrib.gis.db import models
 
 
@@ -22,8 +20,8 @@ class EdifPubMilitar(models.Model):
     situacaofisica = models.TextField(blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+
+
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -32,7 +30,7 @@ class EdifPubMilitar(models.Model):
         db_table = 'adm_edif_pub_militar_a'
 
 
-class AdmEdifPubMilitarP(models.Model): #precisa juntar as tabelas
+class EdifPubMilitar(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -42,8 +40,8 @@ class AdmEdifPubMilitarP(models.Model): #precisa juntar as tabelas
     situacaofisica = models.TextField(blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
+
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -60,14 +58,16 @@ class PostoFiscal(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
     tipopostofisc = models.CharField(max_length=22, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'adm_posto_fiscal_p'
+
+
+
 
 
 
@@ -80,8 +80,7 @@ class EdifAgropecExtVegetalPesca(models.Model):
     situacaofisica = models.TextField(blank=True, null=True)
     tipoedifagropec = models.CharField(max_length=50, blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -100,8 +99,7 @@ class EdifIndustrial(models.Model):
     situacaofisica = models.TextField(blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
     tipodivisaocnae = models.CharField(max_length=180, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -124,8 +122,7 @@ class ExtMineral(models.Model):
     procextracao = models.CharField(max_length=12, blank=True, null=True)
     formaextracao = models.CharField(max_length=12, blank=True, null=True)
     atividade = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -134,7 +131,7 @@ class ExtMineral(models.Model):
         db_table = 'eco_ext_mineral_a'
 
 
-class EcoExtMineralP(models.Model):  #precisa juntar as tabelas
+class ExtMineral(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -148,8 +145,7 @@ class EcoExtMineralP(models.Model):  #precisa juntar as tabelas
     procextracao = models.CharField(max_length=12, blank=True, null=True)
     formaextracao = models.CharField(max_length=12, blank=True, null=True)
     atividade = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -169,8 +165,7 @@ class EdifReligiosa(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -179,6 +174,8 @@ class EdifReligiosa(models.Model):
         db_table = 'edu_edif_religiosa_p'
 
 
+<<<<<<< HEAD
+=======
 class Employee(models.Model):
     employee_id = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=30, blank=True, null=True)
@@ -191,6 +188,7 @@ class Employee(models.Model):
         db_table = 'employee'
 
 
+>>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
 class EstGeradEnergiaEletrica(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
@@ -203,8 +201,7 @@ class EstGeradEnergiaEletrica(models.Model):
     situacaofisica = models.TextField(blank=True, null=True)
     tipoestgerad = models.CharField(max_length=15, blank=True, null=True)
     destenergelet = models.CharField(max_length=56, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -223,8 +220,7 @@ class Hidreletrica(models.Model):
     codigohidreletrica = models.CharField(max_length=30, blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -246,8 +242,7 @@ class Termeletrica(models.Model):
     tipocombustivel = models.CharField(max_length=17, blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -267,14 +262,14 @@ class TorreEnergia(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
     tipotorre = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'enc_torre_energia_p'
+
 
 
 class BancoAreia(models.Model):
@@ -285,8 +280,7 @@ class BancoAreia(models.Model):
     tipobanco = models.CharField(max_length=14, blank=True, null=True)
     situacaoemagua = models.CharField(max_length=17, blank=True, null=True)
     materialpredominante = models.CharField(max_length=27, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -304,8 +298,7 @@ class Barragem(models.Model):
     usoprincipal = models.CharField(max_length=15, blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -319,8 +312,7 @@ class Corredeira(models.Model):
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -329,13 +321,12 @@ class Corredeira(models.Model):
         db_table = 'hid_corredeira_l'
 
 
-class HidCorredeiraP(models.Model): #precisa juntar as tabelas
+class Corredeira(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -349,8 +340,7 @@ class FozMaritima(models.Model):
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -365,8 +355,7 @@ class Ilha(models.Model):
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     tipoilha = models.CharField(max_length=8, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -383,8 +372,7 @@ class MassaDagua(models.Model):
     tipomassadagua = models.CharField(max_length=18, blank=True, null=True)
     salinidade = models.CharField(max_length=16, blank=True, null=True)
     regime = models.CharField(max_length=31, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -400,8 +388,7 @@ class QuedaDagua(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     altura = models.FloatField(blank=True, null=True)
     tipoqueda = models.CharField(max_length=15, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -410,15 +397,14 @@ class QuedaDagua(models.Model):
         db_table = 'hid_queda_dagua_l'
 
 
-class HidQuedaDaguaP(models.Model): #precisa juntar tabelas
+class QuedaDagua(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     altura = models.FloatField(blank=True, null=True)
     tipoqueda = models.CharField(max_length=15, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -435,8 +421,7 @@ class Recife(models.Model):
     tiporecife = models.CharField(max_length=16, blank=True, null=True)
     situamare = models.CharField(max_length=35, blank=True, null=True)
     situacaocosta = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -445,7 +430,7 @@ class Recife(models.Model):
         db_table = 'hid_recife_a'
 
 
-class HidRecifeP(models.Model): #precisa juntar tabelas
+class Recife(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -453,8 +438,7 @@ class HidRecifeP(models.Model): #precisa juntar tabelas
     tiporecife = models.CharField(max_length=16, blank=True, null=True)
     situamare = models.CharField(max_length=35, blank=True, null=True)
     situacaocosta = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -470,8 +454,7 @@ class RochaEmAgua(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     alturalamina = models.FloatField(blank=True, null=True)
     situacaoemagua = models.CharField(max_length=17, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -480,15 +463,14 @@ class RochaEmAgua(models.Model):
         db_table = 'hid_rocha_em_agua_a'
 
 
-class HidRochaEmAguaP(models.Model): #precisa juntar tabelas
+class RochaEmAgua(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     alturalamina = models.FloatField(blank=True, null=True)
     situacaoemagua = models.CharField(max_length=17, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -504,8 +486,7 @@ class SumidouroVertedouro(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     causa = models.CharField(max_length=25, blank=True, null=True)
     tiposumvert = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -520,8 +501,7 @@ class TerrenoSujeitoInundacao(models.Model):
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     periodicidadeinunda = models.CharField(max_length=20, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -545,8 +525,7 @@ class TrechoDrenagem(models.Model):
     coincidecomdentrode = models.CharField(max_length=35, blank=True, null=True)
     navegabilidade = models.CharField(max_length=16, blank=True, null=True)
     regime = models.CharField(max_length=31, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -563,8 +542,7 @@ class TrechoMassaDagua(models.Model):
     tipotrechomassa = models.CharField(max_length=13, blank=True, null=True)
     salinidade = models.CharField(max_length=16, blank=True, null=True)
     regime = models.CharField(max_length=31, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -573,14 +551,14 @@ class TrechoMassaDagua(models.Model):
         db_table = 'hid_trecho_massa_dagua_a'
 
 
+
 class AreaDesenvolvimentoControle(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     classificacao = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -603,8 +581,7 @@ class MarcoDeLimite(models.Model):
     outrarefplan = models.CharField(max_length=20, blank=True, null=True)
     outrarefalt = models.CharField(max_length=20, blank=True, null=True)
     referencialaltim = models.CharField(max_length=16, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -614,14 +591,13 @@ class MarcoDeLimite(models.Model):
 
 
 class Municipio(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
     geocodigo = models.CharField(max_length=15, blank=True, null=True)
-    anodereferencia = models.IntegerField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    anoderefer = models.FloatField(blank=True, null=True)
+    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -631,18 +607,17 @@ class Municipio(models.Model):
 
 
 class OutrasUnidProtegidas(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    anocriacao = models.IntegerField(null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    anocriacao = models.FloatField(blank=True, null=True)
     sigla = models.CharField(max_length=6, blank=True, null=True)
-    areaoficial = models.CharField(max_length=15, blank=True, null=True)
-    administracao = models.TextField(blank=True, null=True)
-    tipooutunidprot = models.CharField(max_length=30, blank=True, null=True)
-    historicomodificacao = models.CharField(max_length=255, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    areaoficia = models.CharField(max_length=15, blank=True, null=True)
+    administra = models.CharField(max_length=18, blank=True, null=True)
+    tipooutuni = models.CharField(max_length=30, blank=True, null=True)
+    historicom = models.CharField(max_length=254, blank=True, null=True)
+    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -660,8 +635,7 @@ class OutrosLimitesOficiais(models.Model):
     extensao = models.FloatField(blank=True, null=True)
     obssituacao = models.CharField(max_length=100, blank=True, null=True)
     tipooutlimofic = models.CharField(max_length=50, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -677,8 +651,7 @@ class Pais(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     sigla = models.CharField(max_length=3, blank=True, null=True)
     codiso3166 = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -688,19 +661,17 @@ class Pais(models.Model):
 
 
 class TerraIndigena(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    perimetrooficial = models.FloatField(blank=True, null=True)
-    areaoficialha = models.FloatField(blank=True, null=True)
-    grupoetnico = models.CharField(max_length=100, blank=True, null=True)
-    datasituacaojuridica = models.CharField(max_length=20, blank=True, null=True)
-    situacaojuridica = models.CharField(max_length=23, blank=True, null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    perimetroo = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    areaoficia = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    grupoetnic = models.CharField(max_length=100, blank=True, null=True)
+    datasituac = models.CharField(max_length=20, blank=True, null=True)
+    situacaoju = models.CharField(max_length=23, blank=True, null=True)
     nometi = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    codigofunai = models.IntegerField(blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -709,20 +680,18 @@ class TerraIndigena(models.Model):
         db_table = 'lim_terra_indigena_a'
 
 
-class LimTerraIndigenaP(models.Model): #precisa juntar as tabelas
-    id_objeto = models.IntegerField(primary_key=True)
+class LimTerraIndigenaP(models.Model):
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    perimetrooficial = models.FloatField(blank=True, null=True)
-    areaoficialha = models.FloatField(blank=True, null=True)
-    grupoetnico = models.CharField(max_length=100, blank=True, null=True)
-    datasituacaojuridica = models.CharField(max_length=20, blank=True, null=True)
-    situacaojuridica = models.CharField(max_length=23, blank=True, null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    perimetroo = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    areaoficia = models.DecimalField(max_digits=65535, decimal_places=65535, blank=True, null=True)
+    grupoetnic = models.CharField(max_length=100, blank=True, null=True)
+    datasituac = models.CharField(max_length=20, blank=True, null=True)
+    situacaoju = models.CharField(max_length=23, blank=True, null=True)
     nometi = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    codigofunai = models.IntegerField(blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.PointField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -732,18 +701,17 @@ class LimTerraIndigenaP(models.Model): #precisa juntar as tabelas
 
 
 class UnidadeConservacaoNaoSnuc(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    anocriacao = models.IntegerField(blank=True, null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    anocriacao = models.FloatField(blank=True, null=True)
     sigla = models.CharField(max_length=6, blank=True, null=True)
-    areaoficial = models.CharField(max_length=15, blank=True, null=True)
-    administracao = models.TextField(blank=True, null=True)
-    classificacao = models.CharField(max_length=100, blank=True, null=True)
+    areaoficia = models.CharField(max_length=15, blank=True, null=True)
+    administra = models.CharField(max_length=18, blank=True, null=True)
+    classifica = models.CharField(max_length=100, blank=True, null=True)
     atolegal = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -753,14 +721,13 @@ class UnidadeConservacaoNaoSnuc(models.Model):
 
 
 class UnidadeFederacao(models.Model):
-    id_objeto = models.IntegerField(primary_key=True, db_column='id_objeto')
+    id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     sigla = models.CharField(max_length=3, blank=True, null=True)
     geocodigo = models.CharField(max_length=15, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
@@ -771,18 +738,17 @@ class UnidadeFederacao(models.Model):
 
 
 class UnidadeProtecaoIntegral(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    anocriacao = models.IntegerField(blank=True, null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    anocriacao = models.FloatField(blank=True, null=True)
     sigla = models.CharField(max_length=6, blank=True, null=True)
-    areaoficial = models.CharField(max_length=15, blank=True, null=True)
-    administracao = models.TextField(blank=True, null=True)
+    areaoficia = models.CharField(max_length=15, blank=True, null=True)
+    administra = models.CharField(max_length=18, blank=True, null=True)
     atolegal = models.CharField(max_length=100, blank=True, null=True)
-    tipounidprotinteg = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    tipounidpr = models.CharField(max_length=100, blank=True, null=True)
+    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -792,18 +758,17 @@ class UnidadeProtecaoIntegral(models.Model):
 
 
 class UnidadeUsoSustentavel(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    anocriacao = models.IntegerField(blank=True, null=True)
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    anocriacao = models.FloatField(blank=True, null=True)
     sigla = models.CharField(max_length=6, blank=True, null=True)
-    areaoficial = models.CharField(max_length=15, blank=True, null=True)
-    administracao = models.TextField(blank=True, null=True)
+    areaoficia = models.CharField(max_length=15, blank=True, null=True)
+    administra = models.CharField(max_length=18, blank=True, null=True)
     atolegal = models.CharField(max_length=100, blank=True, null=True)
-    tipounidusosust = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    tipounidus = models.CharField(max_length=100, blank=True, null=True)
+    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -817,8 +782,7 @@ class AglomeradoRuralDeExtensaoUrbana(models.Model):
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -828,13 +792,12 @@ class AglomeradoRuralDeExtensaoUrbana(models.Model):
 
 
 class AglomeradoRuralIsolado(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True, db_column='id_objeto')
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    tipoaglomrurisol = models.CharField(max_length=35, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    tipoaglomr = models.CharField(max_length=35, blank=True, null=True)
+    geom = models.PointField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -844,15 +807,14 @@ class AglomeradoRuralIsolado(models.Model):
 
 
 class AldeiaIndigena(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     codigofunai = models.CharField(max_length=15, blank=True, null=True)
     terraindigena = models.CharField(max_length=100, blank=True, null=True)
     etnia = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.PointField(srid=4674, dim=4, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -867,8 +829,7 @@ class AreaEdificada(models.Model):
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     geocodigo = models.CharField(max_length=15, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -878,13 +839,12 @@ class AreaEdificada(models.Model):
 
 
 class Capital(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    tipocapital = models.CharField(max_length=20, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    tipocapita = models.CharField(max_length=20, blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -894,12 +854,11 @@ class Capital(models.Model):
 
 
 class Cidade(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -909,12 +868,11 @@ class Cidade(models.Model):
 
 
 class Vila(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    gid = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -923,6 +881,8 @@ class Vila(models.Model):
         db_table = 'loc_vila_p'
 
 
+<<<<<<< HEAD
+=======
 class Orderpart(models.Model):
     order_id = models.IntegerField(blank=True, null=True)
     part_id = models.IntegerField(blank=True, null=True)
@@ -949,11 +909,11 @@ class Part(models.Model):
         db_table = 'part'
 
 
+>>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
 class CurvaBatimetrica(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     profundidade = models.IntegerField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -968,8 +928,7 @@ class CurvaNivel(models.Model):
     depressao = models.CharField(max_length=3, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     indice = models.CharField(max_length=16, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -984,8 +943,7 @@ class Duna(models.Model):
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     fixa = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1000,8 +958,7 @@ class ElementoFisiograficoNatural(models.Model):
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     tipoelemnat = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1010,14 +967,13 @@ class ElementoFisiograficoNatural(models.Model):
         db_table = 'rel_elemento_fisiografico_natural_l'
 
 
-class RelElementoFisiograficoNaturalP(models.Model): #precisa juntar as tabelas
+class ElementoFisiograficoNatural(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     tipoelemnat = models.CharField(max_length=12, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1031,8 +987,7 @@ class Pico(models.Model):
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1046,8 +1001,7 @@ class PontoCotadoAltimetrico(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     cota = models.FloatField(blank=True, null=True)
     cotacomprovada = models.CharField(max_length=3, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1059,8 +1013,7 @@ class PontoCotadoAltimetrico(models.Model):
 class PontoCotadoBatimetrico(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     profundidade = models.FloatField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1069,6 +1022,8 @@ class PontoCotadoBatimetrico(models.Model):
         db_table = 'rel_ponto_cotado_batimetrico_p'
 
 
+<<<<<<< HEAD
+=======
 class Salesorder(models.Model):
     order_id = models.IntegerField(blank=True, null=True)
     customer_id = models.IntegerField(blank=True, null=True)
@@ -1137,6 +1092,7 @@ class TLogradouro(models.Model):
         db_table = 't_logradouro'
 
 
+>>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
 class Eclusa(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
@@ -1149,8 +1105,7 @@ class Eclusa(models.Model):
     matconstr = models.CharField(max_length=18, blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1169,8 +1124,7 @@ class EdifConstPortuaria(models.Model):
     matconstr = models.CharField(max_length=18, blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1189,8 +1143,7 @@ class EdifConstrAeroportuaria(models.Model):
     administracao = models.TextField(blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
     tipoedifaero = models.CharField(max_length=23, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1210,8 +1163,7 @@ class EdifMetroFerroviaria(models.Model):
     situacaofisica = models.TextField(blank=True, null=True)
     administracao = models.TextField(blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1227,8 +1179,7 @@ class Fundeadouro(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     administracao = models.TextField(blank=True, null=True)
     destinacaofundeadouro = models.CharField(max_length=43, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1250,8 +1201,7 @@ class PistaPontoPouso(models.Model):
     tipopista = models.CharField(max_length=14, blank=True, null=True)
     usopista = models.CharField(max_length=15, blank=True, null=True)
     revestimento = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1278,8 +1228,7 @@ class Ponte(models.Model):
     extensao = models.FloatField(blank=True, null=True)
     largura = models.FloatField(blank=True, null=True)
     posicaopista = models.CharField(max_length=13, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1296,8 +1245,7 @@ class Sinalizacao(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
     tiposinal = models.CharField(max_length=21, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1312,8 +1260,7 @@ class Travessia(models.Model):
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     tipotravessia = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1322,14 +1269,13 @@ class Travessia(models.Model):
         db_table = 'tra_travessia_l'
 
 
-class TraTravessiaP(models.Model): #precisa juntar as tabelas
+class Travessia(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     tipotravessia = models.CharField(max_length=18, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1352,8 +1298,7 @@ class TrechoDuto(models.Model):
     situacaoespacial = models.CharField(max_length=11, blank=True, null=True)
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1380,8 +1325,7 @@ class TrechoFerroviario(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     cargasuportmaxima = models.FloatField(blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1400,8 +1344,7 @@ class TrechoHidroviario(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     situacaofisica = models.TextField(blank=True, null=True)
     regime = models.CharField(max_length=31, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1425,8 +1368,7 @@ class TrechoRodoviario(models.Model):
     trafego = models.TextField(blank=True, null=True)
     canteirodivisorio = models.CharField(max_length=4, blank=True, null=True)
     capaccarga = models.DecimalField(max_digits=19, decimal_places=6, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1451,8 +1393,7 @@ class Tunel(models.Model):
     operacional = models.CharField(max_length=12, blank=True, null=True)
     matconstr = models.CharField(max_length=18, blank=True, null=True)
     tipotunel = models.CharField(max_length=28, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1461,14 +1402,18 @@ class Tunel(models.Model):
         db_table = 'tra_tunel_l'
 
 
-class VDescricao(models.Model):
-    description = models.TextField(blank=True, null=True)
+class Municipio(models.Model):
+    sigla_uf = models.CharField(max_length=3, blank=True, null=True)
+    nome_uf = models.CharField(max_length=100, blank=True, null=True)
+    geocodigo_uf = models.CharField(max_length=15, blank=True, null=True)
+    municipio_nome = models.CharField(max_length=100, blank=True, null=True)
+    municipio_geocodigo = models.CharField(max_length=15, blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
-        db_table = 'v_descricao'
+        db_table = 'uf_municipio'
 
 
 class BrejoPantano(models.Model):
@@ -1481,8 +1426,7 @@ class BrejoPantano(models.Model):
     tipobrejopantano = models.CharField(max_length=27, blank=True, null=True)
     denso = models.CharField(max_length=12, blank=True, null=True)
     antropizada = models.CharField(max_length=23, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1500,8 +1444,7 @@ class Mangue(models.Model):
     classificacaoporte = models.CharField(max_length=12, blank=True, null=True)
     denso = models.CharField(max_length=12, blank=True, null=True)
     antropizada = models.CharField(max_length=23, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1519,14 +1462,15 @@ class VegRestinga(models.Model):
     classificacaoporte = models.CharField(max_length=12, blank=True, null=True)
     denso = models.CharField(max_length=12, blank=True, null=True)
     antropizada = models.CharField(max_length=23, blank=True, null=True)
-    geom = models.GeometryField(srid=4326, blank=True, null=True)
-    objects = models.GeoManager()
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'veg_veg_restinga_a'
+<<<<<<< HEAD
+=======
 
 
 class Vegetable(models.Model):
@@ -1571,3 +1515,4 @@ class BlocoR9(models.Model):
     class Meta:
         managed = False
         db_table = 'bloco_r9'
+>>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
