@@ -1,4 +1,6 @@
 from django.contrib.gis.db import models
+from django.contrib.gis.geos import GEOSGeometry
+
 
 def vocabularyDict():
 
@@ -43,24 +45,29 @@ class ContextResource:
     def __init__(self):
         self.basic_path = None
         self.host = None
+        self.dict_context = None
 
 
-    def attribute_name_list(self):
-        return ( field.attname for field in self.model_class._meta.fields[:])
+    #def attribute_name_list(self):
+    #    return ( field.attname for field in self.model_class._meta.fields[:])
 
-    def attribute_type_list(self):
-        return ( type(field) for field in self.model_class._meta.fields[:])
+    #def attribute_type_list(self):
+    #    return ( type(field) for field in self.model_class._meta.fields[:])
 
     def operation_names(self):
         return [method for method in dir(self) if callable(getattr(self, method)) and self.is_not_private(method)]
 
-    def hydraSuportedProperty(self, att='', writeable=True, readable=True, required=False):
+    def attributeContextualized_dict(self, att='', writeable=True, readable=True, required=False):
         dic = {}
         dic["property"] = att
         dic["writeable"] = writeable
         dic["readable"] = readable
         dic["required"] = required
         return dic
+
+    def selectedAttributeContextualized_dict(self, attribute_name_array):
+
+        return {k: v for k, v in self.attributeContextualized_dict().iteritems() if k in attribute_name_array}
 
     def hydraSuportedProperties(self):
         arr = [];
@@ -94,8 +101,33 @@ class ContextResource:
     def iriTemplates(self):
         return {}
 
+    def set_context_to_attributes(self, attributes_name):
+        self.dict_context = {}
+        self.dict_context["@context"] = self.selectedAttributeContextualized_dict(attributes_name)
+
+    def set_context_to_object(self, object, attribute_name):
+        self.dict_context = {}
+        self.dict_context["@context"] = self.selectedAttributeContextualized_dict([attribute_name])
+
+        isGeometry = isinstance(getattr(object, attribute_name, None), GEOSGeometry)
+        if isGeometry:
+           self.dict_context["hydra:supportedOperations"] = self.supportedOperations()
+
+
+
+    def initalize_context(self):
+        self.dict_context = {}
+        self.dict_context["@context"] = self.attributeContextualized_dict()
+        self.dict_context["hydra:supportedProperty"] = self.supportedProperties()
+        self.dict_context["hydra:supportedOperations"] = self.supportedOperations()
+        self.dict_context["hydra:iriTemplate"] = self.iriTemplates()
+
+        return self.dict_context
+
     def context(self):
-        dic = {}
-        #dic['@context'] = self.generateBaseContext()
-        #dic['supportedProperties'] = self.generateSuportedProperties()
-        return dic
+        if self.dict_context is None:
+            self.initalize_context()
+        return self.dict_context
+
+    def set_context_(self, dictionary):
+        self.dict_context = dictionary

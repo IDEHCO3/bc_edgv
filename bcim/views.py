@@ -134,10 +134,10 @@ class UnidadeFederacaoDetail(FeatureResource):
     serializer_class = UnidadeFederacaoSerializer
     contextclassname = 'unidades-federativas'
 
-<<<<<<< HEAD
+
     def initialize_context(self):
         self.context_resource = UnidadeFederacaoContext()
-=======
+
     def get(self, request, *args, **kwargs):
         if kwargs.get('sigla') is not None:
             kwargs['sigla'] = kwargs.get('sigla').upper()
@@ -147,7 +147,7 @@ class UnidadeFederacaoDetail(FeatureResource):
         if kwargs.get('sigla') is not None:
             kwargs['sigla'] = kwargs.get('sigla').upper()
         return super(UnidadeFederacaoDetail, self).options(request, *args, **kwargs)
->>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
+
 
 class UnidadeFederacaoList(HandleFunctionsList):
 

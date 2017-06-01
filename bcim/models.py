@@ -174,8 +174,8 @@ class EdifReligiosa(models.Model):
         db_table = 'edu_edif_religiosa_p'
 
 
-<<<<<<< HEAD
-=======
+
+
 class Employee(models.Model):
     employee_id = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=30, blank=True, null=True)
@@ -188,7 +188,7 @@ class Employee(models.Model):
         db_table = 'employee'
 
 
->>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
+
 class EstGeradEnergiaEletrica(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
@@ -881,8 +881,8 @@ class Vila(models.Model):
         db_table = 'loc_vila_p'
 
 
-<<<<<<< HEAD
-=======
+
+
 class Orderpart(models.Model):
     order_id = models.IntegerField(blank=True, null=True)
     part_id = models.IntegerField(blank=True, null=True)
@@ -909,7 +909,7 @@ class Part(models.Model):
         db_table = 'part'
 
 
->>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
+
 class CurvaBatimetrica(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     profundidade = models.IntegerField(blank=True, null=True)
@@ -1022,8 +1022,8 @@ class PontoCotadoBatimetrico(models.Model):
         db_table = 'rel_ponto_cotado_batimetrico_p'
 
 
-<<<<<<< HEAD
-=======
+
+
 class Salesorder(models.Model):
     order_id = models.IntegerField(blank=True, null=True)
     customer_id = models.IntegerField(blank=True, null=True)
@@ -1092,7 +1092,7 @@ class TLogradouro(models.Model):
         db_table = 't_logradouro'
 
 
->>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860
+
 class Eclusa(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
@@ -1469,8 +1469,8 @@ class VegRestinga(models.Model):
     class Meta:
         managed = False
         db_table = 'veg_veg_restinga_a'
-<<<<<<< HEAD
-=======
+
+
 
 
 class Vegetable(models.Model):
@@ -1515,4 +1515,3 @@ class BlocoR9(models.Model):
     class Meta:
         managed = False
         db_table = 'bloco_r9'
->>>>>>> 9332252eef8f298a323920d43ed1dfc459a14860

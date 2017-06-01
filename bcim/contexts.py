@@ -2,17 +2,19 @@ from hyper_resource.contexts import ContextResource
 
 class UnidadeFederacaoContext(ContextResource):
 
-    def attributeContextualized_list(self):
-        dic_context = {}
-        dic_context["@context"] = {"id_objeto": { "@id": "http://schema.org/identifier", "@type": "@id"},
+    def attributeContextualized_dict(self):
+
+        dic_context = {"id_objeto": { "@id": "http://schema.org/identifier", "@type": "@id"},
                                    "nome": { "@id": "http://schema.org/name", "@type": "@id"},
                                    "nomeabrev": {"@id": "http://schema.org/alternateName"},
                                    "sigla": { "@id": "http://schema.org/alternateName", "@type": "@id"},
                                    "geometriaaproximada": { "@id": "http://schema.org/Boolean", "@type": "http://schema.org/Text"},
                                    "geocodigo": { "@id": "http://schema.org/code", "@type": "@id"},
-                                   "geom": "http://geojson.org/geojson-ld/vocab.html#geometry"}
+                                   "geom": {"@id": "http://geojson.org/geojson-ld/vocab.html#geometry", "@type": "@id"}
+                       }
 
         return dic_context
+
 
     def supportedProperties(self):
         arr_dic = [
@@ -25,14 +27,14 @@ class UnidadeFederacaoContext(ContextResource):
             {"@type": "SupportedProperty", "hydra:property": "geom","hydra:writeable": True, "hydra:readable": True,"hydra:required": True},
 
         ]
-        return {"hydra:supportedProperty" : arr_dic }
+        return arr_dic
 
     def supportedOperations(self):
         arr_dic = [
             {"@id": "http://opengis.org/operations/srs","hydra:method": "GET","hydra:operation": "srs","hydra:expects":"", "hydra:returns": "",  "hydra:statusCode": ""},
             {"@id": "http://opengis.org/operations/envelope", "hydra:method": "GET","hydra:operation": "envelope","hydra:expects":"", "hydra:returns": "http://geojson.org/geojson-ld/vocab.html#geometry",  "hydra:statusCode": ""},
         ]
-        return {"hydra:supportedOperations" : arr_dic }
+        return arr_dic
 
     def iriTemplates(self):
         iri_templates = []
@@ -56,12 +58,4 @@ class UnidadeFederacaoContext(ContextResource):
 
         return {"iri_templates": iri_templates}
 
-    def context(self):
-        dict = {}
-        dict["@context"] = self.attributeContextualized_list()
-        dict["hydra:supportedProperty"] = self.supportedProperties()
-        dict["hydra:supportedOperations"] = self.supportedOperations()
-        dict["hydra:iriTemplate"] = self.iriTemplates()
-
-        return dict
 

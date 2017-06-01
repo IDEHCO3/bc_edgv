@@ -29,6 +29,11 @@ class IgnoreClientContentNegotiation(BaseContentNegotiation):
 
 class AbstractResource(APIView):
 
+
+    def get_geometry_object(self, object_model):
+        return getattr(object_model, self.geometry_field_name(), None)
+
+
     def __init__(self):
         super(AbstractResource, self).__init__()
         self.context_resource = None
@@ -47,11 +52,11 @@ class AbstractResource(APIView):
     def _set_context_to_model(self, object_model):
         self.context_resource.contextModel(object_model)
 
-    def _set_context_to_attributes(self):
-        self.context_resource.set_context_to_attributes()
+    def _set_context_to_attributes(self, attribute_name_array):
+        self.context_resource.set_context_to_attributes(attribute_name_array)
 
-    def _set_context_to_object(self):
-        self.context_resource.set_context_to_object()
+    def _set_context_to_object(self, object, attribute_name):
+        self.context_resource.set_context_to_object(object, attribute_name)
 
     def set_context_resource(self, request, object_model):
         self.context_resource.model = object_model
@@ -400,13 +405,17 @@ class FeatureResource(SpatialResource):
 
         elif self.has_only_attribute(object_model, attributes_functions_str):
             output = self.response_resquest_with_attributes(object_model, attributes_functions_str)
-            self._set_context_to_attributes(output[0])
+            dict_attribute = output[0]
+            if len(attributes_functions_str.split(',')) > 1:
+                self._set_context_to_attributes(dict_attribute.keys())
+            else:
+                self._set_context_to_object(object_model, attributes_functions_str)
         elif self.attributes_functions_str_has_url(attributes_functions_str.lower()):
             output = self.response_request_attributes_functions_str_with_url(object_model, attributes_functions_str)
-            self._set_context_to_object(output)
+            self._set_context_to_object(object_model, attributes_functions_str)
         else:
             output = self.response_of_request(object_model, attributes_functions_str)
-            self._set_context_to_object(output)
+            self._set_context_to_object(object_model, attributes_functions_str)
 
         return output
 
