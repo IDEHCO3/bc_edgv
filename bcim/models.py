@@ -9,6 +9,8 @@ from __future__ import unicode_literals
 
 from django.contrib.gis.db import models
 
+from hyper_resource.models import FeatureModel, AbstractFeatureModel
+
 
 class EdifPubMilitar(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
@@ -720,7 +722,7 @@ class UnidadeConservacaoNaoSnuc(models.Model):
         db_table = 'lim_unidade_conservacao_nao_snuc_a'
 
 
-class UnidadeFederacao(models.Model):
+class UnidadeFederacao(FeatureModel):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)

@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'bcim',
     'context_api',
     'hydra',
+    'hyper_resource',
 )
 
 MIDDLEWARE_CLASSES = (

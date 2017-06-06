@@ -29,15 +29,12 @@ class IgnoreClientContentNegotiation(BaseContentNegotiation):
 
 class AbstractResource(APIView):
 
-
-    def get_geometry_object(self, object_model):
-        return getattr(object_model, self.geometry_field_name(), None)
-
-
     def __init__(self):
         super(AbstractResource, self).__init__()
         self.context_resource = None
         self.initialize_context()
+        self.current_object_state = None
+        self.object_model = None
 
     content_negotiation_class = IgnoreClientContentNegotiation
 
@@ -49,17 +46,18 @@ class AbstractResource(APIView):
         ind = arr.index(self.contextclassname)
         return '/'.join(arr[:ind+1])
 
-    def _set_context_to_model(self, object_model):
-        self.context_resource.contextModel(object_model)
+    def _set_context_to_model(self):
+        self.context_resource.contextModel(self.object_model)
 
     def _set_context_to_attributes(self, attribute_name_array):
         self.context_resource.set_context_to_attributes(attribute_name_array)
 
-    def _set_context_to_object(self, object, attribute_name):
-        self.context_resource.set_context_to_object(object, attribute_name)
+    def _set_context_to_object(self, attribute_name):
 
-    def set_context_resource(self, request, object_model):
-        self.context_resource.model = object_model
+        self.context_resource.set_context_to_object(self.current_object_state, attribute_name)
+
+    def set_context_resource(self, request ):
+        self.context_resource.model = object
         self.context_resource.host = request.META['HTTP_HOST']
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
 
@@ -88,13 +86,12 @@ class AbstractResource(APIView):
         #self.check_object_permissions(self.request, obj)
         return obj
 
-    def operation_names(self):
-        return [method for method in dir(self) if callable(getattr(self, method)) and self.is_not_private(method)]
+    def operation_names_model(self):
+        return self.object_model.operation_names()
 
-    def attribute_names(self):
-        return [attribute for attribute in dir(self) if
-                not callable(getattr(self, attribute)) and self.is_not_private(attribute)]
-
+    def attribute_names_model(self):
+        return self.object_model.attribute_names()
+    
     def is_private(self, attribute_or_method_name):
         return attribute_or_method_name.startswith('__') and attribute_or_method_name.endswith('__')
 
@@ -105,20 +102,20 @@ class AbstractResource(APIView):
         return operation_name in self.operation_names()
 
     def is_attribute(self, attribute_name):
-        attribute_name in dir(self) and not callable(getattr(self, attribute_name))
+        return attribute_name in dir(self) and not callable(getattr(self, attribute_name))
 
-    def _has_method(self, object, method_name):
-        return hasattr(object, method_name) and callable(getattr(object, method_name))
+    def _has_method(self,  method_name):
+        return hasattr(self.object_model, method_name) and callable(getattr(self.object_model, method_name))
 
-    def has_only_attribute(self, object, attributes_functions_name):
+    def has_only_attribute(self,  attributes_functions_name):
         attrs_functs = attributes_functions_name.split('/')
         if len(attrs_functs) > 1:
             return False
         if ',' in attrs_functs[0]:
             return True
-        if self._has_method(object, attrs_functs[0]):
+        if self._has_method(attrs_functs[0]):
             return False
-        return hasattr(object, attrs_functs[0])
+        return hasattr(self.object_model, attrs_functs[0])
 
     def attributes_functions_splitted_by_url(self, attributes_functions_str_url):
         res = attributes_functions_str_url.lower().find('http:')
@@ -254,11 +251,13 @@ class SpatialResource(AbstractResource):
 
         return paramsConveted
 
-    def response_resquest_with_attributes(self, object_model, attributes_functions_name):
+    def response_resquest_with_attributes(self,  attributes_functions_name):
         a_dict ={}
-        attributes = attributes_functions_name.split(',')
+        attributes = attributes_functions_name.strip().split(',')
+        self.current_object = self.object_model
         for attr_name in attributes:
-           obj = self._value_from_object(object_model, attr_name, [])
+           obj = self._value_from_object(self.object_model, attr_name, [])
+
            if isinstance(obj, GEOSGeometry):
                geom = obj
                obj = json.loads(obj.geojson)
@@ -269,7 +268,7 @@ class SpatialResource(AbstractResource):
 
         return (a_dict, 'application/json')
 
-    def response_request_attributes_functions_str_with_url(self,object_model, attributes_functions_str):
+    def response_request_attributes_functions_str_with_url(self, attributes_functions_str):
         attributes_functions_str = re.sub(r':/+', '://', attributes_functions_str)
         arr_of_two_url = self.attributes_functions_splitted_by_url(attributes_functions_str)
         resp = requests.get(arr_of_two_url[1])
@@ -277,17 +276,19 @@ class SpatialResource(AbstractResource):
             return Response({'Erro:' + str(resp.status_code)}, status=status.HTTP_404_NOT_FOUND)
         j = resp.text
         attributes_functions_str = arr_of_two_url[0] + j
-        output = self.response_of_request(object_model, attributes_functions_str)
 
-    def response_of_request(self, object, attributes_functions_str):
+        output = self.response_of_request(attributes_functions_str)
+
+    def response_of_request(self,  attributes_functions_str):
         att_funcs = attributes_functions_str.split('/')
 
-        obj = self.get_geometry_object(object)
-        if not self.is_operation(att_funcs[0]) and self.is_attribute(att_funcs[0]):
+        obj = self.get_geometry_object(self.object_model)
+
+        if (not self.object_model.is_operation(att_funcs[0])) and self.object_model.is_attribute(att_funcs[0]):
             att_funcs = att_funcs[1:]
 
-        a_value = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])
-
+        self.current_object_state = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])
+        a_value = self.current_object_state
         if isinstance(a_value, GEOSGeometry):
             geom = a_value
             a_value = json.loads(a_value.geojson)
@@ -302,6 +303,10 @@ class SpatialResource(AbstractResource):
         return (a_value, 'application/json')
 
 class FeatureResource(SpatialResource):
+
+    def __init__(self):
+        super(FeatureResource, self).__init__()
+        feature_model = None
 
     def operations_with_parameters_type(self):
 
@@ -393,32 +398,33 @@ class FeatureResource(SpatialResource):
         self.model_status = a_const_status
 
     def basic_get(self, request, *args, **kwargs):
-        object_model = self.get_object(kwargs)
-        self.set_context_resource(request, object_model)
+
+        self.object_model = self.get_object(kwargs)
+        self.current_object_state = self.object_model
+        self.set_context_resource(request)
         # self.request.query_params.
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
         if attributes_functions_str is None:
-            serializer = self.serializer_class(object_model)
-            output = (serializer.data, 'application/vnd.geo+json', object_model)
+            serializer = self.serializer_class(self.object_model)
+            output = (serializer.data, 'application/vnd.geo+json', self.object_model)
             #self._set_context_to_model(object_model)
 
-        elif self.has_only_attribute(object_model, attributes_functions_str):
-            output = self.response_resquest_with_attributes(object_model, attributes_functions_str)
+        elif self.has_only_attribute(attributes_functions_str):
+            output = self.response_resquest_with_attributes(attributes_functions_str)
             dict_attribute = output[0]
             if len(attributes_functions_str.split(',')) > 1:
                 self._set_context_to_attributes(dict_attribute.keys())
             else:
-                self._set_context_to_object(object_model, attributes_functions_str)
+                self._set_context_to_object(attributes_functions_str)
         elif self.attributes_functions_str_has_url(attributes_functions_str.lower()):
-            output = self.response_request_attributes_functions_str_with_url(object_model, attributes_functions_str)
-            self._set_context_to_object(object_model, attributes_functions_str)
+            output = self.response_request_attributes_functions_str_with_url( attributes_functions_str)
+            self._set_context_to_object(attributes_functions_str)
         else:
-            output = self.response_of_request(object_model, attributes_functions_str)
-            self._set_context_to_object(object_model, attributes_functions_str)
+            output = self.response_of_request(attributes_functions_str)
+            self._set_context_to_object(attributes_functions_str.split('/')[-1])
 
         return output
-
 
     def get(self, request, *args, **kwargs):
 

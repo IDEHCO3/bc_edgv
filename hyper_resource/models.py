@@ -1,8 +1,26 @@
 
 from django.contrib.gis.db import models
 # Create your models here.
+from django.contrib.gis.gdal import OGRGeometry
+from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import Point
+from django.contrib.gis.geos import Polygon
+from django.contrib.gis.geos.prepared import PreparedGeometry
 
-class AbstractResource(models.Model):
+
+class Type_Called():
+    def __init__(self, a_name, params, answer):
+        self.name = a_name
+        self.parameters = params
+        self.return_type = answer
+
+    def description(self):
+        param = self.parameters or []
+        return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
+
+class AbstractFeatureModel(models.Model):
+
+
     def model_class(self):
         return self.serializer_class.Meta.model
 
@@ -19,7 +37,9 @@ class AbstractResource(models.Model):
         return a_dict
 
     def operation_names(self):
-        return [method for method in dir(self) if callable(getattr(self, method)) and self.is_not_private(method)]
+        method_names = dir(self)
+        method_names.remove('objects')  # with objects the system breaks
+        return [method_name for method_name in method_names if self.is_not_private(method_name) and callable(getattr(self, method_name)) ]
 
     def attribute_names(self):
         return [ attribute for attribute in dir(self) if not callable(getattr(self, attribute)) and self.is_not_private(attribute)]
@@ -34,20 +54,14 @@ class AbstractResource(models.Model):
         return operation_name in self.operation_names()
 
     def is_attribute(self, attribute_name):
-        attribute_name in dir(self) and not callable(getattr(self, attribute_name))
+        return (attribute_name in dir(self) and not callable(getattr(self, attribute_name)))
 
+    class Meta:
+        abstract = True
 
-class SpatialResource(AbstractResource):
-    def __init__(self, a_name, params, answer):
-        self.name = a_name
-        self.parameters = params
-        self.return_type = answer
+class FeatureModel(AbstractFeatureModel):
 
-class FeatureResource(SpatialResource):
-
-    def __init__(self, a_hyperlink):
-        self.hyperlink = a_hyperlink
-        self.dic = {}
+    dic = {}
 
     def centroid(self):
        return self.geom.centroid
@@ -274,7 +288,7 @@ class FeatureResource(SpatialResource):
     def disjoint(self, other_GEOSGeometry):
         return self.geom.disjoint(other_GEOSGeometry)
 
-    def geometry_with_parameters_type(self):
+    def operations_parameters_type(self):
         #self.dic = [   '', '', 'intersects', 'json', 'kml', 'length', 'normalize', 'num_coords', 'num_geom', 'num_points', 'ogr', 'overlaps', 'point_on_surface', 'pop', 'prepared', 'ptr', 'ptr_type', 'relate', 'relate_pattern', 'remove', 'reverse', 'ring', 'set_coords', 'set_srid', 'set_x', 'set_y', 'set_z', 'simple', 'simplify', 'sort', 'srid', 'srs', 'sym_difference', 'touches', 'transform', 'tuple', 'union', 'valid', 'valid_reason', 'within', 'wkb', 'wkt', 'x', 'y', 'z']
 
         if len(self.dic) == 0:
@@ -357,3 +371,5 @@ class FeatureResource(SpatialResource):
             self.dic['z'] = Type_Called('z', None,  float)
         return self.dic
 
+    class Meta:
+        abstract = True
