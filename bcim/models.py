@@ -809,7 +809,7 @@ class AglomeradoRuralIsolado(models.Model):
 
 
 class AldeiaIndigena(models.Model):
-    gid = models.AutoField(primary_key=True)
+    id_objeto = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
@@ -1405,17 +1405,19 @@ class Tunel(models.Model):
 
 
 class Municipio(models.Model):
-    sigla_uf = models.CharField(max_length=3, blank=True, null=True)
-    nome_uf = models.CharField(max_length=100, blank=True, null=True)
-    geocodigo_uf = models.CharField(max_length=15, blank=True, null=True)
-    municipio_nome = models.CharField(max_length=100, blank=True, null=True)
-    municipio_geocodigo = models.CharField(max_length=15, blank=True, null=True)
+    id_objeto = models.IntegerField(primary_key=True)
+    nomeabrev = models.CharField(max_length=3, blank=True, null=True)
+    nome = models.CharField(max_length=100, blank=True, null=True)
+    geocodigo = models.CharField(max_length=15, blank=True, null=True)
+    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
+    anodereferencia = models.IntegerField(blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
     class Meta:
         managed = False
-        db_table = 'uf_municipio'
+        db_table = 'lim_municipio_a'
 
 
 class BrejoPantano(models.Model):

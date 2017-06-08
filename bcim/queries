@@ -28,3 +28,10 @@ b.3) SpatialFunction
 10) <<servidor>>/ibge/bcim/unidades-federativas/MG/contains/http://172.30.10.61:8000/ibge/bcim/unidades-federativas/MG/centroid/
 11) <<servidor>>/ibge/bcim/unidades-federativas/MG/transform/3005%26True/area/
 
+Mais testes
+1) GET e Options http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/RS/
+2) GET e Options http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/RS/nome
+3) GET e Options http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/RS/nome,sigla
+4) GET e Options http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/RS/geom
+5) GET e Options http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/RS/geom/num_points
+6) GET e Options http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/ES/contains/http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159407/

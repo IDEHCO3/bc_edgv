@@ -162,7 +162,8 @@ class AbstractResource(APIView):
 
     def is_operation_and_has_parameters(self, attribute_or_method_name):
         dic = self.operations_with_parameters_type()
-        return (attribute_or_method_name in dic) and len(dic[attribute_or_method_name])
+
+        return (attribute_or_method_name in dic) and len(dic[attribute_or_method_name].parameters)
 
     def function_name(self, attributes_functions_str):
         functions_dic = self.operations_with_parameters_type()
@@ -180,16 +181,16 @@ class SpatialResource(AbstractResource):
 
     def make_geometrycollection_from_featurecollection(self, feature_collection):
         geoms = []
-        features = ast.literal_eval(feature_collection)
+        features = json.loads(feature_collection)
         for feature in features['features']:
-            feature_geom = feature['geometry']
+            feature_geom = json.dumps(feature['geometry'])
             geoms.append(GEOSGeometry(feature_geom))
         return GeometryCollection(tuple(geoms))
 
     def all_parameters_converted(self, attribute_or_function_name, parameters):
         parameters_converted = []
         if self.is_operation_and_has_parameters(attribute_or_function_name):
-            parameters_type = self.operations_with_parameters_type()[attribute_or_function_name]
+            parameters_type = self.operations_with_parameters_type()[attribute_or_function_name].parameters
             for i in range(0, len(parameters)):
                 if GEOSGeometry == parameters_type[i]:
                     geometry_dict = json.loads(parameters[i])
@@ -290,7 +291,7 @@ class SpatialResource(AbstractResource):
         j = resp.text
         attributes_functions_str = arr_of_two_url[0] + j
 
-        output = self.response_of_request(attributes_functions_str)
+        return self.response_of_request(attributes_functions_str)
 
     def response_of_request(self,  attributes_functions_str):
         att_funcs = attributes_functions_str.split('/')
@@ -307,11 +308,9 @@ class SpatialResource(AbstractResource):
             a_value = json.loads(a_value.geojson)
             return (a_value, 'application/vnd.geo+json', geom)
         elif isinstance(a_value, SpatialReference):
-           a_value = { self.function_name(att_funcs): a_value.pretty_wkt }
+           a_value = { self.name_of_last_operation_executed: a_value.pretty_wkt}
         else:
-            a_value = {
-                self.function_name(att_funcs): a_value
-            }
+            a_value = {self.name_of_last_operation_executed: a_value}
 
         return (a_value, 'application/json')
 
@@ -322,88 +321,8 @@ class FeatureResource(SpatialResource):
 
     def operations_with_parameters_type(self):
 
-        dic = {}
+        dic = geometry_operations()
 
-        dic['area'] = []
-        dic['boundary'] = []
-        dic['buffer'] = [float]
-        dic['centroid'] = []
-        dic['contains'] = [GEOSGeometry]
-        dic['convex_hull'] = []
-        dic['coord_seq'] = []
-        dic['coords'] = []
-        dic['coord_seq'] = []
-        dic['count'] = [float]
-        dic['crosses'] = [GEOSGeometry]
-        dic['crs'] = []
-        dic['difference'] = [GEOSGeometry]
-        dic['dims'] = []
-        dic['disjoint'] = [GEOSGeometry]
-        dic['distance'] = [GEOSGeometry]
-        dic['empty'] = []
-        dic['envelope'] = []
-        dic['equals'] = [GEOSGeometry]
-        dic['equals_exact'] = [GEOSGeometry]
-        dic['ewkb'] = []
-        dic['ewkt'] = []
-        dic['extend'] = []
-        dic['extent'] = [tuple]
-        dic['geojson'] = []
-        dic['geom_type'] = []
-        dic['geom_typeid'] = []
-        dic['get_coords'] = []
-        dic['get_srid'] = []
-        dic['get_x'] = []
-        dic['get_y'] = []
-        dic['get_z'] = []
-        dic['has_cs'] = []
-        dic['hasz'] = []
-        dic['hex'] = []
-        dic['hexewkb'] = []
-        dic['index'] = []
-        dic['intersection'] = [GEOSGeometry]
-        dic['intersects'] = [GEOSGeometry]
-        dic['json'] = []
-        dic['kml'] = []
-        dic['length'] = []
-        dic['normalize'] = []
-        dic['num_coords'] = []
-        dic['num_geom'] = []
-        dic['num_points'] = []
-        dic['ogr'] = []
-        dic['overlaps'] = [GEOSGeometry]
-        dic['point_on_surface'] = []
-        dic['pop'] = []
-        dic['prepared'] = []
-        dic['ptr'] = []
-        dic['ptr_type'] = []
-        dic['relate'] = [GEOSGeometry]
-        dic['relate_pattern'] = [GEOSGeometry, str]
-        dic['remove'] = [str]
-        dic['reverse'] = []
-        dic['ring'] = []
-        dic['set_coords'] = [tuple]
-        dic['set_srid'] = [int]
-        dic['set_x'] = [float]
-        dic['set_y'] = [float]
-        dic['set_z'] = []
-        dic['simple'] = []
-        dic['simplify'] = [float, bool]
-        dic['srid'] = []
-        dic['srs'] = []
-        dic['sym_difference'] = [GEOSGeometry]
-        dic['touches'] = [GEOSGeometry]
-        dic['transform'] = [int, bool]
-        dic['tuple'] = []
-        dic['union'] = [GEOSGeometry]
-        dic['valid'] = []
-        dic['valid_reason'] = [GEOSGeometry]
-        dic['within'] = []
-        dic['wkb'] = []
-        dic['wkt'] = []
-        dic['x'] = []
-        dic['y'] = []
-        dic['z'] = []
         return dic
 
     def basic_get(self, request, *args, **kwargs):
@@ -427,7 +346,7 @@ class FeatureResource(SpatialResource):
                 self._set_context_to_only_one_attribute(attributes_functions_str)
         elif self.path_has_url(attributes_functions_str.lower()):
             output = self.response_request_attributes_functions_str_with_url( attributes_functions_str)
-            self._set_context_to_object(attributes_functions_str)
+            self.context_resource.set_context_to_object(self.current_object_state, self.name_of_last_operation_executed)
         else:
             output = self.response_of_request(attributes_functions_str)
             self._set_context_to_operation(self.name_of_last_operation_executed)

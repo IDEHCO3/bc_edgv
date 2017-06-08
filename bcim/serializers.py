@@ -15,7 +15,7 @@ class MunicipioSerializer(GeoFeatureModelSerializer):
     class Meta:
         model = Municipio
         geo_field = 'geom'
-        fields = ['id_objeto', 'nome', 'nomeabrev',  'geocodigo']
+        fields = ['id_objeto', 'nome', 'nomeabrev',  'geocodigo', 'anodereferencia','geometriaaproximada']
         identifiers = ['id_objeto', 'geocodigo']
         identifier = 'id_objeto'
 
