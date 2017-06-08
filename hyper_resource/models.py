@@ -8,15 +8,8 @@ from django.contrib.gis.geos import Polygon
 from django.contrib.gis.geos.prepared import PreparedGeometry
 
 
-class Type_Called():
-    def __init__(self, a_name, params, answer):
-        self.name = a_name
-        self.parameters = params
-        self.return_type = answer
 
-    def description(self):
-        param = self.parameters or []
-        return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
+
 
 class AbstractFeatureModel(models.Model):
 

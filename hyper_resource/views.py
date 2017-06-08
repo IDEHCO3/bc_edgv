@@ -6,6 +6,8 @@ from django.contrib.gis.gdal import SpatialReference
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
+from requests import ConnectionError
+from requests import HTTPError
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -34,6 +36,7 @@ class AbstractResource(APIView):
         self.context_resource = None
         self.initialize_context()
         self.current_object_state = None
+        self.name_of_last_operation_executed = None
         self.object_model = None
 
     content_negotiation_class = IgnoreClientContentNegotiation
@@ -52,12 +55,16 @@ class AbstractResource(APIView):
     def _set_context_to_attributes(self, attribute_name_array):
         self.context_resource.set_context_to_attributes(attribute_name_array)
 
-    def _set_context_to_object(self, attribute_name):
+    def _set_context_to_only_one_attribute(self, attribute_name):
 
-        self.context_resource.set_context_to_object(self.current_object_state, attribute_name)
+        self.context_resource.set_context_to_only_one_attribute(self.current_object_state, attribute_name)
 
-    def set_context_resource(self, request ):
-        self.context_resource.model = object
+    def _set_context_to_operation(self, operation_name):
+
+        self.context_resource.set_context_to_operation(self.current_object_state, operation_name)
+
+    def set_basic_context_resource(self, request ):
+        self.context_resource.model = self.object_model
         self.context_resource.host = request.META['HTTP_HOST']
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
 
@@ -91,7 +98,7 @@ class AbstractResource(APIView):
 
     def attribute_names_model(self):
         return self.object_model.attribute_names()
-    
+
     def is_private(self, attribute_or_method_name):
         return attribute_or_method_name.startswith('__') and attribute_or_method_name.endswith('__')
 
@@ -107,7 +114,10 @@ class AbstractResource(APIView):
     def _has_method(self,  method_name):
         return hasattr(self.object_model, method_name) and callable(getattr(self.object_model, method_name))
 
-    def has_only_attribute(self,  attributes_functions_name):
+    def is_simple_path(self, attributes_functions_str):
+        return attributes_functions_str is None
+
+    def path_has_only_attributes(self,  attributes_functions_name):
         attrs_functs = attributes_functions_name.split('/')
         if len(attrs_functs) > 1:
             return False
@@ -128,7 +138,7 @@ class AbstractResource(APIView):
 
         return [attributes_functions_str_url[0:res], attributes_functions_str_url[res:]]
 
-    def attributes_functions_str_has_url(self, attributes_functions_str_url):
+    def path_has_url(self, attributes_functions_str_url):
         return (attributes_functions_str_url.find('http:') > -1) or (attributes_functions_str_url.find('https:') > -1)\
                or (attributes_functions_str_url.find('www.') > -1)
 
@@ -200,11 +210,13 @@ class SpatialResource(AbstractResource):
 
     def _value_from_object(self, object, attribute_or_function_name, parameters):
 
+        attribute_or_function_name_striped = attribute_or_function_name.strip()
+        self.name_of_last_operation_executed = attribute_or_function_name_striped
         if len(parameters):
-            params = self.all_parameters_converted(attribute_or_function_name, parameters)
-            return getattr(object, attribute_or_function_name)(*params)
+            params = self.all_parameters_converted(attribute_or_function_name_striped, parameters)
+            return getattr(object, attribute_or_function_name_striped)(*params)
 
-        return getattr(object, attribute_or_function_name)
+        return getattr(object, attribute_or_function_name_striped)
 
     def parametersConverted(self, params_as_array):
         paramsConveted = []
@@ -254,7 +266,7 @@ class SpatialResource(AbstractResource):
     def response_resquest_with_attributes(self,  attributes_functions_name):
         a_dict ={}
         attributes = attributes_functions_name.strip().split(',')
-        self.current_object = self.object_model
+        #self.current_object = self.object_model
         for attr_name in attributes:
            obj = self._value_from_object(self.object_model, attr_name, [])
 
@@ -265,6 +277,7 @@ class SpatialResource(AbstractResource):
                    return (obj, 'application/vnd.geo+json', geom)
 
            a_dict[attr_name] = obj
+        self.current_object_state = a_dict
 
         return (a_dict, 'application/json')
 
@@ -306,7 +319,6 @@ class FeatureResource(SpatialResource):
 
     def __init__(self):
         super(FeatureResource, self).__init__()
-        feature_model = None
 
     def operations_with_parameters_type(self):
 
@@ -394,35 +406,31 @@ class FeatureResource(SpatialResource):
         dic['z'] = []
         return dic
 
-    def set_model_status(self, a_const_status):
-        self.model_status = a_const_status
-
     def basic_get(self, request, *args, **kwargs):
 
         self.object_model = self.get_object(kwargs)
         self.current_object_state = self.object_model
-        self.set_context_resource(request)
+        self.set_basic_context_resource(request)
         # self.request.query_params.
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
-        if attributes_functions_str is None:
+        if self.is_simple_path(attributes_functions_str):
             serializer = self.serializer_class(self.object_model)
             output = (serializer.data, 'application/vnd.geo+json', self.object_model)
-            #self._set_context_to_model(object_model)
 
-        elif self.has_only_attribute(attributes_functions_str):
-            output = self.response_resquest_with_attributes(attributes_functions_str)
+        elif self.path_has_only_attributes(attributes_functions_str):
+            output = self.response_resquest_with_attributes(attributes_functions_str.replace(" ", ""))
             dict_attribute = output[0]
             if len(attributes_functions_str.split(',')) > 1:
                 self._set_context_to_attributes(dict_attribute.keys())
             else:
-                self._set_context_to_object(attributes_functions_str)
-        elif self.attributes_functions_str_has_url(attributes_functions_str.lower()):
+                self._set_context_to_only_one_attribute(attributes_functions_str)
+        elif self.path_has_url(attributes_functions_str.lower()):
             output = self.response_request_attributes_functions_str_with_url( attributes_functions_str)
             self._set_context_to_object(attributes_functions_str)
         else:
             output = self.response_of_request(attributes_functions_str)
-            self._set_context_to_object(attributes_functions_str.split('/')[-1])
+            self._set_context_to_operation(self.name_of_last_operation_executed)
 
         return output
 

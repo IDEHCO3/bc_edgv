@@ -3,7 +3,6 @@ from django.conf.urls import include,  url
 from rest_framework.urlpatterns import format_suffix_patterns
 from bcim import views
 
-print(views.UnidadeFederacaoDetail.contextclassname)
 urlpatterns = [
     url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
