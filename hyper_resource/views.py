@@ -33,16 +33,30 @@ class AbstractResource(APIView):
 
     def __init__(self):
         super(AbstractResource, self).__init__()
+        self.current_object_state = None
+        self.object_model = None
+        self.name_of_last_operation_executed = None
         self.context_resource = None
         self.initialize_context()
-        self.current_object_state = None
-        self.name_of_last_operation_executed = None
-        self.object_model = None
 
     content_negotiation_class = IgnoreClientContentNegotiation
 
+    #Must be override
     def initialize_context(self):
-        return ContextResource()
+        pass
+
+
+    def model_class(self):
+        return self.serializer_class.Meta.model
+
+    def attribute_names_to_web(self):
+        return self.serializer_class.Meta.fields
+
+    def fields_to_web(self):
+        atts_web = self.attribute_names_to_web()
+        fields_model = self.model_class._meta.fields
+        return [field for field in fields_model if field.name in atts_web ]
+
 
     def _base_path(self, full_path):
         arr = full_path.split('/')
@@ -64,7 +78,6 @@ class AbstractResource(APIView):
         self.context_resource.set_context_to_operation(self.current_object_state, operation_name)
 
     def set_basic_context_resource(self, request ):
-        self.context_resource.model = self.object_model
         self.context_resource.host = request.META['HTTP_HOST']
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
 
@@ -172,6 +185,9 @@ class AbstractResource(APIView):
         return str(attributes_functions_str[-2])
 
 class SpatialResource(AbstractResource):
+    # Must be override
+    def initialize_context(self):
+        pass
 
     def get_geometry_object(self, object_model):
         return getattr(object_model, self.geometry_field_name(), None)
@@ -318,6 +334,10 @@ class FeatureResource(SpatialResource):
 
     def __init__(self):
         super(FeatureResource, self).__init__()
+
+    # Must be override
+    def initialize_context(self):
+        pass
 
     def operations_with_parameters_type(self):
 

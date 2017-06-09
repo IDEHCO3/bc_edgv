@@ -1,8 +1,8 @@
-from hyper_resource.contexts import ContextResource
+from hyper_resource.contexts import FeatureContext
 
-class UnidadeFederacaoContext(ContextResource):
+class UnidadeFederacaoContext(FeatureContext):
 
-    def attributeContextualized_dict(self):
+    def attributes_contextualized_dict(self):
 
         dic_context = {            "id_objeto": { "@id": "http://schema.org/identifier", "@type": "@id"},
                                    "nome": { "@id": "http://schema.org/name", "@type": "@id"},

@@ -134,9 +134,9 @@ class UnidadeFederacaoDetail(FeatureResource):
     serializer_class = UnidadeFederacaoSerializer
     contextclassname = 'unidades-federativas'
 
-
     def initialize_context(self):
         self.context_resource = UnidadeFederacaoContext()
+        self.context_resource.resource= self
 
     def get(self, request, *args, **kwargs):
         if kwargs.get('sigla') is not None:

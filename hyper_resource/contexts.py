@@ -312,6 +312,7 @@ class ContextResource:
         self.basic_path = None
         self.host = None
         self.dict_context = None
+        self.resource = None
 
     #def attribute_name_list(self):
     #    return ( field.attname for field in self.model_class._meta.fields[:])
@@ -322,17 +323,22 @@ class ContextResource:
     def operation_names(self):
         return [method for method in dir(self) if callable(getattr(self, method)) and self.is_not_private(method)]
 
-    def attributeContextualized_dict(self, att='', writeable=True, readable=True, required=False):
-        dic = {}
-        dic["property"] = att
-        dic["writeable"] = writeable
-        dic["readable"] = readable
-        dic["required"] = required
-        return dic
+    def attribute_contextualized_dict_for(self, field):
+        voc = vocabulary(field.name)
+        res_voc = voc if voc is not None else vocabulary(type(field))
+        return { "@id": res_voc, "@type": "@id"}
+
+
+    def attributes_contextualized_dict(self):
+        dic_field = {}
+        for field_model in self.resource.fields_to_web:
+            dic_field[field_model.name] = self.attribute_contextualized_dict_for(field_model)
+        return dic_field
+
 
     def selectedAttributeContextualized_dict(self, attribute_name_array):
 
-        return {k: v for k, v in self.attributeContextualized_dict().iteritems() if k in attribute_name_array}
+        return {k: v for k, v in self.attributes_contextualized_dict().iteritems() if k in attribute_name_array}
 
     def hydraSuportedProperties(self):
         arr = [];
@@ -402,7 +408,7 @@ class ContextResource:
 
     def initalize_context(self):
         self.dict_context = {}
-        self.dict_context["@context"] = self.attributeContextualized_dict()
+        self.dict_context["@context"] = self.attributes_contextualized_dict()
         self.dict_context["hydra:supportedProperty"] = self.supportedProperties()
         self.dict_context["hydra:supportedOperations"] = self.supportedOperations()
         self.dict_context["hydra:iriTemplate"] = self.iriTemplates()
@@ -419,13 +425,13 @@ class ContextResource:
 
 class FeatureContext(ContextResource):
 
+
+
     def supportedProperties(self):
         arr_dic = [ ]
         return {arr_dic }
 
     def supportedOperations(self):
-
-
         arr_dic = [
             {"hydra:method": "GET","hydra:operation": "srs","hydra:expects":"", "hydra:returns": "",  "hydra:statusCode": ""},
             {"hydra:method": "GET","hydra:operation": "envelope","hydra:expects":"", "hydra:returns": "http://geojson.org/geojson-ld/vocab.html#geometry",  "hydra:statusCode": ""},
