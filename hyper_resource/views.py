@@ -83,6 +83,7 @@ class AbstractResource(APIView):
     def set_basic_context_resource(self, request ):
         self.context_resource.host = request.META['HTTP_HOST']
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
+        self.context_resource.complement_path = self.kwargs.values()[0]
 
     def model_class(self):
         return self.serializer_class.Meta.model
@@ -122,10 +123,10 @@ class AbstractResource(APIView):
         return not self.is_private(attribute_or_method_name)
 
     def is_operation(self, operation_name):
-        return operation_name in self.operation_names()
+        return operation_name in self.operation_names_model()
 
     def is_attribute(self, attribute_name):
-        return attribute_name in dir(self) and not callable(getattr(self, attribute_name))
+        return attribute_name in dir(self.object_model) and not callable(getattr(self.object_model, attribute_name))
 
     def _has_method(self,  method_name):
         return hasattr(self.object_model, method_name) and callable(getattr(self.object_model, method_name))
@@ -317,7 +318,7 @@ class SpatialResource(AbstractResource):
 
         obj = self.get_geometry_object(self.object_model)
 
-        if (not self.object_model.is_operation(att_funcs[0])) and self.object_model.is_attribute(att_funcs[0]):
+        if (not self.is_operation(att_funcs[0])) and self.is_attribute(att_funcs[0]):
             att_funcs = att_funcs[1:]
 
         self.current_object_state = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])

@@ -150,24 +150,24 @@ class AbstractFeatureModel(models.Model):
 
         return a_dict
 
-    def _operation_names(self):
+    def operation_names(self):
         method_names = dir(self)
         method_names.remove('objects')  # with objects the system breaks
-        return [method_name for method_name in method_names if self._is_not_private(method_name) and callable(getattr(self, method_name)) ]
+        return [method_name for method_name in method_names if self.is_not_private(method_name) and callable(getattr(self, method_name)) ]
 
-    def _attribute_names(self):
-        return [ attribute for attribute in dir(self) if not callable(getattr(self, attribute)) and self._is_not_private(attribute)]
+    def attribute_names(self):
+        return [ attribute for attribute in dir(self) if not callable(getattr(self, attribute)) and self.is_not_private(attribute)]
 
-    def _is_private(self, attribute_or_method_name):
+    def is_private(self, attribute_or_method_name):
         return attribute_or_method_name.startswith('__') and attribute_or_method_name.endswith('__')
 
-    def _is_not_private(self, attribute_or_method_name):
-        return not self._is_private(attribute_or_method_name)
+    def is_not_private(self, attribute_or_method_name):
+        return not self.is_private(attribute_or_method_name)
 
-    def _is_operation(self, operation_name):
-        return operation_name in self._operation_names()
+    def is_operation(self, operation_name):
+        return operation_name in self.operation_names()
 
-    def _is_attribute(self, attribute_name):
+    def is_attribute(self, attribute_name):
         return (attribute_name in dir(self) and not callable(getattr(self, attribute_name)))
 
     class Meta:

@@ -317,6 +317,7 @@ class ContextResource:
 
     def __init__(self):
         self.basic_path = None
+        self.complement_path = None
         self.host = None
         self.dict_context = None
         self.resource = None
@@ -457,7 +458,7 @@ class FeatureContext(ContextResource):
         iri_templates = []
         dict = {}
         dict["@type"] = "IriTemplate"
-        dict["template"] = self.host + self.basic_path + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
+        dict["template"] = self.host + self.basic_path +"/" + self.complement_path + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
         dict["mapping"] = [ {"@type": "iriTemplateMapping", "variable": "list*", "property": "hydra:property", "required": True}]
 
         iri_templates.append(dict)

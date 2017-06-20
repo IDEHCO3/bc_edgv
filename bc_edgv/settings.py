@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = '172.17.0.2'
+    os.environ['IP_SGBD'] = '10.0.0.93'
 
 if not 'PORT_SGBD' in os.environ:
-    os.environ['PORT_SGBD'] = '5432'
+    os.environ['PORT_SGBD'] = '2345'
 
 if not 'DB_NAME' in os.environ:
     os.environ['DB_NAME'] = 'idehco3'

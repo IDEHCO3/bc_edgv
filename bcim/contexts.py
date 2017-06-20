@@ -17,26 +17,6 @@ class UnidadeFederacaoContext(FeatureContext):
 
 
 
-    def iriTemplates(self):
-        iri_templates = []
-        dict = {}
-        dict["@type"] = "IriTemplate"
-        dict["template"] = self.host + self.basic_path + "{/list*}" #Ex.: http://host/unidades-federativas/nome,sigla,geom
-        dict["mapping"] = [{"@type": "iriTemplateMapping", "variable":"list*", "property": "hydra:property", "required": True} ]
-        iri_templates.append(dict)
 
-        dict = {}
-        dict["@type"] = "IriTemplate"
-        dict["template"] = self.host + self.basic_path + "{/sigla}" #Ex.: http://host/unidades-federativas/sigla
-        dict["mapping"] = [{"@type": "iriTemplateMapping", "variable":"sigla", "property": "hydra:property", "required": True} ]
-        iri_templates.append(dict)
-
-        dict = {}
-        dict["@type"] = "IriTemplate"
-        dict["template"] = self.host + self.basic_path + "{/geocodigo}"
-        dict["mapping"] = [{"@type": "iriTemplateMapping", "variable":"geocodigo", "property": "hydra:property", "required": True} ]
-        iri_templates.append(dict)
-
-        return {"iri_templates": iri_templates}
 
 
