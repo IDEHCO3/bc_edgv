@@ -52,11 +52,14 @@ class AbstractResource(APIView):
     def attribute_names_to_web(self):
         return self.serializer_class.Meta.fields
 
-    def fields_to_web(self):
-        atts_web = self.attribute_names_to_web()
-        fields_model = self.model_class._meta.fields
-        return [field for field in fields_model if field.name in atts_web ]
 
+    def fields_to_web_for_attribute_names(self, attribute_names):
+
+        fields_model = self.model_class()._meta.fields
+        return [field for field in fields_model if field.name in attribute_names ]
+
+    def fields_to_web(self):
+        return self.fields_to_web_for_attribute_names(self.attribute_names_to_web())
 
     def _base_path(self, full_path):
         arr = full_path.split('/')
@@ -341,7 +344,7 @@ class FeatureResource(SpatialResource):
 
     def operations_with_parameters_type(self):
 
-        dic = geometry_operations()
+        dic = self.object_model.operations_with_parameters_type()
 
         return dic
 

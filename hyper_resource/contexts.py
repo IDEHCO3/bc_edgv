@@ -272,13 +272,20 @@ def polygon_operations():
         return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
 
 class SupportedProperty():
-    def __init__(self, property_name='', required=False, readable=True, writeable=True, is_unique=False, is_identifier=False ):
+    def __init__(self, property_name='', required=False, readable=True, writeable=True, is_unique=False, is_identifier=False, is_external=False ):
         self.property_name = property_name
         self.required = required
         self.readable = readable
         self.writeable = writeable
         self.is_unique = is_unique
         self.is_identifier = is_identifier
+        self.is_external = is_external
+
+
+    def context(self):
+
+        return {"@type": "SupportedProperty", "hydra:property": self.property_name, "hydra:writeable": self.writeable, "hydra:readable": self.readable,
+         "hydra:required": self.required, "isUnique": self.is_unique, "isIdentifier": self.is_identifier, "isExternal": self.is_external }
 
 class SupportedOperation():
     def __init__(self, operation='', title='', method='', expects='', returns='', type='', link=''):
@@ -331,7 +338,7 @@ class ContextResource:
 
     def attributes_contextualized_dict(self):
         dic_field = {}
-        for field_model in self.resource.fields_to_web:
+        for field_model in self.resource.fields_to_web():
             dic_field[field_model.name] = self.attribute_contextualized_dict_for(field_model)
         return dic_field
 
@@ -340,25 +347,19 @@ class ContextResource:
 
         return {k: v for k, v in self.attributes_contextualized_dict().iteritems() if k in attribute_name_array}
 
-    def hydraSuportedProperties(self):
-        arr = [];
-        for  field in self.model_class._meta.fields:
-            arr.append(self.hydraSuportedProperty(field.attname, True, True, False))
-        return arr;
 
-    def generateSuportedProperties(self):
-        dic = {}
-        dic["suportedProperty"] = self.hydraSuportedProperties()
-        return dic
+    def supportedPropertyFor(self, field):
+        voc = vocabulary(field.name)
+        res_voc = voc if voc is not None else vocabulary(type(field))
+        return { "@id": res_voc, "@type": "@id"}
 
     def supportedProperties(self):
-        arr_dic = [ ]
-        return {arr_dic }
+        arr_dict = [];
+        return arr_dict
 
     def supportedOperations(self):
         arr_dic = [
-            {"hydra:method": "GET","hydra:operation": "srs","hydra:expects":"", "hydra:returns": "",  "hydra:statusCode": ""},
-            {"hydra:method": "GET","hydra:operation": "envelope","hydra:expects":"", "hydra:returns": "http://geojson.org/geojson-ld/vocab.html#geometry",  "hydra:statusCode": ""},
+
         ]
         return arr_dic
     def supportedOperationsFor(self, object):
@@ -373,6 +374,7 @@ class ContextResource:
             arr.append( SupportedOperation(operation=v_typed_called.name, title=v_typed_called.name, method='GET', expects=exps, returns=rets, type='', link=link_id))
 
         return [supportedOperation.context() for supportedOperation in arr]
+
 
     def iriTemplates(self):
         return {}
@@ -409,7 +411,7 @@ class ContextResource:
     def initalize_context(self):
         self.dict_context = {}
         self.dict_context["@context"] = self.attributes_contextualized_dict()
-        self.dict_context["hydra:supportedProperty"] = self.supportedProperties()
+        self.dict_context["hydra:supportedProperties"] = self.supportedProperties()
         self.dict_context["hydra:supportedOperations"] = self.supportedOperations()
         self.dict_context["hydra:iriTemplate"] = self.iriTemplates()
 
@@ -426,17 +428,38 @@ class ContextResource:
 class FeatureContext(ContextResource):
 
 
-
     def supportedProperties(self):
-        arr_dic = [ ]
-        return {arr_dic }
+        arr_dict = [];
+        if self.resource is None:
+            return []
+
+        for field in self.resource.fields_to_web():
+            arr_dict.append(SupportedProperty(property_name=field.attname, required=field.null, readable=True, writeable=True, is_unique=False, is_identifier=field.primary_key, is_external=False))
+        return [supportedAttribute.context() for supportedAttribute in arr_dict];
 
     def supportedOperations(self):
-        arr_dic = [
-            {"hydra:method": "GET","hydra:operation": "srs","hydra:expects":"", "hydra:returns": "",  "hydra:statusCode": ""},
-            {"hydra:method": "GET","hydra:operation": "envelope","hydra:expects":"", "hydra:returns": "http://geojson.org/geojson-ld/vocab.html#geometry",  "hydra:statusCode": ""},
-        ]
-        return arr_dic
+
+        arr = []
+        if self.resource is None:
+            return []
+        for k, v_typed_called in self.resource.operations_with_parameters_type().iteritems():
+            exps = [] if v_typed_called.parameters is None else [vocabulary(param) for param in v_typed_called.parameters]
+            rets = (vocabulary(v_typed_called.return_type) if v_typed_called.return_type in vocabularyDict()  else ("NOT FOUND"))
+            link_id = vocabulary(v_typed_called.name)
+            arr.append( SupportedOperation(operation=v_typed_called.name, title=v_typed_called.name, method='GET', expects=exps, returns=rets, type='', link=link_id))
+
+        return [supportedOperation.context() for supportedOperation in arr]
+
+    def iri_template_contextualized_dict(self):
+        pass
 
     def iriTemplates(self):
-        return {}
+        iri_templates = []
+        dict = {}
+        dict["@type"] = "IriTemplate"
+        dict["template"] = self.host + self.basic_path + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
+        dict["mapping"] = [ {"@type": "iriTemplateMapping", "variable": "list*", "property": "hydra:property", "required": True}]
+
+        iri_templates.append(dict)
+
+        return {"iri_templates": iri_templates}

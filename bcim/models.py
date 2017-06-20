@@ -1421,6 +1421,7 @@ class Municipio(models.Model):
 
 
 class BrejoPantano(models.Model):
+
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
