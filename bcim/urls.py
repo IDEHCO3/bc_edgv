@@ -15,8 +15,9 @@ urlpatterns = [
     url(r'^' + views.UnidadeFederacaoDetail.contextclassname + '/(?P<sigla>[A-Za-z]{2})/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoDetail.as_view(), name='uf_detail_si'),
 
     url(r'^unidades-federativas/$', views.UnidadeFederacaoList.as_view(), name='uf_list'),
-    url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoList.as_view(), name='uf_list_sigla_filtered'),
-    url(r'^unidades-federativas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoList.as_view(), name='aldeia_uf_spatial_filtered'),
+    #url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoList.as_view(), name='uf_list_sigla_filtered'),
+    #url(r'^unidades-federativas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoList.as_view(), name='aldeia_uf_spatial_filtered'),
+    url(r'^unidades-federativas/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoList.as_view(), name='aldeia_uf_spatial_filtered'),
 
     #aldeias indigenas
     url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_aldeia'),

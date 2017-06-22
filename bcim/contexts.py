@@ -15,8 +15,12 @@ class UnidadeFederacaoContext(FeatureContext):
 
         return dic_context
 
-
-
-
+    #def  supportedProperties(self):
+    #dic = {"hydra:supportedProperties": [
+    #    {
+    #        "hydra:writeable": true, "hydra:property": "nome", "hydra:readable": true, "isIdentifier": false, "hydra:required": true, "isExternal": false, "@type": "SupportedProperty",  "isUnique": false
+    #    }
+    #]}
+    #return dic
 
 

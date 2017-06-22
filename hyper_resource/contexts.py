@@ -15,6 +15,8 @@ from time import *
 from django.contrib.gis.geos.prepared import PreparedGeometry
 from django.db.models import *
 
+from hyper_resource.models import geometry_operations, point_operations, polygon_operations, line_operations
+
 
 class Reflection:
 
@@ -165,111 +167,7 @@ def vocabulary(a_key):
     return vocabularyDict()[a_key] if a_key in vocabularyDict() else None
 
 
-class Type_Called():
-    def __init__(self, a_name='', params=[], answer=None):
-        self.name = a_name
-        self.parameters = params
-        self.return_type = answer
 
-
-def geometry_operations():
-    dic = {}
-    if len(dic) == 0:
-        dic['area'] = Type_Called('area', [], float)
-        dic['boundary'] = Type_Called('boundary', [], float)
-        dic['buffer'] = Type_Called('buffer', [float], GEOSGeometry)
-        dic['centroid'] = Type_Called('centroid', [], Point)
-        dic['contains'] = Type_Called('contains', [GEOSGeometry], bool)
-        dic['convex_hull'] = Type_Called('convex_hull', [], Polygon)
-        dic['coord_seq'] = Type_Called('coord_seq', [], tuple)
-        dic['coords'] = Type_Called('coords', [], tuple)
-        dic['count'] = Type_Called('count', [], int)
-        dic['crosses'] = Type_Called('crosses', [GEOSGeometry], bool)
-        from django.contrib.gis.gdal import SpatialReference
-
-        dic['crs'] = Type_Called('crs', [], SpatialReference)
-        dic['difference'] = Type_Called('difference', [GEOSGeometry], GEOSGeometry)
-        dic['dims'] = Type_Called('dims', [], int)
-        dic['disjoint'] = Type_Called('disjoint', [GEOSGeometry], bool)
-        dic['distance'] = Type_Called('distance', [GEOSGeometry], float)
-        dic['empty'] = Type_Called('empty', [], bool)
-        dic['envelope'] = Type_Called('envelope', [], GEOSGeometry)
-        dic['equals'] = Type_Called('equals', [GEOSGeometry], bool)
-        dic['equals_exact'] = Type_Called('equals_exact', [GEOSGeometry, float], bool)
-        dic['ewkb'] = Type_Called('ewkb', [], str)
-        dic['ewkt'] = Type_Called('ewkt', [], str)
-        dic['extend'] = Type_Called('extend', [], tuple)
-        dic['extent'] = Type_Called('extent', [], tuple)
-        dic['geojson'] = Type_Called('geojson', [], str)
-        dic['geom_type'] = Type_Called('geom_type', [], str)
-        dic['geom_typeid'] = Type_Called('geom_typeid', [], int)
-        dic['get_coords'] = Type_Called('get_coords', [], tuple)
-        dic['get_srid'] = Type_Called('get_srid', [], str)
-        dic['get_x'] = Type_Called('get_x', [], str)
-        dic['get_y'] = Type_Called('get_y', [], str)
-        dic['get_z'] = Type_Called('get_z', [], str)
-        dic['has_cs'] = Type_Called('has_cs', [], bool)
-        dic['hasz'] = Type_Called('hasz', [], bool)
-        dic['hex'] = Type_Called('hex', [], str)
-        dic['hexewkb'] = Type_Called('hexewkb', [], str)
-        dic['index'] = Type_Called('index', [], int)
-        dic['intersection'] = Type_Called('intersection', [GEOSGeometry], GEOSGeometry)
-        dic['intersects'] = Type_Called('intersects', [GEOSGeometry], bool)
-        dic['interpolate'] = Type_Called('interpolate', [float], Point)
-        dic['json'] = Type_Called('json', [], str)
-        dic['kml'] = Type_Called('kml', [], str)
-        dic['length'] = Type_Called('length', [], float)
-        dic['normalize'] = Type_Called('normalize', [float], Point)
-        dic['num_coords'] = Type_Called('num_coords', [], int)
-        dic['num_geom'] = Type_Called('num_geom', [], int)
-        dic['num_points'] = Type_Called('num_points', [], int)
-        dic['ogr'] = Type_Called('ogr', [], OGRGeometry)
-        dic['overlaps'] = Type_Called('overlaps', [GEOSGeometry], bool)
-        dic['point_on_surface'] = Type_Called('point_on_surface', [], Point)
-        # dic['pop'] = Type_Called('pop', [], tuple)
-        # dic['prepared'] = Type_Called('prepared', [], PreparedGeometry)
-        dic['relate'] = Type_Called('relate', [GEOSGeometry], str)
-        dic['relate_pattern'] = Type_Called('relate_pattern', [GEOSGeometry, str], str)
-        dic['ring'] = Type_Called('ring', [], bool)
-        dic['set_coords'] = Type_Called('set_coords', [tuple], None)
-        dic['set_srid'] = Type_Called('set_srid', [str], None)
-        dic['set_x'] = Type_Called('set_x', [float], None)
-        dic['set_y'] = Type_Called('set_y', [float], None)
-        dic['set_z'] = Type_Called('set_z', [float], None)
-        dic['simple'] = Type_Called('simple', [], bool)
-        dic['simplify'] = Type_Called('simplify', [float, bool], GEOSGeometry)
-        dic['srid'] = Type_Called('srid', [], int)
-        dic['srs'] = Type_Called('srs', [], SpatialReference)
-        dic['sym_difference'] = Type_Called('sym_difference', [GEOSGeometry], GEOSGeometry)
-        dic['touches'] = Type_Called('touches', [GEOSGeometry], bool)
-        dic['transform'] = Type_Called('transform', [int, bool], GEOSGeometry)
-        # dic['tuple'] = Type_Called('tuple', [], tuple)
-        dic['union'] = Type_Called('union', [GEOSGeometry], GEOSGeometry)
-        dic['valid'] = Type_Called('valid', [GEOSGeometry], bool)
-        dic['valid_reason'] = Type_Called('valid_reason', [GEOSGeometry], str)
-        dic['within'] = Type_Called('within', [GEOSGeometry], bool)
-        dic['wkb'] = Type_Called('wkb', [], str)
-        dic['wkt'] = Type_Called('wkt', [], str)
-        dic['x'] = Type_Called('x', [], float)
-        dic['y'] = Type_Called('y', [], float)
-        dic['z'] = Type_Called('z', [], float)
-        return dic
-
-def point_operations():
-    dict = geometry_operations()
-    return dict
-
-def line_operations():
-    dict = geometry_operations()
-    return dict
-
-def polygon_operations():
-    dict = geometry_operations()
-    return dict
-
-    def description(self):
-        param = self.parameters or []
-        return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
 
 class SupportedProperty():
     def __init__(self, property_name='', required=False, readable=True, writeable=True, is_unique=False, is_identifier=False, is_external=False ):
@@ -327,6 +225,9 @@ class ContextResource:
 
     #def attribute_type_list(self):
     #    return ( type(field) for field in self.model_class._meta.fields[:])
+
+    def host_with_path(self):
+        return self.host + self.basic_path + "/" + self.complement_path
 
     def operation_names(self):
         return [method for method in dir(self) if callable(getattr(self, method)) and self.is_not_private(method)]
@@ -395,6 +296,7 @@ class ContextResource:
     def set_context_to_operation(self, object, operation_name):
         self.dict_context = {}
         dict = {}
+
         dict [operation_name] = { "@id": vocabulary(operation_name),"@type": "@id" }
         self.dict_context["@context"] = dict
         isGeometry = isinstance(object, GEOSGeometry)
@@ -458,7 +360,7 @@ class FeatureContext(ContextResource):
         iri_templates = []
         dict = {}
         dict["@type"] = "IriTemplate"
-        dict["template"] = self.host + self.basic_path +"/" + self.complement_path + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
+        dict["template"] = self.host_with_path() + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
         dict["mapping"] = [ {"@type": "iriTemplateMapping", "variable": "list*", "property": "hydra:property", "required": True}]
 
         iri_templates.append(dict)

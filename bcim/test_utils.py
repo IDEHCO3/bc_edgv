@@ -1,7 +1,6 @@
 from django.test import SimpleTestCase
 
 import json
-import httplib2
 
 from django.contrib.gis.geos import GEOSGeometry
 from django.http import HttpResponse

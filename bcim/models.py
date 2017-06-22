@@ -12,24 +12,6 @@ from django.contrib.gis.db import models
 from hyper_resource.models import FeatureModel, AbstractFeatureModel
 
 
-class EdifPubMilitar(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
-    nome = models.CharField(max_length=100, blank=True, null=True)
-    nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    tipoedifmil = models.CharField(max_length=26, blank=True, null=True)
-    tipousoedif = models.CharField(max_length=21, blank=True, null=True)
-    situacaofisica = models.TextField(blank=True, null=True)
-    operacional = models.CharField(max_length=12, blank=True, null=True)
-    matconstr = models.CharField(max_length=18, blank=True, null=True)
-
-
-
-    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
-    iri_style = models.CharField(max_length=1000, blank=True, null=True)
-    class Meta:
-        managed = False
-        db_table = 'adm_edif_pub_militar_a'
 
 
 class EdifPubMilitar(models.Model):
@@ -110,7 +92,7 @@ class EdifIndustrial(models.Model):
         db_table = 'eco_edif_industrial_p'
 
 
-class ExtMineral(models.Model):
+class ExtMineral_A(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -323,7 +305,7 @@ class Corredeira(models.Model):
         db_table = 'hid_corredeira_l'
 
 
-class Corredeira(models.Model):
+class Corredeira_P(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -399,7 +381,7 @@ class QuedaDagua(models.Model):
         db_table = 'hid_queda_dagua_l'
 
 
-class QuedaDagua(models.Model):
+class QuedaDagua_P(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -432,7 +414,7 @@ class Recife(models.Model):
         db_table = 'hid_recife_a'
 
 
-class Recife(models.Model):
+class Recife_P(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -465,7 +447,7 @@ class RochaEmAgua(models.Model):
         db_table = 'hid_rocha_em_agua_a'
 
 
-class RochaEmAgua(models.Model):
+class RochaEmAgua_P(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -969,7 +951,7 @@ class ElementoFisiograficoNatural(models.Model):
         db_table = 'rel_elemento_fisiografico_natural_l'
 
 
-class ElementoFisiograficoNatural(models.Model):
+class ElementoFisiograficoNatural_P(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -1271,7 +1253,7 @@ class Travessia(models.Model):
         db_table = 'tra_travessia_l'
 
 
-class Travessia(models.Model):
+class Travessia_P(models.Model):
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
@@ -1403,21 +1385,6 @@ class Tunel(models.Model):
         managed = False
         db_table = 'tra_tunel_l'
 
-
-class Municipio(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
-    nomeabrev = models.CharField(max_length=3, blank=True, null=True)
-    nome = models.CharField(max_length=100, blank=True, null=True)
-    geocodigo = models.CharField(max_length=15, blank=True, null=True)
-    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
-    anodereferencia = models.IntegerField(blank=True, null=True)
-    geom = models.GeometryField(blank=True, null=True)
-
-    iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
-    iri_style = models.CharField(max_length=1000, blank=True, null=True)
-    class Meta:
-        managed = False
-        db_table = 'lim_municipio_a'
 
 
 class BrejoPantano(models.Model):

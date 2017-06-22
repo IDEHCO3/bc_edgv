@@ -1,7 +1,17 @@
+import django
+import rest_framework
+#from rest_framework import generics
+#from rest_framework.response import Response
+#from rest_framework.views import APIView
+#from rest_framework import permissions
+#from rest_framework import permissions
+
+from django.contrib.gis.geos import Point
 from django.test import TestCase
 # Create your tests here.
-from django.test.runner import DiscoverRunner
 from django.contrib.gis.db import models
+
+from hyper_resource.models import FeatureModel, point_operations, geometry_operations
 from hyper_resource.views import AbstractResource
 from django.contrib.gis.geos import GEOSGeometry
 from django.test import SimpleTestCase
@@ -10,13 +20,13 @@ import json
 import requests
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import permissions
-from rest_framework import permissions
 
 
+from django.test.runner import DiscoverRunner
+#import os
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'bc_edgv.settings'
+#django.setup()
+#python manage.py test bcim.test_utils  --testrunner=bcim.test_utils.NoDbTestRunner
 
 class NoDbTestRunner(DiscoverRunner):
    """ A test runner to test without database creation/deletion """
@@ -27,43 +37,29 @@ class NoDbTestRunner(DiscoverRunner):
    def teardown_databases(self, old_config, **kwargs):
      pass
 
+class Ponto(FeatureModel):
+    id_objeto = models.IntegerField(primary_key=True)
+    geom = models.PointField(blank=True, null=True)
+class Linha(FeatureModel):
+    id_objeto = models.IntegerField(primary_key=True)
+    geom = models.LineStringField(blank=True, null=True)
+class Poligono(FeatureModel):
+    id_objeto = models.IntegerField(primary_key=True)
+    geom = models.PolygonField(blank=True, null=True)
+class Geometria(FeatureModel):
+    id_objeto = models.IntegerField(primary_key=True)
+    geom = models.GeometryField(blank=True, null=True)
+
+## ativando virtual environment em: source ~/desenv/env/env_bc_edgv/bin/activate
+## Testando
+# python manage.py test hyper_resource.tests  --testrunner=hyper_resource.tests.NoDbTestRunner
+##
+#python manage.py test bcim.test_utils  --testrunner=bcim.test_utils.NoDbTestRunner
+from django.test import SimpleTestCase
+#from bcim.utils import APIViewHypermedia
 #python manage.py test app --testrunner=app.filename.NoDbTestRunner
 #python manage.py test bcim.tests  --testrunner=bcim.tests.NoDbTestRunner
 #python manage.py test bcim.test_spatial_functions  --testrunner=bcim.test_spatial_functions.NoDbTestRunner
-
-class DetailTestCase(SimpleTestCase):
-    def setUp(self):
-        self.json_type = type('str')
-        self.host_base = 'http://172.30.10.61:8000'
-        #self.host_base = 'http://127.0.0.1:8001'
-        self.featureString = 'Feature'
-        self.polygonString = 'Polygon'
-        self.pointString = 'Point'
-        self.multilineString = 'MultiLineString'
-        self.lineString = 'LineString'
-    def url_feature(self):
-        return ''
-
-    def test_feature(self):
-        if len(self.url_feature())==0:
-            return True
-        an_url = self.host_base + self.url_feature()
-        req = requests.get(an_url)
-        self.assertEquals(req.json()['type'], self.featureString)
-
-class UnidadeFederacaoDetailSpatialQueryTestCase(EDGVDetailTestCase):
-    #testa se uma feature(multipoligon) contém um ponto dado em WKT
-    def test_uf_sigla_contains_point(self):
-        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/RJ/contains/POINT(-42 -21)/'
-        req = requests.get(an_url)
-        is_true = req.json().values().__iter__().__next__()== True
-        self.assertTrue(is_true)
-    #testa se uma feature(multipolygon) contém um ponto dado em geojson
-    def test_uf_sigla_contains_point_as_geojson(self):
-        an_url = self.host_base + '/instituicoes/ibge/bcim/unidades-federativas/RJ/contains/{ "type": "Point", "coordinates": [ -42, -21]}/'
-        req = requests.get(an_url)
-        is_true = req.json().values().__iter__().__next__()== True
-        self.assertTrue(is_true)
 
 
 class ModelTest(models.Model):
@@ -86,26 +82,40 @@ class TesteResource(AbstractResource):
         self.parameters = params
         self.return_type = answer
 
+
+class FeatureModelTestCase(SimpleTestCase):
+    def setUp(self):
+        self.ponto = Ponto()
+        self.linha = Linha()
+        self.poligono = Poligono()
+        self.geometria = Geometria()
+
+    def url_feature(self):
+        return ''
+
+    def test_get_geometry_type(self):
+        self.assertEquals(self.ponto.get_geometry_type(), Point)
+
+    def test_operations_with_parameters_type(self):
+        self.assertEquals(self.ponto.operations_with_parameters_type().keys(), point_operations().keys())
+
+    def test_fields(self):
+        self.assertEquals(self.ponto.fields()[0].name, 'id_objeto')
 class AbstractResourceTestCase(SimpleTestCase):
 
     def setUp(self):
-        tr = TesteResource('name', 'parameters', 'answer')
+        self.tr = TesteResource('name', 'parameters', 'answer')
 
     def test_attributes(self):
-        self.assertTrue( 'name' in self.tr.attribute_names())
-        self.assertTrue('parameters' in self.tr.attribute_names())
-
+        pass
     def test_operations(self):
-        self.assertTrue('__init__' not in self.tr.operation_names())
+        pass
 
 
 class SpatialResourceTest(SimpleTestCase):
 
     def test_attributeContextualized(self):
-        field = ModelTest._meta.fields[0]
-        self.assertTrue('id_objeto' == field.name)
-        dic = {'id_objeto': { "@id": "http://schema.org/identifier", "@type": "@id"}}
-
+        pass
 
 class FeatureResourceTest(SimpleTestCase):
 

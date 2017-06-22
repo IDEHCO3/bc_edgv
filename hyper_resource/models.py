@@ -1,6 +1,7 @@
 
 from django.contrib.gis.db import models
 # Create your models here.
+from django.contrib.gis.db.models import GeometryField
 from django.contrib.gis.gdal import OGRGeometry
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.geos import GeometryCollection
@@ -12,13 +13,31 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.geos import Polygon
 from django.contrib.gis.geos.prepared import PreparedGeometry
 
+from django.contrib.gis.db.models import GeometryField
+from django.contrib.gis.db.models import LineStringField
+from django.contrib.gis.db.models import MultiLineStringField
+from django.contrib.gis.db.models import MultiPointField
+from django.contrib.gis.db.models import MultiPolygonField
+from django.contrib.gis.db.models import PointField
+from django.contrib.gis.db.models import PolygonField
+
+def dict_map_geo_field_geometry():
+    dic = {}
+    dic[GeometryField] = GEOSGeometry
+    dic[LineStringField] = LineString
+    dic[MultiLineStringField] = MultiLineString
+    dic[MultiPointField] = MultiPoint
+    dic[MultiPolygonField] = MultiPolygon
+    dic[PointField] = Point
+    dic[PolygonField] = Polygon
+    return dic
+
 
 class Type_Called():
     def __init__(self, a_name='', params=[], answer=None):
         self.name = a_name
         self.parameters = params
         self.return_type = answer
-
 
 def geometry_operations():
     dic = {}
@@ -119,8 +138,7 @@ def polygon_operations():
         param = self.parameters or []
         return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
 
-
-def initialize_dict():
+def dict_geometry_operations():
     dict = {}
     dict[GEOSGeometry] = geometry_operations()
     dict[Point] = point_operations()
@@ -135,8 +153,8 @@ def initialize_dict():
 class AbstractFeatureModel(models.Model):
 
 
-    def _model_class(self):
-        return self.serializer_class.Meta.model
+    def model_class(self):
+        return type(self)
 
     def _key_is_identifier(self, key):
         return key in self.serializer_class.Meta.identifiers
@@ -158,6 +176,9 @@ class AbstractFeatureModel(models.Model):
     def attribute_names(self):
         return [ attribute for attribute in dir(self) if not callable(getattr(self, attribute)) and self.is_not_private(attribute)]
 
+    def fields(self):
+        return self.model_class()._meta.fields
+
     def is_private(self, attribute_or_method_name):
         return attribute_or_method_name.startswith('__') and attribute_or_method_name.endswith('__')
 
@@ -170,6 +191,9 @@ class AbstractFeatureModel(models.Model):
     def is_attribute(self, attribute_name):
         return (attribute_name in dir(self) and not callable(getattr(self, attribute_name)))
 
+    def operations_with_parameters_type(self):
+        pass
+
     class Meta:
         abstract = True
 
@@ -178,15 +202,26 @@ class FeatureModel(AbstractFeatureModel):
     class Meta:
         abstract = True
 
-    def _geo_field_name(self):
-        return 'geom'
+    def geo_field(self):
+        return [field for field in self.fields()  if  isinstance(field, GeometryField)][0]
+
+    def geo_field_name(self):
+        return self.geo_field().name
 
     def _get_geometry_object(self):
-        return getattr(self, self._geo_field_name(), None)
+        return getattr(self, self.geo_field_name(), None)
 
     def _get_type_geometry_object(self):
-        return type(self._get_geometry_object())
+        geo_object =  self._get_geometry_object()
+        if geo_object is None:
+            return None
+        return type(geo_object)
+
+    def get_geometry_type(self):
+        geoType = self._get_type_geometry_object()
+        return geoType if geoType is not None else dict_map_geo_field_geometry()[type(self.geo_field())]
+
 
     def operations_with_parameters_type(self):
-        return initialize_dict()[self._get_type_geometry_object()]
+        return dict_geometry_operations()[self.get_geometry_type()]
 

@@ -2,6 +2,7 @@ import ast
 import re
 import json
 import requests
+from django.contrib.gis.db.models.functions import AsGeoJSON
 from django.contrib.gis.gdal import SpatialReference
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -38,6 +39,8 @@ class AbstractResource(APIView):
         self.name_of_last_operation_executed = None
         self.context_resource = None
         self.initialize_context()
+        self.iri_metadata = None
+
 
     content_negotiation_class = IgnoreClientContentNegotiation
 
@@ -48,6 +51,7 @@ class AbstractResource(APIView):
 
     def model_class(self):
         return self.serializer_class.Meta.model
+        #return self.object_model.model_class()
 
     def attribute_names_to_web(self):
         return self.serializer_class.Meta.fields
@@ -55,7 +59,7 @@ class AbstractResource(APIView):
 
     def fields_to_web_for_attribute_names(self, attribute_names):
 
-        fields_model = self.model_class()._meta.fields
+        fields_model = self.object_model.fields()
         return [field for field in fields_model if field.name in attribute_names ]
 
     def fields_to_web(self):
@@ -85,8 +89,6 @@ class AbstractResource(APIView):
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
         self.context_resource.complement_path = self.kwargs.values()[0]
 
-    def model_class(self):
-        return self.serializer_class.Meta.model
 
     def key_is_identifier(self, key):
         return key in self.serializer_class.Meta.identifiers
@@ -126,7 +128,7 @@ class AbstractResource(APIView):
         return operation_name in self.operation_names_model()
 
     def is_attribute(self, attribute_name):
-        return attribute_name in dir(self.object_model) and not callable(getattr(self.object_model, attribute_name))
+        return self.object_model.is_attribute(attribute_name)
 
     def _has_method(self,  method_name):
         return hasattr(self.object_model, method_name) and callable(getattr(self.object_model, method_name))
@@ -189,6 +191,10 @@ class AbstractResource(APIView):
         return str(attributes_functions_str[-2])
 
 class SpatialResource(AbstractResource):
+
+    def __init__(self):
+        super(SpatialResource, self).__init__()
+        self.iri_style = None
     # Must be override
     def initialize_context(self):
         pass
@@ -400,29 +406,52 @@ class FeatureResource(SpatialResource):
         #return self.context_resource.context()
         return Response ( data=self.context_resource.context(), content_type='application/json' )
 
-class SpatialCollectionResource(AbstractResource):
+
+class AbstractCollectionResource(AbstractResource):
+    def __init__(self):
+        super(AbstractResource, self).__init__()
+        self.queryset = None
+
+class SpatialCollectionResource(AbstractCollectionResource):
     pass
 
 class FeatureCollectionResource(SpatialCollectionResource):
-    def get_queryset(self):
-        stFunction = self.kwargs.get("attributes_functions", None)
-        modelClass = self.serializer_class.Meta.model
 
-        if stFunction is None:  # to get query parameters
-            queryset = modelClass.objects.all()
-            query_parameters = self.request.query_params
-            dict = self.get_dict_with_spatialfunction_or_same_dict(query_parameters.dict())
-            self.queryset = queryset.filter(**dict)
+    def get_objects_serialized(self):
+        objects = self.model_class().objects.all()
+        return self.serializer_class(objects, many=True).data
 
-        else:  # to get query from url
-            geom_str_or_url = self.kwargs.get('geom')
-            aKey = self.serializer_class.Meta.geo_field + '__' + stFunction
-            aGeom = self.geos_geometry(geom_str_or_url)
 
-            if stFunction is not None:
-                self.queryset = modelClass.objects.filter(**({aKey: aGeom}))
+    def get_objects_serialized_with_only_attributes(self, attribute_names_str):
+        arr = []
+        attribute_names_str_as_array = attribute_names_str.split(',')
 
-        return self.queryset
+        values = self.model_class().objects.values(*attribute_names_str_as_array)
+        for dic in values:
+            a_dic = {}
+            for att_name in attribute_names_str_as_array:
+                a_dic[att_name] = dic[att_name] if not isinstance(dic[att_name], GEOSGeometry) else json.loads(dic[att_name].json)
+                arr.append(a_dic)
+        return arr
+
+    def response_resquest_with_only_attributes(self,  attribute_names):
+
+
+        return ('', 'application/json')
 
     def options(self, request, *args, **kwargs):
         pass
+
+    def basic_get(self, request, *args, **kwargs):
+        self.object_model = self.model_class()()
+        attributes_functions_str = self.kwargs.get("attributes_functions", None)
+
+        if self.is_simple_path(attributes_functions_str):  # to get query parameters
+            return self.get_objects_serialized()
+
+        elif self.path_has_only_attributes(attributes_functions_str):
+            return self.get_objects_serialized_with_only_attributes(attributes_functions_str)
+
+    def get(self, request, *args, **kwargs):
+        serialized_objects = self.basic_get(request, *args, **kwargs)
+        return Response(data=serialized_objects, content_type='application/json')
