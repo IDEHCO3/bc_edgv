@@ -17,6 +17,9 @@ from hyper_resource.contexts import *
 from rest_framework.negotiation import BaseContentNegotiation
 from django.contrib.gis.db import models
 
+from hyper_resource.models import feature_collection_operations
+
+
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
     def select_parser(self, request, parsers):
         """
@@ -136,6 +139,14 @@ class AbstractResource(APIView):
     def is_simple_path(self, attributes_functions_str):
         return attributes_functions_str is None
 
+    def path_has_operations(self, attributes_functions_name):
+        attrs_functs = attributes_functions_name.split('/')
+        operations = self.object_model.operation_names()
+        for att_func in attrs_functs:
+            if  att_func in operations:
+                return True
+        return False
+
     def path_has_only_attributes(self,  attributes_functions_name):
         attrs_functs = attributes_functions_name.split('/')
         if len(attrs_functs) > 1:
@@ -145,6 +156,7 @@ class AbstractResource(APIView):
         if self._has_method(attrs_functs[0]):
             return False
         return hasattr(self.object_model, attrs_functs[0])
+
 
     def attributes_functions_splitted_by_url(self, attributes_functions_str_url):
         res = attributes_functions_str_url.lower().find('http:')
@@ -412,10 +424,27 @@ class AbstractCollectionResource(AbstractResource):
         super(AbstractResource, self).__init__()
         self.queryset = None
 
+    def is_filter_operation(self, attributes_functions_str):
+        att_funcs = attributes_functions_str.split('/')
+        return len(att_funcs) > 1 and  (att_funcs[0].lower() == 'filter')
+
+    def operations_with_parameters_type(self):
+        pass
+
+    def q_objects_from_filter_operation(self, attributes_functions_str):
+        att_funcs = attributes_functions_str.split('/')
+
+
 class SpatialCollectionResource(AbstractCollectionResource):
-    pass
+
+    def path_request_is_ok(self, attributes_functions_str):
+        return True
 
 class FeatureCollectionResource(SpatialCollectionResource):
+
+
+    def operations_with_parameters_type(self):
+        return feature_collection_operations()
 
     def get_objects_serialized(self):
         objects = self.model_class().objects.all()
@@ -434,10 +463,13 @@ class FeatureCollectionResource(SpatialCollectionResource):
                 arr.append(a_dic)
         return arr
 
-    def response_resquest_with_only_attributes(self,  attribute_names):
+    def get_objects_serialized_by_filter_operation(self, attributes_functions_str):
+        pass
 
+    def get_objects_serialized_with_functions(self, attributes_functions_str):
 
-        return ('', 'application/json')
+        if self.is_filter_operation(attributes_functions_str):
+            return self.get_objects_serialized_by_filter_operation(attributes_functions_str)
 
     def options(self, request, *args, **kwargs):
         pass
@@ -447,11 +479,19 @@ class FeatureCollectionResource(SpatialCollectionResource):
         attributes_functions_str = self.kwargs.get("attributes_functions", None)
 
         if self.is_simple_path(attributes_functions_str):  # to get query parameters
-            return self.get_objects_serialized()
+            return {"data": self.get_objects_serialized(),"status": 200, "content_type": "application/json"}
 
         elif self.path_has_only_attributes(attributes_functions_str):
-            return self.get_objects_serialized_with_only_attributes(attributes_functions_str)
+            return {"data": self.get_objects_serialized_with_only_attributes(attributes_functions_str),"status": 200, "content_type": "application/json"}
+
+        elif self.path_has_url(attributes_functions_str.lower()):
+            pass
+        elif self.path_has_operations(attributes_functions_str) and self.path_request_is_ok(attributes_functions_str):
+            return {"data": self.get_objects_serialized_with_functions(attributes_functions_str),"status": 200, "content_type": "application/json"}
+
+        else:
+            return {"data": "This request has invalid attribute or operation","status": 400, "content_type": "application/json"}
 
     def get(self, request, *args, **kwargs):
-        serialized_objects = self.basic_get(request, *args, **kwargs)
-        return Response(data=serialized_objects, content_type='application/json')
+        basic_response = self.basic_get(request, *args, **kwargs)
+        return Response(data=basic_response["data"],status=basic_response["status"], content_type=basic_response["content_type"])

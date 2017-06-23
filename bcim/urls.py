@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^unidades-federativas/$', views.UnidadeFederacaoList.as_view(), name='uf_list'),
     #url(r'^unidades-federativas/(?P<siglas>\w+(\s*,\s*\w+)*)/$', views.UnidadeFederacaoList.as_view(), name='uf_list_sigla_filtered'),
     #url(r'^unidades-federativas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.UnidadeFederacaoList.as_view(), name='aldeia_uf_spatial_filtered'),
-    url(r'^unidades-federativas/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoList.as_view(), name='aldeia_uf_spatial_filtered'),
+    url(r'^unidades-federativas/(?P<attributes_functions>.*)/$', views.UnidadeFederacaoList.as_view(), name='uf_list_sigla_filtered'),
 
     #aldeias indigenas
     url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_aldeia'),
@@ -29,6 +29,7 @@ urlpatterns = [
 
 
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
+    url(r'^municipios/(?P<attributes_functions>.*)/$', views.MunicipioList.as_view(), name='uf_list_sigla_filtered'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
     url(r'^municipios/(?P<id_objeto>[0-9]*)/$', views.MunicipioDetail.as_view(), name='municipio_detail'),

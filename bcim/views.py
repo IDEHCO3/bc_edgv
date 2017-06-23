@@ -173,7 +173,7 @@ class UnidadeFederacaoList(FeatureCollectionResource):
 
         return super(UnidadeFederacaoList, self).get_queryset()
 
-class MunicipioList(HandleFunctionsList):
+class MunicipioList(FeatureCollectionResource):
 
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer

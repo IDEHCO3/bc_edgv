@@ -39,6 +39,11 @@ class Type_Called():
         self.parameters = params
         self.return_type = answer
 
+def base_operators():
+    return ['neq', 'eq','lt','lte','gt','gte','between','isnull','like','notlike','in','notin']
+def logical_operators():
+    return ['or', 'and']
+
 def geometry_operations():
     dic = {}
     if len(dic) == 0:
@@ -138,6 +143,17 @@ def polygon_operations():
         param = self.parameters or []
         return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
 
+def collection_operations():
+    dic = {}
+    dic['filter'] = Type_Called('filter', ['expression'], object)
+    dic['map'] = Type_Called('map', ['expression'], object)
+    dic['annotate'] = Type_Called('annotate', ['expression'], object)
+    return dic
+
+def feature_collection_operations():
+
+    return dict(collection_operations(), **geometry_operations())
+
 def dict_geometry_operations():
     dict = {}
     dict[GEOSGeometry] = geometry_operations()
@@ -179,6 +195,9 @@ class AbstractFeatureModel(models.Model):
     def fields(self):
         return self.model_class()._meta.fields
 
+    def field_names(self):
+        return [field.name for field in self.fields()]
+
     def is_private(self, attribute_or_method_name):
         return attribute_or_method_name.startswith('__') and attribute_or_method_name.endswith('__')
 
@@ -189,7 +208,9 @@ class AbstractFeatureModel(models.Model):
         return operation_name in self.operation_names()
 
     def is_attribute(self, attribute_name):
-        return (attribute_name in dir(self) and not callable(getattr(self, attribute_name)))
+        return attribute_name in self.field_names()
+
+        #return (attribute_name in dir(self) and not callable(getattr(self, attribute_name)))
 
     def operations_with_parameters_type(self):
         pass

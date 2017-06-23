@@ -1487,3 +1487,17 @@ class BlocoR9(models.Model):
     class Meta:
         managed = False
         db_table = 'bloco_r9'
+
+class ModeloTeste(models.Model):
+    data = models.DateField(blank=True, null=True)
+    sigla = models.CharField(max_length=2, blank=True, null=True)
+    contador = models.IntegerField(blank=True, null=True)
+    geom = models.GeometryField(srid=0, blank=True, null=True)
+    id_modelo_teste = models.IntegerField(primary_key=True)
+    tempo = models.TimeField(blank=True, null=True)
+    data_hora = models.DateTimeField(blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'modelo_teste'
