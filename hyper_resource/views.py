@@ -17,7 +17,7 @@ from hyper_resource.contexts import *
 from rest_framework.negotiation import BaseContentNegotiation
 from django.contrib.gis.db import models
 
-from hyper_resource.models import feature_collection_operations
+from hyper_resource.models import feature_collection_operations, FactoryComplexQuery
 
 
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
@@ -134,14 +134,14 @@ class AbstractResource(APIView):
         return self.object_model.is_attribute(attribute_name)
 
     def _has_method(self,  method_name):
-        return hasattr(self.object_model, method_name) and callable(getattr(self.object_model, method_name))
+        return method_name in self.operation_names_model()
 
     def is_simple_path(self, attributes_functions_str):
         return attributes_functions_str is None
 
     def path_has_operations(self, attributes_functions_name):
         attrs_functs = attributes_functions_name.split('/')
-        operations = self.object_model.operation_names()
+        operations = self.operation_names_model()
         for att_func in attrs_functs:
             if  att_func in operations:
                 return True
@@ -153,8 +153,8 @@ class AbstractResource(APIView):
             return False
         if ',' in attrs_functs[0]:
             return True
-        if self._has_method(attrs_functs[0]):
-            return False
+        if not self._has_method(attrs_functs[0]):
+            return True
         return hasattr(self.object_model, attrs_functs[0])
 
 
@@ -419,6 +419,7 @@ class FeatureResource(SpatialResource):
         return Response ( data=self.context_resource.context(), content_type='application/json' )
 
 
+
 class AbstractCollectionResource(AbstractResource):
     def __init__(self):
         super(AbstractResource, self).__init__()
@@ -431,9 +432,14 @@ class AbstractCollectionResource(AbstractResource):
     def operations_with_parameters_type(self):
         pass
 
-    def q_objects_from_filter_operation(self, attributes_functions_str):
-        att_funcs = attributes_functions_str.split('/')
 
+    def get_objects_from_filter_operation(self, attributes_functions_str):
+        att_funcs = attributes_functions_str.split('/')
+        fcq = FactoryComplexQuery().q_object_for_filter_expression(None, self.model_class(), att_funcs[1:])
+        return self.model_class().objects.filter(fcq)
+
+    def operation_names_model(self):
+        return feature_collection_operations().keys()
 
 class SpatialCollectionResource(AbstractCollectionResource):
 
@@ -449,7 +455,6 @@ class FeatureCollectionResource(SpatialCollectionResource):
     def get_objects_serialized(self):
         objects = self.model_class().objects.all()
         return self.serializer_class(objects, many=True).data
-
 
     def get_objects_serialized_with_only_attributes(self, attribute_names_str):
         arr = []
@@ -469,8 +474,9 @@ class FeatureCollectionResource(SpatialCollectionResource):
     def get_objects_serialized_with_functions(self, attributes_functions_str):
 
         if self.is_filter_operation(attributes_functions_str):
-            return self.get_objects_serialized_by_filter_operation(attributes_functions_str)
+            objects = self.get_objects_from_filter_operation(attributes_functions_str)
 
+        return self.serializer_class(objects, many=True).data
     def options(self, request, *args, **kwargs):
         pass
 

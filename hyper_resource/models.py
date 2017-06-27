@@ -1,5 +1,6 @@
-
+from datetime import date, datetime, time
 from django.contrib.gis.db import models
+from django.contrib.gis.db.models import Q
 # Create your models here.
 from django.contrib.gis.db.models import GeometryField
 from django.contrib.gis.gdal import OGRGeometry
@@ -21,6 +22,24 @@ from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.db.models import PolygonField
 
+def dict_field_to_type():
+    d = {}
+    d[models.CharField] = str
+    d[models.TextField] = str
+    d[models.IntegerField] = int
+    d[models.FloatField] = float
+    d[models.TimeField] = time
+    d[models.DateTimeField] = datetime
+    d[models.DateField] = date
+    d[GeometryField] = GEOSGeometry
+    d[LineStringField] = LineString
+    d[MultiLineStringField] = MultiLineString
+    d[MultiPointField] = MultiPoint
+    d[MultiPolygonField] = MultiPolygon
+    d[PointField] = Point
+    d[PolygonField] = Polygon
+
+    return d
 def dict_map_geo_field_geometry():
     dic = {}
     dic[GeometryField] = GEOSGeometry
@@ -32,17 +51,184 @@ def dict_map_geo_field_geometry():
     dic[PolygonField] = Polygon
     return dic
 
-
 class Type_Called():
     def __init__(self, a_name='', params=[], answer=None):
         self.name = a_name
         self.parameters = params
         self.return_type = answer
 
-def base_operators():
-    return ['neq', 'eq','lt','lte','gt','gte','between','isnull','like','notlike','in','notin']
-def logical_operators():
-    return ['or', 'and']
+class ConverterType():
+
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(ConverterType, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def convert_to_string(self, value_as_str):
+        return value_as_str
+
+    def convert_to_int(self, value_as_str):
+        return int(value_as_str)
+
+    def convert_to_float(self, value_as_str):
+        return float(value_as_str)
+
+    def convert_to_date(self, value_as_str):
+        return datetime.datetime.strptime(value_as_str, "%Y-%m-%d").date()
+
+    def convert_to_datetime(self, value_as_str):
+        return datetime.datetime.strptime(value_as_str, "%Y-%m-%d %H:%M:%S")
+
+    def convert_to_time(self, value_as_str):
+        return datetime.time.strptime(value_as_str, "%Y-%m-%d %H:%M:%S")
+
+    def convert_to_geometry(self, value_as_str):
+        pass
+
+    def operation_to_convert_value(self, a_type):
+        d = {}
+        d[str] = self.convert_to_string
+        d[int] = self.convert_to_int
+        d[float] = self.convert_to_float
+        d[date] = self.convert_to_date
+        d[datetime] = self.convert_to_datetime
+        d[time] = self.convert_to_time
+        d[models.CharField] = self.convert_to_string
+        d[models.TextField] = self.convert_to_string
+        d[models.IntegerField] = self.convert_to_int
+        d[models.FloatField] = self.convert_to_float
+        d[models.TimeField] = self.convert_to_time
+        d[models.DateTimeField] = self.convert_to_datetime
+        d[models.DateField] = self.convert_to_date
+        d[GeometryField] = self.convert_to_geometry
+
+        return d[a_type]
+
+    def value_converted(self, a_type, value):
+        object_method = self.operation_to_convert_value(a_type)
+        return object_method(value)
+
+class QObjectFactory:
+
+    def __init__(self, model_class, attribute_name, operation_or_operator, raw_value_as_str):
+        self.model_class = model_class
+        self.attribute_name = attribute_name
+        self.operation_or_operator = operation_or_operator
+        self.raw_value_as_str = raw_value_as_str
+
+    def fields(self):
+        return self.model_class._meta.fields
+
+    def field_type(self):
+        for field in self.fields():
+            if field.name == self.attribute_name:
+                return type(field)
+        return None
+
+    def convert_value_for(self, a_value):
+        converter = ConverterType()
+        return converter.value_converted(self.field_type(), a_value)
+
+    def q_object_for_in(self):
+        dc = {}
+        arr_value = self.raw_value_as_str.split(',')
+        arr_value_converted = [ self.convert_value_for(a_value) for a_value in arr_value]
+        dc[self.attribute_name + '__in'] = arr_value_converted
+        return Q(**dc)
+
+    def q_object_for_eq(self):
+        dc = {}
+        dc[self.attribute_name] = self.convert_value_for(self.raw_value_as_str)
+        return Q(**dc)
+
+    def q_object_for_neq(self):
+        dc = {}
+        dc[self.attribute_name] = self.convert_value_for(self.raw_value_as_str)
+        return ~Q(**dc)
+
+    def q_object_for_between(self):
+        dc = {}
+        arr_value = self.raw_value_as_str.split(',')
+        arr_value_converted = [self.convert_value_for(a_value) for a_value in arr_value]
+        dc[self.attribute_name + '__range'] = arr_value_converted
+        return Q(**dc)
+
+    def q_object_operation_or_operator_in_dict(self):
+        d = {}
+        d['in'] = self.q_object_for_in
+        d['eq'] = self.q_object_for_eq
+        d['neq'] = self.q_object_for_neq
+        d['between'] = self.q_object_for_between
+        return d[self.operation_or_operator]
+
+    def q_object(self):
+        object_method = self.q_object_operation_or_operator_in_dict()
+        return object_method()
+
+class FactoryComplexQuery:
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(FactoryComplexQuery, cls).__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    def fields(self, model_class):
+        return model_class._meta.fields
+
+    def field_names(self, mode_class):
+        return [field.name for field in self.fields(mode_class)]
+
+    def base_operators(self):
+        return ['neq', 'eq','lt','lte','gt','gte','between','isnull','like','notlike','in','notin']
+
+    def logical_operators(self):
+        return ['or', 'and']
+
+    def is_attribute(self, att_name, model_class):
+        return att_name in self.field_names(model_class)
+
+    def is_logical_operators(self, op):
+       return op.lower() in self.logical_operators()
+
+    def is_logical_operator_and_not_attribute(self, model_class, att_or_op):
+       return self.is_logical_operators(att_or_op) and self.is_attribute(att_or_op, model_class)
+
+    def q_object_with_logical_operator(self, q_object_expression_or_none, q_object, logical_operator_str):
+        if q_object_expression_or_none is None:
+            return q_object
+        print(logical_operator_str.lower())
+        print(logical_operator_str.lower() == 'and')
+        return (q_object_expression_or_none & q_object) if logical_operator_str.lower() == 'and' else (q_object_expression_or_none | q_object)
+
+    def expression_as_array_of_qbject(self, model_class, q_object_as_array, expression_as_array):
+        if len(expression_as_array) == 0:
+           return q_object_as_array
+
+        att_name = expression_as_array[0]
+        oper = expression_as_array[1]
+        value = expression_as_array[2]
+        qof = QObjectFactory(model_class, att_name, oper, value)
+        q_object_as_array.append(qof.q_object())
+        self.expression_as_array_of_qbject(model_class,expression_as_array[3:])
+
+    def q_object_for_filter_expression(self, q_object_or_none, model_class, expression_as_array):
+        #'sigla/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/' = ['sigla','in','rj,es,go','and','data', 'between','2017-02-01,2017-06-30']
+        if len(expression_as_array)  < 3:
+            return q_object_or_none
+
+        if self.is_attribute(expression_as_array[0], model_class):
+            qof = QObjectFactory(model_class, expression_as_array[0], expression_as_array[1], expression_as_array[2])
+            oper = qof.operation_or_operator
+        else:
+            qof = QObjectFactory(model_class, expression_as_array[1], expression_as_array[2], expression_as_array[3])
+            oper = expression_as_array[0]
+
+        q_object_expression = self.q_object_with_logical_operator(q_object_or_none, qof.q_object(), oper)
+
+        return self.q_object_for_filter_expression(q_object_expression, model_class, expression_as_array[3:])
+
 
 def geometry_operations():
     dic = {}
@@ -145,9 +331,9 @@ def polygon_operations():
 
 def collection_operations():
     dic = {}
-    dic['filter'] = Type_Called('filter', ['expression'], object)
-    dic['map'] = Type_Called('map', ['expression'], object)
-    dic['annotate'] = Type_Called('annotate', ['expression'], object)
+    dic['filter'] = Type_Called('filter', [Q], object)
+    dic['map'] = Type_Called('map', [Q], object)
+    dic['annotate'] = Type_Called('annotate', [Q], object)
     return dic
 
 def feature_collection_operations():

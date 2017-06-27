@@ -574,14 +574,14 @@ class MarcoDeLimite(models.Model):
         db_table = 'lim_marco_de_limite_p'
 
 
-class Municipio(models.Model):
-    gid = models.AutoField(primary_key=True)
+class Municipio(FeatureModel):
+    id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
-    geometriaa = models.CharField(max_length=3, blank=True, null=True)
+    geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
     geocodigo = models.CharField(max_length=15, blank=True, null=True)
-    anoderefer = models.FloatField(blank=True, null=True)
-    geom = models.MultiPolygonField(srid=4674, dim=4, blank=True, null=True)
+    anodereferencia = models.FloatField(blank=True, null=True)
+    geom = models.GeometryField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
@@ -1488,7 +1488,7 @@ class BlocoR9(models.Model):
         managed = False
         db_table = 'bloco_r9'
 
-class ModeloTeste(models.Model):
+class ModeloTeste(FeatureModel):
     data = models.DateField(blank=True, null=True)
     sigla = models.CharField(max_length=2, blank=True, null=True)
     contador = models.IntegerField(blank=True, null=True)

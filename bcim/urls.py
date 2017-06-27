@@ -27,12 +27,13 @@ urlpatterns = [
     url(r'^aldeias-indigenas/$', views.AldeiaIndigenaListFilteredByQueryParameters.as_view(), name='aldeia_indigena_list'),
     url(r'^aldeias-indigenas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.AldeiaIndigenaListFiltered.as_view(), name='aldeia_indigena_list_filtered'),
 
-
+    url(r'^' + views.MunicipioDetail.contextclassname + '/(?P<geocodigo>[0-9]{7})/(?P<attributes_functions>.*)/$', views.MunicipioDetail.as_view(), name='mun_detail_geocodigo'),
+    url(r'^' + views.MunicipioDetail.contextclassname + '/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='mun_detail_geocodigo'),
     url(r'^municipios/$', views.MunicipioList.as_view(), name='municipio_list'),
     url(r'^municipios/(?P<attributes_functions>.*)/$', views.MunicipioList.as_view(), name='uf_list_sigla_filtered'),
     url(r'^municipios/(?P<nome>[A-Za-z]+)/$', views.MunicipioFiltered.as_view(), name='municipio_list_filtered'),
-    url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
-    url(r'^municipios/(?P<id_objeto>[0-9]*)/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
+    #url(r'^municipios/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
+    #url(r'^municipios/(?P<id_objeto>[0-9]*)/$', views.MunicipioDetail.as_view(), name='municipio_detail'),
     url(r'^municipios/(?P<geocodigo>[0-9]{7})/(?P<attributes_functions>.*)/$', views.MunicipioDetail.as_view(), name='municipios_si'),
     url(r'^municipios/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.MunicipioList.as_view(), name='municipio_list_functions'),
 

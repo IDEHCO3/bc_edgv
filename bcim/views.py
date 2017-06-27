@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework import status
 
-from bcim.contexts import UnidadeFederacaoContext
+from bcim.contexts import UnidadeFederacaoContext, MunicipioContext
 from bcim.utils import *
 
 from rest_framework import permissions
@@ -187,9 +187,13 @@ class MunicipioList(FeatureCollectionResource):
 
 class MunicipioFiltered(HandleFunctionsList):
 
-    queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
     contextclassname = 'municipios'
+
+    def initialize_context(self):
+        self.context_resource = MunicipioContext()
+        self.context_resource.resource = self
+
 
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
@@ -206,12 +210,16 @@ class MunicipioFiltered(HandleFunctionsList):
 
         return self.queryset
 
-class MunicipioDetail(HandleFunctionDetail):
+class MunicipioDetail(FeatureResource):
 
     queryset = Municipio.objects.all()
     serializer_class = MunicipioSerializer
     contextclassname = 'municipios'
     lookup_field = "geocodigo"
+
+    def initialize_context(self):
+        self.context_resource = MunicipioContext()
+        self.context_resource.resource = self
 
 
 class OutrasUnidProtegidasList(HandleFunctionsList):

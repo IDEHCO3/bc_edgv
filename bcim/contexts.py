@@ -24,3 +24,5 @@ class UnidadeFederacaoContext(FeatureContext):
     #return dic
 
 
+class MunicipioContext(FeatureContext):
+    pass

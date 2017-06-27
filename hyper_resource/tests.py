@@ -11,7 +11,7 @@ from django.test import TestCase
 # Create your tests here.
 from django.contrib.gis.db import models
 
-from hyper_resource.models import FeatureModel, point_operations, geometry_operations
+from hyper_resource.models import FeatureModel, point_operations, geometry_operations, FactoryComplexQuery
 from hyper_resource.views import AbstractResource, FeatureCollectionResource
 from django.contrib.gis.geos import GEOSGeometry
 from django.test import SimpleTestCase
@@ -130,6 +130,36 @@ class FeatureResourceTest(SimpleTestCase):
     def test_options_url_with_spatia_functions(self):
         pass
 
+
+
+class FactoryComplexQueryTest(SimpleTestCase):
+    def setUp(self):
+        self.fcq = FactoryComplexQuery()
+    def test_q_object_for_in(self):
+
+        q = self.fcq.q_object_for_in(str,'sigla', ['ES,RJ'])
+        self.assertEquals(Q(sigla__in=['ES,RJ']).__repr__(), q.__repr__())
+
+    def test_q_object_for_eq(self):
+
+        q = self.fcq.q_object_for_eq(str,'sigla', 'ES')
+        self.assertEquals(Q(sigla='ES').__repr__(), q.__repr__())
+
+    def test_q_object_for_neq(self):
+
+        q = self.fcq.q_object_for_neq(str, 'sigla', 'ES')
+        self.assertEquals((~Q(sigla='ES')).__repr__(), q.__repr__())
+
+    def test_q_object_by_filter_operation(self):
+        attribute_operation_str ='filter/sigla/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/'
+        import datetime
+        start_date = datetime.date(2017, 2, 1)
+        end_date = datetime.date(2017, 6, 30)
+        q = Q(sigla__in=['rj','es','go']) & Q(data__range=(start_date, end_date))
+        model_class = ModeloTeste
+        self.fcq.q_object_serialized_by_filter_operation(attribute_operation_str, model_class)
+
+
 class FeatureCollectionResourceTest(SimpleTestCase):
     def setUp(self):
         self.attributes_functions = ['filter/sigla/in/rj,es,go/', 'filter/sigla/uppercase/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/', 'filter/sigla/in/rj,es,go/and/geom/within/{"type":"Polygon","coordinates":[[[-41.881710164667396,-21.297482165015307],[-28.840495695785098,-21.297482165015307],[-28.840495695785098,-17.886950999070834],[-41.881710164667396,-17.886950999070834],[-41.881710164667396,-21.297482165015307]]]}']
@@ -142,17 +172,20 @@ class FeatureCollectionResourceTest(SimpleTestCase):
 
     def test_get_objects_serialized_by_filter_operation(self):
         pass
+
+
     def test_q_objects_from_filter_operation(self):
-        result = self.fc.q_objects_from_filter_operation('filter/sigla/in/ES')[0]
-        self.assertEquals(result, Q(sigla='ES'))
-        result = self.fc.q_objects_from_filter_operation('filter/sigla/in/ES/')[0]
-        self.assertEquals(result, Q(sigla='ES'))
+
+        result = self.fc.q_objects_from_filter_operation('filter/sigla/eq/ES')[0]
+        self.assertEquals(result.__repr__(), Q(sigla='ES').__repr__())
+        result = self.fc.q_objects_from_filter_operation('filter/sigla/eq/ES/')[0]
+        self.assertEquals(result.__repr__(), Q(sigla='ES').__repr__())
         result = self.fc.q_objects_from_filter_operation('filter/sigla/in/ES,RJ')[0]
-        self.assertEquals(result, Q(sigla='ES,RJ'))
+        self.assertEquals(result.__repr__(), Q(sigla__in=['ES,RJ']).__repr__())
         result = self.fc.q_objects_from_filter_operation('filter/sigla/in/ES,RJ/')[0]
-        self.assertEquals(result, Q(sigla='ES,RJ'))
+        self.assertEquals(result, Q(sigla__in=['ES,RJ']))
         result1 = self.fc.q_objects_from_filter_operation('filter/sigla/in/ES,RJ/and/data/between/2017-02-01,2017-06-30')[0]
         result2 = self.fc.q_objects_from_filter_operation('filter/sigla/in/ES,RJ/and/data/between/2017-02-01,2017-06-30')[1]
-        self.assertEquals(result1, Q(sigla='ES,RJ'))
+        self.assertEquals(result1, Q(sigla__in=['ES,RJ']))
         self.assertEquals(result2, Q(data='ES,RJ'))
 
