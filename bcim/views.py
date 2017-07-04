@@ -320,19 +320,19 @@ class AglomeradoRuralIsoladoDetail(HandleFunctionDetail):
     serializer_class = AglomeradoRuralIsoladoSerializer
     contextclassname = 'aglomerados-rurais-isolado'
 
-class AldeiaIndigenaList(HandleFunctionsList):
+class AldeiaIndigenaList(FeatureCollectionResource):
 
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
     contextclassname = 'aldeias-indigenas'
 
-class AldeiaIndigenaListFiltered(HandleFunctionsList):
+class AldeiaIndigenaListFiltered(FeatureCollectionResource):
 
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
     contextclassname = 'aldeias-indigenas'
 
-class AldeiaIndigenaListFilteredByQueryParameters(HandleFunctionsList):
+class AldeiaIndigenaListFilteredByQueryParameters(FeatureCollectionResource):
 
     serializer_class = AldeiaIndigenaSerializer
     contextclassname = 'aldeias-indigenas'

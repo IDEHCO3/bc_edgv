@@ -24,8 +24,8 @@ urlpatterns = [
     url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<attributes_functions>.*)/$', views.AldeiaIndigenaDetail.as_view(), name='uf_detail_si'),
     #url(r'^aldeias-indigenas/(?P<id_objeto>[0-9]+)/(?P<attributes_functions_1>[A-Za-z]+)/(?P<param_1>.+)/$', views.AldeiaIndigenaDetail.as_view(), name='aldeia_detail_with_param_sf'),
     #collection
-    url(r'^aldeias-indigenas/$', views.AldeiaIndigenaListFilteredByQueryParameters.as_view(), name='aldeia_indigena_list'),
-    url(r'^aldeias-indigenas/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/$', views.AldeiaIndigenaListFiltered.as_view(), name='aldeia_indigena_list_filtered'),
+    url(r'^aldeias-indigenas/$', views.AldeiaIndigenaList.as_view(), name='aldeia_indigena_list'),
+    url(r'^aldeias-indigenas/(?P<attributes_functions>.*)/$', views.AldeiaIndigenaList.as_view(), name='aldeia_indigena_list_filtered'),
 
     url(r'^' + views.MunicipioDetail.contextclassname + '/(?P<geocodigo>[0-9]{7})/(?P<attributes_functions>.*)/$', views.MunicipioDetail.as_view(), name='mun_detail_geocodigo'),
     url(r'^' + views.MunicipioDetail.contextclassname + '/(?P<geocodigo>[0-9]{7})/$', views.MunicipioDetail.as_view(), name='mun_detail_geocodigo'),

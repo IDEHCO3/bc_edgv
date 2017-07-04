@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 
 from django.contrib.gis.db import models
 
-from hyper_resource.models import FeatureModel, AbstractFeatureModel
+from hyper_resource.models import FeatureModel
 
 
 
@@ -790,7 +790,7 @@ class AglomeradoRuralIsolado(models.Model):
         db_table = 'loc_aglomerado_rural_isolado_p'
 
 
-class AldeiaIndigena(models.Model):
+class AldeiaIndigena(FeatureModel):
     id_objeto = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)

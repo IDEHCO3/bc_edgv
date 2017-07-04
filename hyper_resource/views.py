@@ -133,6 +133,8 @@ class AbstractResource(APIView):
     def is_attribute(self, attribute_name):
         return self.object_model.is_attribute(attribute_name)
 
+    def is_spatial_attribute(self, attribute_name):
+        return False
     def _has_method(self,  method_name):
         return method_name in self.operation_names_model()
 
@@ -153,8 +155,8 @@ class AbstractResource(APIView):
             return False
         if ',' in attrs_functs[0]:
             return True
-        if not self._has_method(attrs_functs[0]):
-            return True
+        if self._has_method(attrs_functs[0]):
+            return False
         return hasattr(self.object_model, attrs_functs[0])
 
 
@@ -361,6 +363,9 @@ class FeatureResource(SpatialResource):
     def initialize_context(self):
         pass
 
+    def is_spatial_attribute(self, attribute_name):
+        return self.model.geo_field_name() == attribute_name.lower()
+
     def operations_with_parameters_type(self):
 
         dic = self.object_model.operations_with_parameters_type()
@@ -425,18 +430,46 @@ class AbstractCollectionResource(AbstractResource):
         super(AbstractResource, self).__init__()
         self.queryset = None
 
-    def is_filter_operation(self, attributes_functions_str):
+    def token_str_is_http_or_www(self, string):
+        term = string.lower()
+        return term == 'http:' or term == 'https:' or term == 'www.'
+    def token_is_http_or_https(self, token_str):
+        return  token_str.lower() in ['http:', 'https:']
+
+    def logical_operators(self):
+        return FactoryComplexQuery().logical_operators()
+
+    def attributes_functions_str_is_filter_with_spatial_operation(self, attributes_functions_str):
+
+        arr_str = attributes_functions_str.split('/')[1:]
+
+        geom_ops = geometry_operations()
+
+        for str in arr_str:
+            if self.is_spatial_attribute(str):
+              ind = arr_str.index(str)
+              if ind +1 <= len(arr_str):
+                return arr_str[ind + 1] in geom_ops()
+
+        return False
+
+    def path_has_filter_operation(self, attributes_functions_str):
         att_funcs = attributes_functions_str.split('/')
         return len(att_funcs) > 1 and  (att_funcs[0].lower() == 'filter')
 
     def operations_with_parameters_type(self):
         pass
 
+    def q_object_for_filter_array_of_terms(self, array_of_terms):
+        return FactoryComplexQuery().q_object_for_filter_expression(None, self.model_class(), array_of_terms)
+
+    def q_object_for_filter_expression(self, attributes_functions_str):
+        att_funcs = attributes_functions_str.split('/')
+        return self.q_object_for_filter_array_of_terms(None, att_funcs[1:])
 
     def get_objects_from_filter_operation(self, attributes_functions_str):
-        att_funcs = attributes_functions_str.split('/')
-        fcq = FactoryComplexQuery().q_object_for_filter_expression(None, self.model_class(), att_funcs[1:])
-        return self.model_class().objects.filter(fcq)
+        q_object = self.q_object_for_filter_expression(attributes_functions_str)
+        return self.model_class().objects.filter(q_object)
 
     def operation_names_model(self):
         return feature_collection_operations().keys()
@@ -446,8 +479,36 @@ class SpatialCollectionResource(AbstractCollectionResource):
     def path_request_is_ok(self, attributes_functions_str):
         return True
 
+    def geometry_field_name(self):
+        return self.serializer_class.Meta.geo_field
+
 class FeatureCollectionResource(SpatialCollectionResource):
 
+    def geometry_operations(self):
+        return geometry_operations()
+
+    def geometry_field_name(self):
+        return self.serializer_class.Meta.geo_field
+
+    def is_spatial_attribute(self, attribute_name):
+        return attribute_name == self.geometry_field_name()
+
+    def is_spatial_operation(self, operation_name):
+        return operation_name in self.geometry_operations()
+
+    def path_has_only_spatial_operation(self, attributes_functions_str):
+
+        att_funcs = attributes_functions_str.split('/')
+        spatial_operation_names = self.geometry_operations().keys()
+
+        if (len(att_funcs) > 1 and (att_funcs[0].lower() in spatial_operation_names)):
+           return True
+
+        return  (att_funcs[1].lower() in spatial_operation_names)
+
+    def is_filter_with_spatial_operation(self, attributes_functions_str):
+        att_funcs = attributes_functions_str.split('/')
+        return (len(att_funcs) > 1 and (att_funcs[0].lower() in self.geometry_operations().keys())) or self.attributes_functions_str_is_filter_with_spatial_operation(attributes_functions_str)
 
     def operations_with_parameters_type(self):
         return feature_collection_operations()
@@ -456,7 +517,66 @@ class FeatureCollectionResource(SpatialCollectionResource):
         objects = self.model_class().objects.all()
         return self.serializer_class(objects, many=True).data
 
-    def get_objects_serialized_with_only_attributes(self, attribute_names_str):
+    def get_objects_from_from_spatial_operation(self, array_of_terms):
+        q_object = self.q_object_for_filter_array_of_terms(array_of_terms)
+        return self.model_class().objects.filter(q_object)
+
+    def is_end_of_term(self,term):
+        return term in self.logical_operators()
+
+    def inject_geometry_attribute_in_spatial_operation_for_path(self, arr_of_term):
+        indexes = []
+        for term in arr_of_term:
+            if term in self.geometry_operations():
+                indexes.append(arr_of_term.index(term))
+        for i in indexes:
+            arr_of_term.insert(i, self.geometry_field_name())
+
+        return arr_of_term
+
+    def transform_path_with_spatial_operation_str_and_url_as_array(self, arr_of_term):
+
+        arr = []
+        http_str = ''
+        is_end_of_url = False
+        is_part_of_url = False
+        if '' in  arr_of_term:
+            arr_of_term.remove('')
+
+        for token in arr_of_term:
+            if self.token_is_http_or_https(token):
+               http_str += token + '//'
+               is_part_of_url = True
+               is_not_end_of_url = False
+               continue
+
+            is_end_of_url = (self.is_end_of_term(token) or (arr_of_term.index(token) == len(arr_of_term)))
+
+            if  is_end_of_url:
+                arr.append(token)
+                continue
+            else:
+                arr.append(http_str)
+            if is_part_of_url  and is_end_of_url:
+                arr.append(token)
+
+
+        return arr
+
+    def path_has_geometry_attribute(self, term_of_path):
+        return term_of_path.lower() == self.geometry_field_name()
+
+    def get_objects_with_spatial_operation_serialized(self, attributes_functions_str):
+        att_func_arr = attributes_functions_str.split('/')
+        arr = att_func_arr
+        if self.is_spatial_operation(att_func_arr[0]) and not self.path_has_geometry_attribute(att_func_arr[0]):
+            if self.path_has_url(attributes_functions_str):
+                arr = self.transform_path_with_spatial_operation_str_and_url_as_array(att_func_arr)
+                arr = self.inject_geometry_attribute_in_spatial_operation_for_path(arr)
+        objects = self.get_objects_from_from_spatial_operation(arr)
+        return self.serializer_class(objects, many=True).data
+
+    def get_objects_serialized_by_only_attributes(self, attribute_names_str):
         arr = []
         attribute_names_str_as_array = attribute_names_str.split(',')
 
@@ -468,15 +588,16 @@ class FeatureCollectionResource(SpatialCollectionResource):
                 arr.append(a_dic)
         return arr
 
-    def get_objects_serialized_by_filter_operation(self, attributes_functions_str):
-        pass
 
-    def get_objects_serialized_with_functions(self, attributes_functions_str):
+    def get_objects_serialized_by_functions(self, attributes_functions_str):
 
-        if self.is_filter_operation(attributes_functions_str):
+        objects = []
+        if self.path_has_filter_operation(attributes_functions_str) or self.path_has_spatial_operation(attributes_functions_str) or  self.is_filter_with_spatial_operation(attributes_functions_str):
             objects = self.get_objects_from_filter_operation(attributes_functions_str)
 
+
         return self.serializer_class(objects, many=True).data
+
     def options(self, request, *args, **kwargs):
         pass
 
@@ -488,12 +609,16 @@ class FeatureCollectionResource(SpatialCollectionResource):
             return {"data": self.get_objects_serialized(),"status": 200, "content_type": "application/json"}
 
         elif self.path_has_only_attributes(attributes_functions_str):
-            return {"data": self.get_objects_serialized_with_only_attributes(attributes_functions_str),"status": 200, "content_type": "application/json"}
+            return {"data": self.get_objects_serialized_by_only_attributes(attributes_functions_str),"status": 200, "content_type": "application/json"}
 
-        elif self.path_has_url(attributes_functions_str.lower()):
-            pass
+        #elif self.path_has_url(attributes_functions_str.lower()):
+        #    pass
+        elif self.path_has_only_spatial_operation(attributes_functions_str):
+            return {"data": self.get_objects_with_spatial_operation_serialized(attributes_functions_str), "status": 200,
+                    "content_type": "application/json"}
+
         elif self.path_has_operations(attributes_functions_str) and self.path_request_is_ok(attributes_functions_str):
-            return {"data": self.get_objects_serialized_with_functions(attributes_functions_str),"status": 200, "content_type": "application/json"}
+            return {"data": self.get_objects_serialized_by_functions(attributes_functions_str),"status": 200, "content_type": "application/json"}
 
         else:
             return {"data": "This request has invalid attribute or operation","status": 400, "content_type": "application/json"}

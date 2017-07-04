@@ -1,4 +1,6 @@
 from datetime import date, datetime, time
+
+import requests
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models import Q
 # Create your models here.
@@ -21,6 +23,9 @@ from django.contrib.gis.db.models import MultiPointField
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.db.models import PolygonField
+from requests import ConnectionError
+from requests import HTTPError
+
 
 def dict_field_to_type():
     d = {}
@@ -66,8 +71,22 @@ class ConverterType():
             cls._instance = super(ConverterType, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
+    def value_has_url(self, value_str):
+        return (value_str.find('http:\\') > -1) or (value_str.find('https:') > -1) or (value_str.find('www.') > -1)
+
+    def get_geometry_json_from_request(self, url_as_str):
+        resp = requests.get(url_as_str)
+        if 400 <= resp.status_code <= 599:
+            raise HTTPError({resp.status_code: resp.reason})
+        js = resp.json()
+
+        if (js.get("type") and js["type"].lower() in ['feature', 'featurecollection']):
+            a_geom = js["geometry"]
+        else:
+            a_geom = js
+
     def convert_to_string(self, value_as_str):
-        return value_as_str
+        return str(value_as_str)
 
     def convert_to_int(self, value_as_str):
         return int(value_as_str)
@@ -85,7 +104,13 @@ class ConverterType():
         return datetime.time.strptime(value_as_str, "%Y-%m-%d %H:%M:%S")
 
     def convert_to_geometry(self, value_as_str):
-        pass
+        try:
+            if self.value_has_url(value_as_str):
+                return GEOSGeometry(self.get_geometry_json_from_request(value_as_str))
+            return GEOSGeometry(value_as_str)
+        except (ValueError, ConnectionError, HTTPError) as err:
+            print('Error: '.format(err))
+
 
     def operation_to_convert_value(self, a_type):
         d = {}
@@ -103,6 +128,13 @@ class ConverterType():
         d[models.DateTimeField] = self.convert_to_datetime
         d[models.DateField] = self.convert_to_date
         d[GeometryField] = self.convert_to_geometry
+        d[PolygonField] = self.convert_to_geometry
+        d[LineStringField] = self.convert_to_geometry
+        d[PointField] = self.convert_to_geometry
+        d[MultiPolygonField] = self.convert_to_geometry
+        d[MultiLineString] = self.convert_to_geometry
+        d[MultiPointField] = self.convert_to_geometry
+
 
         return d[a_type]
 
@@ -131,12 +163,19 @@ class QObjectFactory:
         converter = ConverterType()
         return converter.value_converted(self.field_type(), a_value)
 
-    def q_object_for_in(self):
+
+    def q_object_base_range(self, oper_operation):
         dc = {}
         arr_value = self.raw_value_as_str.split(',')
         arr_value_converted = [ self.convert_value_for(a_value) for a_value in arr_value]
-        dc[self.attribute_name + '__in'] = arr_value_converted
+        dc[self.attribute_name + '__' + oper_operation] = arr_value_converted
         return Q(**dc)
+
+    def q_object_for_in(self):
+        return self.q_object_base_range('in')
+
+    def q_object_for_between(self):
+        return self.q_object_base_range('range')
 
     def q_object_for_eq(self):
         dc = {}
@@ -148,11 +187,9 @@ class QObjectFactory:
         dc[self.attribute_name] = self.convert_value_for(self.raw_value_as_str)
         return ~Q(**dc)
 
-    def q_object_for_between(self):
+    def q_object_for_spatial_operation(self):
         dc = {}
-        arr_value = self.raw_value_as_str.split(',')
-        arr_value_converted = [self.convert_value_for(a_value) for a_value in arr_value]
-        dc[self.attribute_name + '__range'] = arr_value_converted
+        dc[self.attribute_name] = self.convert_value_for(self.raw_value_as_str)
         return Q(**dc)
 
     def q_object_operation_or_operator_in_dict(self):
@@ -161,7 +198,8 @@ class QObjectFactory:
         d['eq'] = self.q_object_for_eq
         d['neq'] = self.q_object_for_neq
         d['between'] = self.q_object_for_between
-        return d[self.operation_or_operator]
+
+        return d.get(self.operation_or_operator, self.q_object_for_spatial_operation())
 
     def q_object(self):
         object_method = self.q_object_operation_or_operator_in_dict()
@@ -182,9 +220,10 @@ class FactoryComplexQuery:
 
     def base_operators(self):
         return ['neq', 'eq','lt','lte','gt','gte','between','isnull','like','notlike','in','notin']
+        #'*neq', '*eq','*lt','*lte','*gt','*gte','*between','*isnull','*like','*notlike','*in','*notin']
 
     def logical_operators(self):
-        return ['or', 'and']
+        return ['or', 'and', '*or', '*and']
 
     def is_attribute(self, att_name, model_class):
         return att_name in self.field_names(model_class)
@@ -198,20 +237,8 @@ class FactoryComplexQuery:
     def q_object_with_logical_operator(self, q_object_expression_or_none, q_object, logical_operator_str):
         if q_object_expression_or_none is None:
             return q_object
-        print(logical_operator_str.lower())
-        print(logical_operator_str.lower() == 'and')
+
         return (q_object_expression_or_none & q_object) if logical_operator_str.lower() == 'and' else (q_object_expression_or_none | q_object)
-
-    def expression_as_array_of_qbject(self, model_class, q_object_as_array, expression_as_array):
-        if len(expression_as_array) == 0:
-           return q_object_as_array
-
-        att_name = expression_as_array[0]
-        oper = expression_as_array[1]
-        value = expression_as_array[2]
-        qof = QObjectFactory(model_class, att_name, oper, value)
-        q_object_as_array.append(qof.q_object())
-        self.expression_as_array_of_qbject(model_class,expression_as_array[3:])
 
     def q_object_for_filter_expression(self, q_object_or_none, model_class, expression_as_array):
         #'sigla/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/' = ['sigla','in','rj,es,go','and','data', 'between','2017-02-01,2017-06-30']
@@ -229,6 +256,21 @@ class FactoryComplexQuery:
 
         return self.q_object_for_filter_expression(q_object_expression, model_class, expression_as_array[3:])
 
+    def q_object_for_spatial_expression(self, q_object_or_none, model_class, expression_as_array):
+        #'geom/within/Polygon(10,10, 30, 30, 40, 40 , 10 10)/and/data/between/2017-02-01,2017-06-30/' = ['sigla','in','rj,es,go','and','data', 'between','2017-02-01,2017-06-30']
+        if len(expression_as_array)  < 3:
+            return q_object_or_none
+
+        if self.is_attribute(expression_as_array[0], model_class):
+            qof = QObjectFactory(model_class, expression_as_array[0], expression_as_array[1], expression_as_array[2])
+            oper = qof.operation_or_operator
+        else:
+            qof = QObjectFactory(model_class, expression_as_array[1], expression_as_array[2], expression_as_array[3])
+            oper = expression_as_array[0]
+
+        q_object_expression = self.q_object_with_logical_operator(q_object_or_none, qof.q_object(), oper)
+
+        return self.q_object_for_filter_expression(q_object_expression, model_class, expression_as_array[3:])
 
 def geometry_operations():
     dic = {}
@@ -336,6 +378,42 @@ def collection_operations():
     dic['annotate'] = Type_Called('annotate', [Q], object)
     return dic
 
+def spatial_collection_operations():
+    d = collection_operations()
+    d['bbcontains'] = Type_Called('bbcontains', [GEOSGeometry], bool)
+    d['bboverlaps'] = Type_Called('bbcontains', [GEOSGeometry], bool)
+    d['contained']  = Type_Called('contained', [GEOSGeometry], bool)
+    d['contains']  = Type_Called('contains', [GEOSGeometry], bool)
+    d['contains_properly'] = Type_Called('contains_properly', [GEOSGeometry], bool)
+    d['coveredby'] = Type_Called('coveredby', [GEOSGeometry], bool)
+    d['covers']= Type_Called('covers', [GEOSGeometry], bool)
+    d['crosses'] = Type_Called('crosses', [GEOSGeometry], bool)
+    d['disjoint']= Type_Called('disjoint', [GEOSGeometry], bool)
+    d['equals'] = Type_Called('equals', [GEOSGeometry], bool)
+    d['exact'] = Type_Called('exact', [GEOSGeometry], bool)
+    d['same_as'] = Type_Called('same_as', [GEOSGeometry], bool)
+    d['intersects']  = Type_Called('intersects', [GEOSGeometry], bool)
+    d['isvalid']  = Type_Called('isvalid', [GEOSGeometry], bool)
+    d['overlaps'] = Type_Called('overlaps', [GEOSGeometry], bool)
+    d['relate'] = Type_Called('relate', [tuple], bool)
+    d['touches'] = Type_Called('touches', [GEOSGeometry], bool)
+    d['within'] = Type_Called('within', [GEOSGeometry], bool)
+    d['left'] = Type_Called('left', [GEOSGeometry], bool)
+    d['right'] = Type_Called('right', [GEOSGeometry], bool)
+    d['overlaps_left']  = Type_Called('overlaps_left', [GEOSGeometry], bool)
+    d['overlaps_right'] = Type_Called('overlaps_right', [GEOSGeometry], bool)
+    d['overlaps_above'] = Type_Called('overlaps_above', [GEOSGeometry], bool)
+    d['overlaps_below'] = Type_Called('overlaps_below', [GEOSGeometry], bool)
+    d['strictly_above'] = Type_Called('strictly_above', [GEOSGeometry], bool)
+    d['strictly_below'] = Type_Called('strictly_below', [GEOSGeometry], bool)
+    d['distance_gt'] = Type_Called('distance_gt', [GEOSGeometry], bool)
+    d['distance_gte'] = Type_Called('distance_gte', [GEOSGeometry], bool)
+    d['distance_lt'] = Type_Called('distance_lt', [GEOSGeometry], bool)
+    d['distance_lte'] = Type_Called('distance_lte', [GEOSGeometry], bool)
+    d['dwithin'] = Type_Called('dwithin', [GEOSGeometry], bool)
+
+    return d
+
 def feature_collection_operations():
 
     return dict(collection_operations(), **geometry_operations())
@@ -352,7 +430,8 @@ def dict_geometry_operations():
     dict[GeometryCollection] = geometry_operations()
     return dict
 
-class AbstractFeatureModel(models.Model):
+
+class BusinessModel(models.Model):
 
 
     def model_class(self):
@@ -404,22 +483,26 @@ class AbstractFeatureModel(models.Model):
     class Meta:
         abstract = True
 
-class FeatureModel(AbstractFeatureModel):
+class FeatureModel(BusinessModel):
+
+    geometry_object = None
 
     class Meta:
         abstract = True
 
     def geo_field(self):
-        return [field for field in self.fields()  if  isinstance(field, GeometryField)][0]
+        return [field for field in self.fields() if isinstance(field, GeometryField)][0]
 
     def geo_field_name(self):
         return self.geo_field().name
 
-    def _get_geometry_object(self):
-        return getattr(self, self.geo_field_name(), None)
+    def get_geometry_object(self):
+        if self.geometry_object == None:
+            self.geometry_object = getattr(self, self.geo_field_name(), None)
+        return self.geometry_object
 
     def _get_type_geometry_object(self):
-        geo_object =  self._get_geometry_object()
+        geo_object = self.get_geometry_object()
         if geo_object is None:
             return None
         return type(geo_object)
@@ -428,7 +511,234 @@ class FeatureModel(AbstractFeatureModel):
         geoType = self._get_type_geometry_object()
         return geoType if geoType is not None else dict_map_geo_field_geometry()[type(self.geo_field())]
 
-
     def operations_with_parameters_type(self):
         return dict_geometry_operations()[self.get_geometry_type()]
 
+    def centroid(self):
+        return self.get_geometry_object().centroid
+
+    def ring(self):
+        return self.get_geometry_object().ring
+
+    def crs(self):
+        return self.get_geometry_object().crs
+
+    def wkt(self):
+        return self.get_geometry_object().wkt
+
+    def srs(self):
+        return self.get_geometry_object().srs
+
+    def hexewkb(self):
+        return self.get_geometry_object().hexewkb
+
+    def equals_exact(self, other_GEOSGeometry, tolerance=0):
+        return self.get_geometry_object().equals_exact(other_GEOSGeometry, tolerance)
+
+    def set_srid(self, a_srid):
+        return self.get_geometry_object().set_srid(a_srid)
+
+    def hex(self):
+        return self.get_geometry_object().hex
+
+    def has_cs(self):
+        return self.get_geometry_object().has_cs
+
+    def area(self):
+        return self.get_geometry_object().area
+
+    def extend(self):
+        return self.get_geometry_object().extend
+
+    def wkb(self):
+        return self.get_geometry_object().wkb
+
+    def geojson(self):
+        return self.get_geometry_object().geojson
+
+    def relate(self, other_GEOSGeometry, pattern):
+        return self.get_geometry_object().relate(other_GEOSGeometry, pattern)
+
+    def set_coords(self, coords):
+        return self.get_geometry_object().set_coords(coords)
+
+    def simple(self):
+        return self.get_geometry_object().simple
+
+    def simplify(self):
+        return self.get_geometry_object().simplify
+
+
+    def geom_type(self):
+        return self.get_geometry_object().geom_type
+
+    def set_y(self, y):
+        return self.get_geometry_object().set_y(y)
+
+    def normalize(self):
+        return self.get_geometry_object().normalize
+
+    def sym_difference(self, other_GEOSGeometry):
+        return self.get_geometry_object().sym_difference(other_GEOSGeometry)
+
+    def valid_reason(self):
+        return self.get_geometry_object().valid_reason
+
+    def geom_typeid(self):
+        return self.get_geometry_object().geom_typeid
+
+    def valid(self):
+        return self.get_geometry_object().valid
+
+    def ogr(self):
+        return self.get_geometry_object().ogr
+
+    def coords(self):
+        return self.get_geometry_object().coords
+
+    def num_coords(self):
+        return self.get_geometry_object().num_coords
+
+    def get_srid(self):
+        return self.get_geometry_object().get_srid
+
+    def distance(self, other_GEOSGeometry):
+        return self.get_geometry_object().distance(other_GEOSGeometry)
+
+    def json(self):
+        return self.get_geometry_object().json
+
+    def pop(self):
+        return self.get_geometry_object().pop
+
+    def ewkb(self):
+        return self.get_geometry_object().ewkb
+
+    def x(self):
+        return self.get_geometry_object().x
+
+    def simplify(self, tolerance=0.0, preserve_topology=False):
+        return self.get_geometry_object().simplify(tolerance=0.0, preserve_topology=False)
+
+    def set_z(self):
+        return self.get_geometry_object().set_z
+
+    def buffer(self, width, quadsegs=8):
+        return self.get_geometry_object().buffer(width, quadsegs)
+
+    def relate_pattern(self, other_GEOSGeometry, pattern):
+        return self.get_geometry_object().relate_pattern(other_GEOSGeometry, pattern)
+
+    def z(self):
+        return self.get_geometry_object().z
+
+    def num_geom(self):
+        return self.get_geometry_object().num_geom
+
+    def coord_seq(self):
+        return self.get_geometry_object().coord_seq
+
+    def dims(self):
+        return self.get_geometry_object().dims
+
+    def get_y(self):
+        return self.get_geometry_object().get_y
+
+    def tuple(self):
+        return self.get_geometry_object().tuple
+
+    def y(self):
+        return self.get_geometry_object().y
+
+    def convex_hull(self):
+        return self.get_geometry_object().convex_hull
+
+    def get_x(self):
+        return self.get_geometry_object().get_x
+
+    def index(self):
+        return self.get_geometry_object().index
+
+    def boundary(self):
+        return self.get_geometry_object().boundary
+
+    def kml(self):
+        return self.get_geometry_object().kml
+
+    def touches(self, other_GEOSGeometry):
+        return self.get_geometry_object().touches(other_GEOSGeometry)
+
+    def empty(self):
+        return self.get_geometry_object().empty
+
+    def srid(self):
+        return self.get_geometry_object().srid
+
+    def get_z(self):
+        return self.get_geometry_object().get_z
+
+    def extent(self):
+        return self.get_geometry_object().extent
+
+    def union(self, other_GEOSGeometry):
+        return self.get_geometry_object().union(other_GEOSGeometry)
+
+    def intersects(self, other_GEOSGeometry):
+        return self.get_geometry_object().intersect(other_GEOSGeometry)
+
+    def contains(self, other_GEOSGeometry):
+        return self.get_geometry_object().contains(other_GEOSGeometry)
+
+    def hasz(self):
+        return self.get_geometry_object().hasz
+
+    def crosses(self, other_GEOSGeometry):
+        return self.get_geometry_object().crosses(other_GEOSGeometry)
+
+    def count(self):
+        return self.get_geometry_object().count
+
+    def num_points(self):
+        return self.get_geometry_object().num_points
+
+    def within(self, other_GEOSGeometry):
+        return self.get_geometry_object().within(other_GEOSGeometry)
+
+    def intersection(self, other_GEOSGeometry):
+        return self.get_geometry_object().intersection(other_GEOSGeometry)
+
+    def overlaps(self, other_GEOSGeometry):
+        return self.get_geometry_object().overlaps(other_GEOSGeometry)
+
+    def equals(self, other_GeosGeometry):
+        return self.get_geometry_object().equals(other_GeosGeometry)
+
+    def point_on_surface(self):
+        return self.get_geometry_object().point_on_surface
+
+    def difference(self, other_GEOSGeometry):
+        return self.get_geometry_object().difference(other_GEOSGeometry)
+
+    def transform(self, srid, clone=True):
+        return self.get_geometry_object().transform(srid, clone=True)
+
+    def set_x(self, x):
+        return self.get_geometry_object().set_x(x)
+
+    def get_coords(self):
+        return self.get_geometry_object().get_coords
+
+    def envelope(self):
+        return self.get_geometry_object().envelope
+
+    def prepared(self):
+        return self.get_geometry_object().prepared
+
+    def ewkt(self):
+        return self.get_geometry_object().ewkt
+
+    def length(self):
+        return self.get_geometry_object().length
+
+    def disjoint(self, other_GEOSGeometry):
+        return self.get_geometry_object().disjoint(other_GEOSGeometry)

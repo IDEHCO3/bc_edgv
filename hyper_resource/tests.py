@@ -12,7 +12,7 @@ from django.test import TestCase
 from django.contrib.gis.db import models
 
 from hyper_resource.models import FeatureModel, point_operations, geometry_operations, FactoryComplexQuery
-from hyper_resource.views import AbstractResource, FeatureCollectionResource
+from hyper_resource.views import AbstractResource, FeatureCollectionResource, AbstractCollectionResource
 from django.contrib.gis.geos import GEOSGeometry
 from django.test import SimpleTestCase
 
@@ -159,6 +159,24 @@ class FactoryComplexQueryTest(SimpleTestCase):
         model_class = ModeloTeste
         self.fcq.q_object_serialized_by_filter_operation(attribute_operation_str, model_class)
 
+class AbstractCollectionResourceTest(SimpleTestCase):
+    def setUp(self):
+        self.attributes_functions = ['filter/sigla/in/rj,es,go/', 'filter/sigla/uppercase/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/', 'filter/sigla/in/rj,es,go/and/geom/within/{"type":"Polygon","coordinates":[[[-41.881710164667396,-21.297482165015307],[-28.840495695785098,-21.297482165015307],[-28.840495695785098,-17.886950999070834],[-41.881710164667396,-17.886950999070834],[-41.881710164667396,-21.297482165015307]]]}']
+        self.acr = AbstractCollectionResource()
+
+    def test_attributes_functions_str_is_filter_with_spatial_operation(self):
+        self.assertTrue(self.acr.attributes_functions_str_is_filter_with_spatial_operation('filter/sigla/in/rj,es,go/and/geom/within/Point(1,2)'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/filter'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/ast/eq/ass/geom/within/asd'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/within/eq/asd'))
+        self.assertTrue(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/within/eq/geom/and/geom/within/asd'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/operacao/eq/within'))
+        self.assertTrue(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/eq/within/abxgeom'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/filter/within/eq/abxx'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/within/geom'))
+        self.assertFalse(self.acr.attributes_functions_str_is_filter_with_spatial_operation('/within/filter'))
+
 
 class FeatureCollectionResourceTest(SimpleTestCase):
     def setUp(self):
@@ -166,8 +184,8 @@ class FeatureCollectionResourceTest(SimpleTestCase):
         self.fc = FeatureCollectionResource()
 
     def test_is_filter_operation(self):
-        self.assertTrue(self.fc.is_filter_operation('filter/sigla/in/rj,es,go/and/geom'))
-        self.assertFalse( self.fc.is_filter_operation('/filter'))
+        self.assertTrue(self.fc.path_has_filter_operation('filter/sigla/in/rj,es,go/and/geom'))
+        self.assertFalse( self.fc.path_has_filter_operation('/filter'))
         self.assertTrue('filter/sigla/uppercase/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/')
 
     def test_get_objects_serialized_by_filter_operation(self):
@@ -175,7 +193,7 @@ class FeatureCollectionResourceTest(SimpleTestCase):
 
 
     def test_q_objects_from_filter_operation(self):
-
+        return True
         result = self.fc.q_objects_from_filter_operation('filter/sigla/eq/ES')[0]
         self.assertEquals(result.__repr__(), Q(sigla='ES').__repr__())
         result = self.fc.q_objects_from_filter_operation('filter/sigla/eq/ES/')[0]
@@ -189,3 +207,10 @@ class FeatureCollectionResourceTest(SimpleTestCase):
         self.assertEquals(result1, Q(sigla__in=['ES,RJ']))
         self.assertEquals(result2, Q(data='ES,RJ'))
 
+    def test_transform_path_with_spatial_operation_str_and_url_as_array(self):
+        self.maxDiff = None
+        s = 'geom/contains/http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159407/*or/geom/contains/http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159406'
+        arr = ['geom', 'contains', 'http:','172.30.10.86:8000','instituicoes','ibge','bcim','municipios','3159407', '*or', 'geom', 'contains', 'http:','172.30.10.86:8000','instituicoes','ibge','bcim','municipios','3159406']
+        arr1 = ['geom', 'contains', 'http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159407/', '*or', 'geom', 'contains', 'http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159406/']
+
+        self.assertEquals(len(self.fc.transform_path_with_spatial_operation_str_and_url_as_array(arr)), len(arr1))
