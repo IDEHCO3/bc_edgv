@@ -430,11 +430,21 @@ class AbstractCollectionResource(AbstractResource):
         super(AbstractResource, self).__init__()
         self.queryset = None
 
-    def token_str_is_http_or_www(self, string):
-        term = string.lower()
-        return term == 'http:' or term == 'https:' or term == 'www.'
-    def token_is_http_or_https(self, token_str):
-        return  token_str.lower() in ['http:', 'https:']
+
+    def token_is_http_or_https(self, token):
+        return  token.lower() in ['http:', 'https:']
+
+    def token_is_http(self, token):
+        return 'http:' == token
+
+    def token_is_https(self, token):
+        return 'https:' == token
+
+    def token_is_www(self, token):
+        return True if token.find('www.') > -1 else False
+
+    def token_is_http_or_https_or_www(self, token):
+        return  self.token_is_http_or_https(token) or self.token_is_www(token)
 
     def logical_operators(self):
         return FactoryComplexQuery().logical_operators()
@@ -521,7 +531,7 @@ class FeatureCollectionResource(SpatialCollectionResource):
         q_object = self.q_object_for_filter_array_of_terms(array_of_terms)
         return self.model_class().objects.filter(q_object)
 
-    def is_end_of_term(self,term):
+    def is_end_of_term(self, term):
         return term in self.logical_operators()
 
     def inject_geometry_attribute_in_spatial_operation_for_path(self, arr_of_term):
@@ -534,33 +544,35 @@ class FeatureCollectionResource(SpatialCollectionResource):
 
         return arr_of_term
 
+
     def transform_path_with_spatial_operation_str_and_url_as_array(self, arr_of_term):
 
         arr = []
         http_str = ''
-        is_end_of_url = False
-        is_part_of_url = False
         if '' in  arr_of_term:
             arr_of_term.remove('')
+        found_url = False
+        size_of_term = len(arr_of_term)
+        for idx, token in enumerate(arr_of_term):
+            if self.token_is_http_or_https_or_www(token.lower()):
+                found_url = True
 
-        for token in arr_of_term:
-            if self.token_is_http_or_https(token):
-               http_str += token + '//'
-               is_part_of_url = True
-               is_not_end_of_url = False
-               continue
+            if  found_url:
+                if self.token_is_http_or_https(token):
+                   http_str += token + '//'
+                elif self.is_end_of_term(token):
+                    found_url = False
+                    arr.append(http_str)
+                    arr.append(token)
+                elif (idx == size_of_term -1):
+                    found_url = False
+                    http_str+= token + '/'
+                    arr.append(http_str)
 
-            is_end_of_url = (self.is_end_of_term(token) or (arr_of_term.index(token) == len(arr_of_term)))
-
-            if  is_end_of_url:
-                arr.append(token)
-                continue
+                else:
+                   http_str += token + '/'
             else:
-                arr.append(http_str)
-            if is_part_of_url  and is_end_of_url:
                 arr.append(token)
-
-
         return arr
 
     def path_has_geometry_attribute(self, term_of_path):

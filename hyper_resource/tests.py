@@ -207,6 +207,14 @@ class FeatureCollectionResourceTest(SimpleTestCase):
         self.assertEquals(result1, Q(sigla__in=['ES,RJ']))
         self.assertEquals(result2, Q(data='ES,RJ'))
 
+    def test_token_in_url_array(self):
+        self.maxDiff = None
+        arr = ['geom', 'contains', 'http:','172.30.10.86:8000','instituicoes','ibge','bcim','municipios','3159407', '*or', 'geom', 'contains', 'http:','172.30.10.86:8000','instituicoes','ibge','bcim','municipios','3159406', '*and', 'contains', 'Point(23,23)']
+        self.assertTrue(self.fc.token_in_url_array('http:',2, arr ))
+        self.assertFalse(self.fc.token_in_url_array('*or',9 ,arr))
+        self.assertTrue(self.fc.token_in_url_array('172.30.10.86:8000',13, arr ))
+        self.assertFalse(self.fc.token_in_url_array('Point(23,23)',19 ,arr))
+
     def test_transform_path_with_spatial_operation_str_and_url_as_array(self):
         self.maxDiff = None
         s = 'geom/contains/http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159407/*or/geom/contains/http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159406'

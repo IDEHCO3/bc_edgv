@@ -72,7 +72,7 @@ class ConverterType():
         return cls._instance
 
     def value_has_url(self, value_str):
-        return (value_str.find('http:\\') > -1) or (value_str.find('https:') > -1) or (value_str.find('www.') > -1)
+        return (value_str.find('http:') > -1) or (value_str.find('https:') > -1) or (value_str.find('www.') > -1)
 
     def get_geometry_json_from_request(self, url_as_str):
         resp = requests.get(url_as_str)
@@ -82,9 +82,10 @@ class ConverterType():
 
         if (js.get("type") and js["type"].lower() in ['feature', 'featurecollection']):
             a_geom = js["geometry"]
+
         else:
             a_geom = js
-
+        return a_geom
     def convert_to_string(self, value_as_str):
         return str(value_as_str)
 
@@ -106,7 +107,8 @@ class ConverterType():
     def convert_to_geometry(self, value_as_str):
         try:
             if self.value_has_url(value_as_str):
-                return GEOSGeometry(self.get_geometry_json_from_request(value_as_str))
+                geome = self.get_geometry_json_from_request(value_as_str)
+                return GEOSGeometry(geome)
             return GEOSGeometry(value_as_str)
         except (ValueError, ConnectionError, HTTPError) as err:
             print('Error: '.format(err))
@@ -199,7 +201,7 @@ class QObjectFactory:
         d['neq'] = self.q_object_for_neq
         d['between'] = self.q_object_for_between
 
-        return d.get(self.operation_or_operator, self.q_object_for_spatial_operation())
+        return d.get(self.operation_or_operator, self.q_object_for_spatial_operation)
 
     def q_object(self):
         object_method = self.q_object_operation_or_operator_in_dict()
