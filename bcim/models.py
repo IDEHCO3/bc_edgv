@@ -798,7 +798,7 @@ class AldeiaIndigena(FeatureModel):
     codigofunai = models.CharField(max_length=15, blank=True, null=True)
     terraindigena = models.CharField(max_length=100, blank=True, null=True)
     etnia = models.CharField(max_length=100, blank=True, null=True)
-    geom = models.PointField(srid=4674, dim=4, blank=True, null=True)
+    geom = models.PointField(blank=True, null=True)
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)

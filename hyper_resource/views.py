@@ -536,11 +536,13 @@ class FeatureCollectionResource(SpatialCollectionResource):
 
     def inject_geometry_attribute_in_spatial_operation_for_path(self, arr_of_term):
         indexes = []
-        for term in arr_of_term:
+        for idx, term in enumerate(arr_of_term):
             if term in self.geometry_operations():
-                indexes.append(arr_of_term.index(term))
+                indexes.append(idx)
+        count = 0
         for i in indexes:
-            arr_of_term.insert(i, self.geometry_field_name())
+            arr_of_term.insert(i + count, self.geometry_field_name())
+            count+=1
 
         return arr_of_term
 
@@ -549,11 +551,11 @@ class FeatureCollectionResource(SpatialCollectionResource):
 
         arr = []
         http_str = ''
-        if '' in  arr_of_term:
-            arr_of_term.remove('')
+        arr_term = filter(lambda ele: ele != '', arr_of_term)
+
         found_url = False
-        size_of_term = len(arr_of_term)
-        for idx, token in enumerate(arr_of_term):
+        size_of_term = len(arr_term)
+        for idx, token in enumerate(arr_term):
             if self.token_is_http_or_https_or_www(token.lower()):
                 found_url = True
 
@@ -564,10 +566,12 @@ class FeatureCollectionResource(SpatialCollectionResource):
                     found_url = False
                     arr.append(http_str)
                     arr.append(token)
+                    http_str = ''
                 elif (idx == size_of_term -1):
                     found_url = False
                     http_str+= token + '/'
                     arr.append(http_str)
+                    http_str = ''
 
                 else:
                    http_str += token + '/'
