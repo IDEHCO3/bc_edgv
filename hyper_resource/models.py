@@ -75,18 +75,32 @@ class ConverterType():
     def value_has_url(self, value_str):
         return (value_str.find('http:') > -1) or (value_str.find('https:') > -1) or (value_str.find('www.') > -1)
 
-    def get_geometry_json_from_request(self, url_as_str):
+    def make_geometrycollection_from_featurecollection(self, feature_collection):
+        geoms = []
+        #features = json.loads(feature_collection)
+        gc = GeometryCollection()
+        for feature in feature_collection['features']:
+            feature_geom = json.dumps(feature['geometry'])
+            geos_geom = (GEOSGeometry(feature_geom))
+            gc.append(geos_geom)
+        return gc
+
+
+    def get_geos_geometry_from_request(self, url_as_str):
         resp = requests.get(url_as_str)
         if 400 <= resp.status_code <= 599:
             raise HTTPError({resp.status_code: resp.reason})
         js = resp.json()
 
-        if (js.get("type") and js["type"].lower() in ['feature', 'featurecollection']):
-            a_geom = js["geometry"]
+        if (js.get("type") and js["type"].lower()=='feature'):
+            return GEOSGeometry(json.dumps(js["geometry"]))
+
+        elif  (js.get("type") and js["type"].lower()=='featurecollection'):
+            return self.make_geometrycollection_from_featurecollection(js)
 
         else:
-            a_geom = js
-        return a_geom
+            return GEOSGeometry(json.dumps(js))
+
     def convert_to_string(self, value_as_str):
         return str(value_as_str)
 
@@ -108,8 +122,8 @@ class ConverterType():
     def convert_to_geometry(self, value_as_str):
         try:
             if self.value_has_url(value_as_str):
-                geome = self.get_geometry_json_from_request(value_as_str)
-                return GEOSGeometry(json.dumps(geome))
+               return self.get_geos_geometry_from_request(value_as_str)
+
             return GEOSGeometry(value_as_str)
         except (ValueError, ConnectionError, HTTPError) as err:
             print('Error: '.format(err))
@@ -126,6 +140,7 @@ class ConverterType():
         d[models.CharField] = self.convert_to_string
         d[models.TextField] = self.convert_to_string
         d[models.IntegerField] = self.convert_to_int
+        d[models.AutoField] = self.convert_to_int
         d[models.FloatField] = self.convert_to_float
         d[models.TimeField] = self.convert_to_time
         d[models.DateTimeField] = self.convert_to_datetime
@@ -164,6 +179,9 @@ class QObjectFactory:
 
     def convert_value_for(self, a_value):
         converter = ConverterType()
+        field_type = self.field_type()
+        if field_type is None:
+            return None
         return converter.value_converted(self.field_type(), a_value)
 
 
@@ -232,28 +250,33 @@ class FactoryComplexQuery:
     def is_attribute(self, att_name, model_class):
         return att_name in self.field_names(model_class)
 
-    def is_logical_operators(self, op):
+    def is_logical_operator(self, op):
        return op.lower() in self.logical_operators()
 
-    def is_logical_operator_and_not_attribute(self, model_class, att_or_op):
-       return self.is_logical_operators(att_or_op) and self.is_attribute(att_or_op, model_class)
 
     def q_object_with_logical_operator(self, q_object_expression_or_none, q_object, logical_operator_str):
         if q_object_expression_or_none is None:
             return q_object
-
-        return (q_object_expression_or_none & q_object) if logical_operator_str.lower() == 'and' else (q_object_expression_or_none | q_object)
+        exp = (q_object_expression_or_none & q_object) if logical_operator_str.lower() in ['and', '*and'] else (q_object_expression_or_none | q_object)
+        return exp
 
     def q_object_for_filter_expression(self, q_object_or_none, model_class, expression_as_array):
         #'sigla/in/rj,es,go/and/data/between/2017-02-01,2017-06-30/' = ['sigla','in','rj,es,go','and','data', 'between','2017-02-01,2017-06-30']
         if len(expression_as_array)  < 3:
             return q_object_or_none
+        oper = expression_as_array[0]
+        if self.is_logical_operator(oper):
+           expression_as_array = expression_as_array[1:]
 
         if self.is_attribute(expression_as_array[0], model_class):
             qof = QObjectFactory(model_class, expression_as_array[0], expression_as_array[1], expression_as_array[2])
-            oper = qof.operation_or_operator
+            #oper = qof.operation_or_operator
         else:
-            qof = QObjectFactory(model_class, expression_as_array[1], expression_as_array[2], expression_as_array[3])
+            if len(expression_as_array) > 3:
+                qof = QObjectFactory(model_class, expression_as_array[1], expression_as_array[2], expression_as_array[3])
+            else:
+                qof = QObjectFactory(model_class, expression_as_array[0], expression_as_array[1],
+                                     expression_as_array[2])
             oper = expression_as_array[0]
 
         q_object_expression = self.q_object_with_logical_operator(q_object_or_none, qof.q_object(), oper)

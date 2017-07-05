@@ -183,7 +183,7 @@ class AbstractResource(APIView):
         att_or_method_name = attribute_or_method_name
 
         if self.is_operation_and_has_parameters(att_or_method_name):
-            parameters = arr_attrib_method_name[0].split('&')
+            parameters = arr_attrib_method_name[0].split(',')
             arr_attrib_method_name = arr_attrib_method_name[1:]
 
         obj = self._value_from_object(object, att_or_method_name, parameters)
@@ -315,19 +315,21 @@ class SpatialResource(AbstractResource):
                geom = obj
                obj = json.loads(obj.geojson)
                if len(attributes) == 1:
-                   return (obj, 'application/vnd.geo+json', geom)
+                   return (obj, 'application/vnd.geo+json', geom, {'status': 200})
 
            a_dict[attr_name] = obj
         self.current_object_state = a_dict
 
-        return (a_dict, 'application/json')
+        return (a_dict, 'application/json', self.object_model, {'status': 200})
 
     def response_request_attributes_functions_str_with_url(self, attributes_functions_str):
         attributes_functions_str = re.sub(r':/+', '://', attributes_functions_str)
         arr_of_two_url = self.attributes_functions_splitted_by_url(attributes_functions_str)
         resp = requests.get(arr_of_two_url[1])
-        if resp.status_code == 404:
-            return Response({'Erro:' + str(resp.status_code)}, status=status.HTTP_404_NOT_FOUND)
+        if resp.status_code in[400, 401, 404]:
+            return ({},'application/json', self.object_model, {'status': resp.status_code})
+        if resp.status_code == 500:
+            return ({},'application/json', self.object_model,{'status': resp.status_code})
         j = resp.text
         attributes_functions_str = arr_of_two_url[0] + j
 
@@ -352,7 +354,7 @@ class SpatialResource(AbstractResource):
         else:
             a_value = {self.name_of_last_operation_executed: a_value}
 
-        return (a_value, 'application/json')
+        return (a_value, 'application/json', self.object_model, {'status': 200})
 
 class FeatureResource(SpatialResource):
 
@@ -382,7 +384,7 @@ class FeatureResource(SpatialResource):
 
         if self.is_simple_path(attributes_functions_str):
             serializer = self.serializer_class(self.object_model)
-            output = (serializer.data, 'application/vnd.geo+json', self.object_model)
+            output = (serializer.data, 'application/vnd.geo+json', self.object_model, {'status': 200})
 
         elif self.path_has_only_attributes(attributes_functions_str):
             output = self.response_resquest_with_attributes(attributes_functions_str.replace(" ", ""))
@@ -403,6 +405,13 @@ class FeatureResource(SpatialResource):
     def get(self, request, *args, **kwargs):
 
         dict_for_response = self.basic_get(request, *args, **kwargs)
+        status = dict_for_response[3]['status']
+        if status in [400, 401,404]:
+            return Response({'Error ': 'The request has problem. Status:' + str(status)}, status=status)
+
+        if status in [500]:
+           return Response({'Error ': 'The server can not process this request. Status:' + str(status)}, status=status)
+
         accept = request.META['HTTP_ACCEPT']
         if accept.lower() == "image/png" or kwargs.get('format', None) == 'png':
             if len(dict_for_response) == 3:
@@ -474,8 +483,12 @@ class AbstractCollectionResource(AbstractResource):
         return FactoryComplexQuery().q_object_for_filter_expression(None, self.model_class(), array_of_terms)
 
     def q_object_for_filter_expression(self, attributes_functions_str):
-        att_funcs = attributes_functions_str.split('/')
-        return self.q_object_for_filter_array_of_terms(None, att_funcs[1:])
+        arr = attributes_functions_str.split('/')
+
+        if self.path_has_url(attributes_functions_str):
+           arr = self.transform_path_with_spatial_operation_str_and_url_as_array(arr)
+
+        return self.q_object_for_filter_array_of_terms(arr[1:])
 
     def get_objects_from_filter_operation(self, attributes_functions_str):
         q_object = self.q_object_for_filter_expression(attributes_functions_str)
@@ -493,6 +506,8 @@ class SpatialCollectionResource(AbstractCollectionResource):
         return self.serializer_class.Meta.geo_field
 
 class FeatureCollectionResource(SpatialCollectionResource):
+
+
 
     def geometry_operations(self):
         return geometry_operations()

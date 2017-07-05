@@ -873,7 +873,7 @@ class APIViewHypermedia(BasicAPIViewHypermedia):
         if isinstance(a_value, GEOSGeometry) or isinstance(a_value, OGRGeometry):
             geom = a_value
             a_value = json.loads(a_value.geojson)
-            return (a_value, 'application/vnd.geo+json', geom)
+            return (a_value, 'application/vnd.geo+json', geom, {'status_code': '200'})
         elif isinstance(a_value, SpatialReference):
             a_value = {
                 self.function_name(att_funcs): a_value.wkt
