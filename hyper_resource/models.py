@@ -1,3 +1,4 @@
+import json
 from datetime import date, datetime, time
 
 import requests
@@ -108,7 +109,7 @@ class ConverterType():
         try:
             if self.value_has_url(value_as_str):
                 geome = self.get_geometry_json_from_request(value_as_str)
-                return GEOSGeometry(geome)
+                return GEOSGeometry(json.dumps(geome))
             return GEOSGeometry(value_as_str)
         except (ValueError, ConnectionError, HTTPError) as err:
             print('Error: '.format(err))
@@ -191,7 +192,8 @@ class QObjectFactory:
 
     def q_object_for_spatial_operation(self):
         dc = {}
-        dc[self.attribute_name] = self.convert_value_for(self.raw_value_as_str)
+        value_conveted = self.convert_value_for(self.raw_value_as_str)
+        dc[self.attribute_name + '__' + self.operation_or_operator] = value_conveted
         return Q(**dc)
 
     def q_object_operation_or_operator_in_dict(self):
