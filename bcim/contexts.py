@@ -26,3 +26,6 @@ class UnidadeFederacaoContext(FeatureContext):
 
 class MunicipioContext(FeatureContext):
     pass
+
+class AldeiaIndigenaContext(FeatureContext):
+    pass

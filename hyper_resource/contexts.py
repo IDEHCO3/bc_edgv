@@ -139,7 +139,7 @@ def vocabularyDict():
     dic['ring'] = 'http://opengis.org/operations/ring'
     dic['set_coords'] = 'http://opengis.org/operations/set_coords'
     dic['set_srid'] = 'http://opengis.org/operations/set_srid'
-    dic['set_x'] = 'http://opengis.or   g/operations/set_x'
+    dic['set_x'] = 'http://opengis.org/operations/set_x'
     dic['set_y'] = 'http://opengis.org/operations/set_y'
     dic['set_z'] = 'http://opengis.org/operations/set_z'
     dic['simple'] = 'http://opengis.org/operations/simple'
@@ -332,7 +332,7 @@ class FeatureContext(ContextResource):
 
 
     def supportedProperties(self):
-        arr_dict = [];
+        arr_dict = []
         if self.resource is None:
             return []
 

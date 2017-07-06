@@ -221,4 +221,4 @@ class FeatureCollectionResourceTest(SimpleTestCase):
         arr = ['geom', 'contains', 'http:','172.30.10.86:8000','instituicoes','ibge','bcim','municipios','3159407', '*or', 'geom', 'contains', 'http:','172.30.10.86:8000','instituicoes','ibge','bcim','municipios','3159406']
         arr1 = ['geom', 'contains', 'http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159407/', '*or', 'geom', 'contains', 'http://172.30.10.86:8000/instituicoes/ibge/bcim/municipios/3159406/']
 
-        self.assertEquals(len(self.fc.transform_path_with_spatial_operation_str_and_url_as_array(arr)), len(arr1))
+        self.assertEquals(len(self.fc.transform_path_with_url_as_array(arr)), len(arr1))

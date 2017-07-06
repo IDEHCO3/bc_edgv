@@ -105,6 +105,16 @@ class AbstractResource(APIView):
 
         return a_dict
 
+    def get_object(self, arr_of_term=[]):
+        first_term = arr_of_term[0]
+        if self.is_attribute(self, first_term):
+            self.current_object_state =  getattr(self.object_model, first_term, None)
+            arr_of_term = arr_of_term[1:]
+
+        for term in arr_of_term:
+            self.current_object_state = getattr(self.current_object_state, term, None)
+        return  self.current_object_state
+
     def attributes_functions_name_template(self):
         return 'attributes_functions'
 
@@ -159,6 +169,37 @@ class AbstractResource(APIView):
             return False
         return hasattr(self.object_model, attrs_functs[0])
 
+    def transform_path_with_url_as_array(self, arr_of_term):
+
+        arr = []
+        http_str = ''
+        arr_term = filter(lambda ele: ele != '', arr_of_term)
+
+        found_url = False
+        size_of_term = len(arr_term)
+        for idx, token in enumerate(arr_term):
+            if self.token_is_http_or_https_or_www(token.lower()):
+                found_url = True
+
+            if  found_url:
+                if self.token_is_http_or_https(token):
+                   http_str += token + '//'
+                elif self.is_end_of_term(token):
+                    found_url = False
+                    arr.append(http_str)
+                    arr.append(token)
+                    http_str = ''
+                elif (idx == size_of_term -1):
+                    found_url = False
+                    http_str+= token + '/'
+                    arr.append(http_str)
+                    http_str = ''
+
+                else:
+                   http_str += token + '/'
+            else:
+                arr.append(token)
+        return arr
 
     def attributes_functions_splitted_by_url(self, attributes_functions_str_url):
         res = attributes_functions_str_url.lower().find('http:')
@@ -348,7 +389,7 @@ class SpatialResource(AbstractResource):
         if isinstance(a_value, GEOSGeometry):
             geom = a_value
             a_value = json.loads(a_value.geojson)
-            return (a_value, 'application/vnd.geo+json', geom)
+            return (a_value, 'application/vnd.geo+json', geom, {'status': 200})
         elif isinstance(a_value, SpatialReference):
            a_value = { self.name_of_last_operation_executed: a_value.pretty_wkt}
         else:
@@ -486,7 +527,7 @@ class AbstractCollectionResource(AbstractResource):
         arr = attributes_functions_str.split('/')
 
         if self.path_has_url(attributes_functions_str):
-           arr = self.transform_path_with_spatial_operation_str_and_url_as_array(arr)
+           arr = self.transform_path_with_url_as_array(arr)
 
         return self.q_object_for_filter_array_of_terms(arr[1:])
 
@@ -561,39 +602,6 @@ class FeatureCollectionResource(SpatialCollectionResource):
 
         return arr_of_term
 
-
-    def transform_path_with_spatial_operation_str_and_url_as_array(self, arr_of_term):
-
-        arr = []
-        http_str = ''
-        arr_term = filter(lambda ele: ele != '', arr_of_term)
-
-        found_url = False
-        size_of_term = len(arr_term)
-        for idx, token in enumerate(arr_term):
-            if self.token_is_http_or_https_or_www(token.lower()):
-                found_url = True
-
-            if  found_url:
-                if self.token_is_http_or_https(token):
-                   http_str += token + '//'
-                elif self.is_end_of_term(token):
-                    found_url = False
-                    arr.append(http_str)
-                    arr.append(token)
-                    http_str = ''
-                elif (idx == size_of_term -1):
-                    found_url = False
-                    http_str+= token + '/'
-                    arr.append(http_str)
-                    http_str = ''
-
-                else:
-                   http_str += token + '/'
-            else:
-                arr.append(token)
-        return arr
-
     def path_has_geometry_attribute(self, term_of_path):
         return term_of_path.lower() == self.geometry_field_name()
 
@@ -602,8 +610,8 @@ class FeatureCollectionResource(SpatialCollectionResource):
         arr = att_func_arr
         if self.is_spatial_operation(att_func_arr[0]) and not self.path_has_geometry_attribute(att_func_arr[0]):
             if self.path_has_url(attributes_functions_str):
-                arr = self.transform_path_with_spatial_operation_str_and_url_as_array(att_func_arr)
-                arr = self.inject_geometry_attribute_in_spatial_operation_for_path(arr)
+                arr = self.transform_path_with_url_as_array(att_func_arr)
+            arr = self.inject_geometry_attribute_in_spatial_operation_for_path(arr)
         objects = self.get_objects_from_from_spatial_operation(arr)
         return self.serializer_class(objects, many=True).data
 
