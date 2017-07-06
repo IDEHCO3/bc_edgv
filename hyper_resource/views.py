@@ -183,7 +183,7 @@ class AbstractResource(APIView):
         att_or_method_name = attribute_or_method_name
 
         if self.is_operation_and_has_parameters(att_or_method_name):
-            parameters = arr_attrib_method_name[0].split(',')
+            parameters = arr_attrib_method_name[0].split('&')
             arr_attrib_method_name = arr_attrib_method_name[1:]
 
         obj = self._value_from_object(object, att_or_method_name, parameters)
