@@ -398,6 +398,25 @@ def polygon_operations():
         param = self.parameters or []
         return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
 
+def string_operations():
+    d = {}
+    d['capitalize'] = Type_Called('capitalize', [], str)
+    d['center'] = Type_Called('center', [int, str], str)
+    d['count'] = Type_Called('count', [str], str)
+    d['endswith'] = Type_Called('endswith', [str], bool)
+    d['find'] = Type_Called('find', [str], int)
+    d['index'] = Type_Called('index', [str], int)
+    d['isdigit'] = Type_Called('isdigit', [str], int)
+    d['isalnum'] = Type_Called('isalnum', [], bool)
+    d['isalpha'] = Type_Called('isalpha', [], bool)
+    d['islower'] = Type_Called('islower', [], bool)
+    d['isupper'] = Type_Called('isupper', [], bool)
+    d['lower'] = Type_Called('lower', [], str)
+    d['join'] = Type_Called('join', [[str]], bool)
+    d['startswith'] = Type_Called('startswith', [str], bool)
+    d['split'] = Type_Called('split', [str], [str])
+    d['upper'] = Type_Called('upper', [], str)
+    return d
 def collection_operations():
     dic = {}
     dic['filter'] = Type_Called('filter', [Q], object)
