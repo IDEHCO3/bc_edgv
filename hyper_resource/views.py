@@ -16,6 +16,8 @@ from django.contrib.gis.geos import GEOSGeometry, GeometryCollection
 from hyper_resource.contexts import *
 from rest_framework.negotiation import BaseContentNegotiation
 from django.contrib.gis.db import models
+from abc import ABCMeta, abstractmethod
+
 
 from hyper_resource.models import feature_collection_operations, FactoryComplexQuery
 
@@ -34,6 +36,7 @@ class IgnoreClientContentNegotiation(BaseContentNegotiation):
         return (renderers[0], renderers[0].media_type)
 
 class AbstractResource(APIView):
+    __metaclass__ = ABCMeta
 
     def __init__(self):
         super(AbstractResource, self).__init__()
@@ -47,14 +50,19 @@ class AbstractResource(APIView):
 
     content_negotiation_class = IgnoreClientContentNegotiation
 
-    #Must be override
+    @abstractmethod #Must be override
     def initialize_context(self):
-        pass
+       pass
 
+    @abstractmethod  # Must be override
+    def operations_with_parameters_type(self):
+        pass
 
     def model_class(self):
         return self.serializer_class.Meta.model
         #return self.object_model.model_class()
+    def model_class_name(self):
+        return self.model_class().__name__
 
     def attribute_names_to_web(self):
         return self.serializer_class.Meta.fields
@@ -244,6 +252,9 @@ class AbstractResource(APIView):
         if str(attributes_functions_str[-1]) in functions_dic:
             return str(attributes_functions_str[-1])
         return str(attributes_functions_str[-2])
+
+class NonSpatialResource(AbstractResource):
+    pass
 
 class SpatialResource(AbstractResource):
 
@@ -472,8 +483,6 @@ class FeatureResource(SpatialResource):
         self.basic_get(request, *args, **kwargs)
         #return self.context_resource.context()
         return Response ( data=self.context_resource.context(), content_type='application/json' )
-
-
 
 class AbstractCollectionResource(AbstractResource):
     def __init__(self):

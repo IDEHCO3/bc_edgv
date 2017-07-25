@@ -15,19 +15,25 @@ def convert_camel_case_to_hifen(camel_case_string):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', camel_case_string)
     return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
 
-def generate_snippets_to_view(model_class_name):
+def generate_snippets_to_view(model_class_name, is_spatial):
+    super_class_collection_name = 'FeatureCollectionResource' if is_spatial else 'CollectionResource'
+    super_class_name = 'FeatureResource' if is_spatial else 'NonSpatialResource'
     serializer_class_snippet = (' ' * 4) + 'serializer_class = ' + model_class_name + 'Serializer\n'
     context_name = convert_camel_case_to_hifen(model_class_name)
     context = convert_camel_case_to_hifen((' ' * 4) + 'contextclassname = ' + "'" + context_name + "-list'\n")
     arr = []
-    arr.append('class ' + model_class_name + 'List(HandleFunctionsList):\n')
+    arr.append('class ' + model_class_name + 'List('+ super_class_collection_name +'):\n')
     arr.append((' ' * 4) + 'queryset = ' + model_class_name + '.objects.all()' + '\n')
     arr.append(serializer_class_snippet)
     arr.append(context)
     arr.append('\n')
-    arr.append('class ' + model_class_name + 'Detail(HandleFunctionDetail):\n')
+    arr.append('class ' + model_class_name + 'Detail(' + super_class_name +'):\n')
     arr.append(serializer_class_snippet)
     arr.append(context)
+    arr.append((' ' * 4) + 'def initialize_context(self):\n')
+    arr.append((' ' * 8) + 'self.context_resource = ' + model_class_name + 'Context()\n')
+    arr.append((' ' * 8) + 'self.context_resource.resource = self\n')
+
     return arr
 
 def imports_str_as_array(a_name):
@@ -38,7 +44,7 @@ def imports_str_as_array(a_name):
     arr.append("from " + a_name + ".serializers import *\n\n")
     return arr
 
-def generate_file(package_name, default_name='views.py'):
+def generate_file(package_name, default_name='views.py', is_spatial=True):
     classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
     with open(default_name, 'w+') as sr:
         for import_str in imports_str_as_array(package_name):
@@ -68,7 +74,7 @@ def generate_file(package_name, default_name='views.py'):
         sr.write((' ' * 8) +'response = Response(root_links)\n')
         sr.write((' ' * 8) +'return self.base_context.addContext(request, response)\n\n')
         for model_class_arr in classes_from:
-            for str in generate_snippets_to_view(model_class_arr[0]):
+            for str in generate_snippets_to_view(model_class_arr[0], is_spatial):
                 sr.write(str)
             sr.write('\n')
         sr.close()

@@ -46,6 +46,7 @@ def vocabularyDict():
     dic[FloatField] = 'http://schema.org/Float'
     dic[float] = 'http://schema.org/Float'
     dic[IntegerField] = 'http://schema.org/Integer'
+    dic[AutoField]= 'http://schema.org/Integer'
     dic[int] = 'http://schema.org/Integer'
     dic[CharField] = 'http://schema.org/Text'
     dic[str] = 'http://schema.org/Text'
@@ -366,3 +367,6 @@ class FeatureContext(ContextResource):
         iri_templates.append(dict)
 
         return {"iri_templates": iri_templates}
+
+class FeatureCollectionContext(FeatureContext):
+    pass

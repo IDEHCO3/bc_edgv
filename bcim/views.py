@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework import status
 
-from bcim.contexts import UnidadeFederacaoContext, MunicipioContext
+from bcim.contexts import UnidadeFederacaoContext, MunicipioContext, AldeiaIndigenaContext
 from bcim.utils import *
 
 from rest_framework import permissions
@@ -217,9 +217,6 @@ class MunicipioDetail(FeatureResource):
     contextclassname = 'municipios'
     lookup_field = "geocodigo"
 
-    def initialize_context(self):
-        self.context_resource = MunicipioContext()
-        self.context_resource.resource = self
 
 
 class OutrasUnidProtegidasList(HandleFunctionsList):
@@ -337,10 +334,14 @@ class AldeiaIndigenaListFilteredByQueryParameters(FeatureCollectionResource):
     serializer_class = AldeiaIndigenaSerializer
     contextclassname = 'aldeias-indigenas'
 
-class AldeiaIndigenaDetail(HandleFunctionDetail):
+class AldeiaIndigenaDetail(FeatureResource):
 
     serializer_class = AldeiaIndigenaSerializer
     contextclassname = 'aldeias-indigenas'
+    def initialize_context(self):
+        self.context_resource = AldeiaIndigenaContext()
+        self.context_resource.resource = self
+
 
 class AreaEdificadaList(HandleFunctionsList):
 

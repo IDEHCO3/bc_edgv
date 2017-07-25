@@ -1,4 +1,4 @@
-from hyper_resource.contexts import FeatureContext
+from hyper_resource.contexts import FeatureContext, FeatureCollectionContext
 
 class UnidadeFederacaoContext(FeatureContext):
 
@@ -25,6 +25,9 @@ class UnidadeFederacaoContext(FeatureContext):
 
 
 class MunicipioContext(FeatureContext):
+    pass
+
+class AldeiaIndigenaContext(FeatureContext):
     pass
 
 class AldeiaIndigenaContext(FeatureContext):
