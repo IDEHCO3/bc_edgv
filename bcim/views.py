@@ -185,14 +185,16 @@ class MunicipioList(FeatureCollectionResource):
         managed = False
         db_table = 'lim_municipio_a'
 
+    def initialize_context(self):
+        self.context_resource = MunicipioContext()
+        self.context_resource.resource = self
+
 class MunicipioFiltered(HandleFunctionsList):
 
     serializer_class = MunicipioSerializer
     contextclassname = 'municipios'
 
-    def initialize_context(self):
-        self.context_resource = MunicipioContext()
-        self.context_resource.resource = self
+
 
 
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
@@ -217,7 +219,9 @@ class MunicipioDetail(FeatureResource):
     contextclassname = 'municipios'
     lookup_field = "geocodigo"
 
-
+    def initialize_context(self):
+        self.context_resource = MunicipioContext()
+        self.context_resource.resource = self
 
 class OutrasUnidProtegidasList(HandleFunctionsList):
 
