@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework import status
 
-from bcim.contexts import UnidadeFederacaoContext, MunicipioContext, AldeiaIndigenaContext
+from bcim.contexts import UnidadeFederacaoContext, MunicipioContext, AldeiaIndigenaContext, UnidadeFederacaoListContext
 from bcim.utils import *
 
 from rest_framework import permissions
@@ -172,6 +172,10 @@ class UnidadeFederacaoList(FeatureCollectionResource):
             return self.queryset.filter(sigla__in=siglas.split(","))
 
         return super(UnidadeFederacaoList, self).get_queryset()
+
+    def initialize_context(self):
+        self.context_resource = UnidadeFederacaoListContext()
+        self.context_resource.resource = self
 
 class MunicipioList(FeatureCollectionResource):
 

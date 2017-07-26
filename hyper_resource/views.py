@@ -19,7 +19,7 @@ from django.contrib.gis.db import models
 from abc import ABCMeta, abstractmethod
 
 
-from hyper_resource.models import feature_collection_operations, FactoryComplexQuery
+from hyper_resource.models import feature_collection_operations, FactoryComplexQuery, collection_operations
 
 
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
@@ -98,7 +98,10 @@ class AbstractResource(APIView):
     def set_basic_context_resource(self, request ):
         self.context_resource.host = request.META['HTTP_HOST']
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
-        self.context_resource.complement_path = self.kwargs.values()[0]
+        if len(self.kwargs.values()):
+            self.context_resource.complement_path = self.kwargs.values()[0]
+        else:
+            self.context_resource.complement_path = ''
 
 
     def key_is_identifier(self, key):
@@ -486,7 +489,7 @@ class FeatureResource(SpatialResource):
 
 class AbstractCollectionResource(AbstractResource):
     def __init__(self):
-        super(AbstractResource, self).__init__()
+        super(AbstractCollectionResource, self).__init__()
         self.queryset = None
 
 
@@ -526,8 +529,6 @@ class AbstractCollectionResource(AbstractResource):
         att_funcs = attributes_functions_str.split('/')
         return len(att_funcs) > 1 and  (att_funcs[0].lower() == 'filter')
 
-    def operations_with_parameters_type(self):
-        pass
 
     def q_object_for_filter_array_of_terms(self, array_of_terms):
         return FactoryComplexQuery().q_object_for_filter_expression(None, self.model_class(), array_of_terms)
@@ -545,18 +546,35 @@ class AbstractCollectionResource(AbstractResource):
         return self.model_class().objects.filter(q_object)
 
     def operation_names_model(self):
-        return feature_collection_operations().keys()
+        return collection_operations().keys()
+
+    @abstractmethod  # Must be override
+    def basic_get(request, *args, **kwargs):
+        pass
+
+    def get(self, request, *args, **kwargs):
+
+        basic_response = self.basic_get(request, *args, **kwargs)
+        return Response(data=basic_response["data"],status=basic_response["status"], content_type=basic_response["content_type"])
+
+    def options(self, request, *args, **kwargs):
+        self.basic_get(request, *args, **kwargs)
+        #return self.context_resource.context()
+        return Response ( data=self.context_resource.context(), content_type='application/json' )
 
 class SpatialCollectionResource(AbstractCollectionResource):
 
+    #To do
     def path_request_is_ok(self, attributes_functions_str):
         return True
 
     def geometry_field_name(self):
         return self.serializer_class.Meta.geo_field
 
-class FeatureCollectionResource(SpatialCollectionResource):
+    def operation_names_model(self):
+        return feature_collection_operations().keys()
 
+class FeatureCollectionResource(SpatialCollectionResource):
 
 
     def geometry_operations(self):
@@ -646,11 +664,11 @@ class FeatureCollectionResource(SpatialCollectionResource):
 
         return self.serializer_class(objects, many=True).data
 
-    def options(self, request, *args, **kwargs):
-        pass
+
 
     def basic_get(self, request, *args, **kwargs):
         self.object_model = self.model_class()()
+        self.set_basic_context_resource(request)
         attributes_functions_str = self.kwargs.get("attributes_functions", None)
 
         if self.is_simple_path(attributes_functions_str):  # to get query parameters
@@ -671,6 +689,4 @@ class FeatureCollectionResource(SpatialCollectionResource):
         else:
             return {"data": "This request has invalid attribute or operation","status": 400, "content_type": "application/json"}
 
-    def get(self, request, *args, **kwargs):
-        basic_response = self.basic_get(request, *args, **kwargs)
-        return Response(data=basic_response["data"],status=basic_response["status"], content_type=basic_response["content_type"])
+

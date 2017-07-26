@@ -462,7 +462,7 @@ def spatial_collection_operations():
 
 def feature_collection_operations():
 
-    return dict(collection_operations(), **geometry_operations())
+    return dict(collection_operations(), **spatial_collection_operations())
 
 def dict_geometry_operations():
     dict = {}

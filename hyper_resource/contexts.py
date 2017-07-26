@@ -58,6 +58,9 @@ def vocabularyDict():
     dic[Model] = 'http://geojson.org/geojson-ld/vocab.html#Feature'
     dic[tuple]= 'http://schema.org/ListItem'
 
+    dic[Q] = 'http://extension.schema.org/expression'
+    dic[object] = 'http://schema.org/Thing'
+
     dic['nome'] = 'http://schema.org/name'
     dic['nomeAbrev'] = 'https://schema.org/alternateName'
 
@@ -81,6 +84,12 @@ def vocabularyDict():
     dic[GeometryCollection] = 'http://geojson.org/geojson-ld/vocab.html#GeometryCollection'
     dic[SpatialReference] = 'http://geojson.org/geojson-ld/vocab.html#SpatialReference'
 
+
+
+    #collection
+    dic['filter'] = 'http://opengis.org/operations/filter'
+    dic['map'] = 'http://opengis.org/operations/map'
+    dic['annotate'] = 'http://opengis.org/operations/annotate'
 
     dic['area'] = 'http://opengis.org/operations/area'
     dic['boundary'] = 'http://opengis.org/operations/boundary'
@@ -339,7 +348,7 @@ class FeatureContext(ContextResource):
 
         for field in self.resource.fields_to_web():
             arr_dict.append(SupportedProperty(property_name=field.attname, required=field.null, readable=True, writeable=True, is_unique=False, is_identifier=field.primary_key, is_external=False))
-        return [supportedAttribute.context() for supportedAttribute in arr_dict];
+        return [supportedAttribute.context() for supportedAttribute in arr_dict]
 
     def supportedOperations(self):
 
