@@ -54,6 +54,8 @@ class AbstractResource(APIView):
     def initialize_context(self):
        pass
 
+    def protocol(self, request):
+        return 'http:' if request.META['SERVER_PROTOCOL'][4] == '/' else 'https:'
     # todo
     def path_request_is_ok(self, a_path):
         return True
@@ -350,7 +352,8 @@ class NonSpatialResource(AbstractResource):
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
         if self.is_simple_path(attributes_functions_str):
-            serializer = self.serializer_class(self.object_model)
+            proto = self.protocol(request)
+            serializer = self.serializer_class(self.object_model, proto, request.META['HTTP_HOST'], self._base_path(request.META['PATH_INFO']) )
             output = (serializer.data, 'application/json', self.object_model, {'status': 200})
 
         elif self.path_has_only_attributes(attributes_functions_str):

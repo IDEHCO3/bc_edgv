@@ -622,15 +622,26 @@ class SprintSerializer(ModelSerializer):
         identifier = 'id_sprint'
 
 class TaskSerializer(ModelSerializer):
+    def __init__(self, object_model, protocol, host_name, base_path):
+        self.protocol= protocol
+        self.host_name = host_name
+        self.base_path = base_path
+        super(TaskSerializer, self).__init__(object_model)
+
+    sprint_iri = serializers.SerializerMethodField()
+
     class Meta:
         model = Task
-
-        fields = ['id_task', 'name', 'description', 'sprint', 'status', 'order', 'started', 'due', 'completed']
+        fields = ['id_task', 'name', 'description', 'sprint', 'sprint_iri', 'status', 'order', 'started', 'due', 'completed']
         # 'altitudeortometrica'
 
         identifiers = ['id_task']
         identifier = 'id_task'
 
+    def get_sprint_iri(self, obj):
+
+        #basic_path = self._base_path(request.META['PATH_INFO'])
+        return self.protocol + '//' + self.host_name + self.base_path+ '/' + str(obj.sprint.id_sprint)
 
 serializers_dict = {
     'outras-unidades-protegidas': {
