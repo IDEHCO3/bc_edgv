@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.serializers import ModelSerializer
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from .models import *
 
@@ -610,6 +611,27 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
         identifier = 'id_objeto'
 
 
+class SprintSerializer(ModelSerializer):
+    class Meta:
+        model = Sprint
+
+        fields = ['id_sprint', 'name', 'description', 'end']
+        # 'altitudeortometrica'
+
+        identifiers = ['id_sprint']
+        identifier = 'id_sprint'
+
+class TaskSerializer(ModelSerializer):
+    class Meta:
+        model = Task
+
+        fields = ['id_task', 'name', 'description', 'sprint', 'status', 'order', 'started', 'due', 'completed']
+        # 'altitudeortometrica'
+
+        identifiers = ['id_task']
+        identifier = 'id_task'
+
+
 serializers_dict = {
     'outras-unidades-protegidas': {
         'name': "outras unidades protegidas",
@@ -620,3 +642,4 @@ serializers_dict = {
         'serializer': OutrosLimitesOficiaisSerializer
     },
 }
+

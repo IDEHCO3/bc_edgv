@@ -4,7 +4,8 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from rest_framework import status
 
-from bcim.contexts import UnidadeFederacaoContext, MunicipioContext, AldeiaIndigenaContext, UnidadeFederacaoListContext
+from bcim.contexts import UnidadeFederacaoContext, MunicipioContext, AldeiaIndigenaContext, UnidadeFederacaoListContext, \
+    SprintContext, TaskContext, SprintListContext, TaskListContext, AldeiaIndigenaListContext
 from bcim.utils import *
 
 from rest_framework import permissions
@@ -87,6 +88,8 @@ def get_root_response(request):
         'trechos de massa dagua': reverse('bcim_v1:trecho_massa_dagua_list', request=request, format=format),
         'areas de desenvolvimento de controle': reverse('bcim_v1:area_desenvolvimento_controle_list', request=request, format=format),
         'marcos de limite': reverse('bcim_v1:marco_de_limite_list', request=request, format=format),
+        'sprints': reverse('bcim_v1:sprint_list', request=request, format=format),
+        'tasks': reverse('bcim_v1:task_list', request=request, format=format),
         #'pontos geodesicos': reverse('bcim_v1:ponto_exibicao_wgs84_list', request=request, format=format),
     }
 
@@ -227,6 +230,8 @@ class MunicipioDetail(FeatureResource):
         self.context_resource = MunicipioContext()
         self.context_resource.resource = self
 
+
+
 class OutrasUnidProtegidasList(HandleFunctionsList):
 
     queryset = OutrasUnidProtegidas.objects.all()
@@ -330,6 +335,9 @@ class AldeiaIndigenaList(FeatureCollectionResource):
     queryset = AldeiaIndigena.objects.all()
     serializer_class = AldeiaIndigenaSerializer
     contextclassname = 'aldeias-indigenas'
+    def initialize_context(self):
+        self.context_resource = AldeiaIndigenaListContext()
+        self.context_resource.resource = self
 
 class AldeiaIndigenaListFiltered(FeatureCollectionResource):
 
@@ -937,3 +945,42 @@ class MarcoDeLimiteDetail(HandleFunctionDetail):
     serializer_class = MarcoDeLimiteSerializer
     contextclassname = 'marcos-de-limite'
 
+
+class SprintList(CollectionResource):
+    queryset = Sprint.objects.all()
+    contextclassname = 'sprints'
+    serializer_class = SprintSerializer
+
+    def initialize_context(self):
+        self.context_resource = SprintListContext()
+        self.context_resource.resource = self
+
+
+class SprintDetail(NonSpatialResource):
+
+    queryset = Sprint.objects.all()
+    serializer_class = SprintSerializer
+    contextclassname = 'sprints'
+
+    def initialize_context(self):
+        self.context_resource = SprintContext()
+        self.context_resource.resource = self
+
+class TaskList(CollectionResource):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    contextclassname = 'tasks'
+
+    def initialize_context(self):
+        self.context_resource = TaskListContext()
+        self.context_resource.resource = self
+
+class TaskDetail(NonSpatialResource):
+
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
+    contextclassname = 'tasks'
+
+    def initialize_context(self):
+        self.context_resource = TaskContext()
+        self.context_resource.resource = self

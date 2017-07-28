@@ -357,6 +357,18 @@ urlpatterns = [
     url(r'^marcos-de-limite/(?P<id_objeto>[0-9]*)/$', views.MarcoDeLimiteDetail.as_view(), name='marco_de_limite_detail_id_objeto'),
     url(r'^marcos-de-limite/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.MarcoDeLimiteDetail.as_view(), name='marco_de_limite_detail_af'),
 
+    #sprint
+    url(r'^sprints/(?P<id_sprint>[0-9]+)/$', views.SprintDetail.as_view(), name='sprint_detail'),
+    url(r'^sprints/(?P<id_sprint>[0-9]+)/(?P<attributes_functions>.*)/$', views.SprintDetail.as_view(), name='sprint_detail'),
+    #sprint collection
+    url(r'^sprints/$', views.SprintList.as_view(), name='sprint_list'),
+    url(r'^sprints/(?P<attributes_functions>.*)/$', views.SprintList.as_view(), name='sprint_list'),
+    #tasks
+    url(r'^tasks/(?P<id_task>[0-9]+)/$', views.TaskDetail.as_view(), name='task_detail'),
+    url(r'^tasks/(?P<id_task>[0-9]+)/(?P<attributes_functions>.*)/$', views.TaskDetail.as_view(), name='task_detail'),
+    #collection
+    url(r'^tasks/$', views.TaskList.as_view(), name='task_list'),
+    url(r'^tasks/(?P<attributes_functions>.*)/$', views.TaskList.as_view(), name='task_list'),
 
     # urls generalized
     url(r'^(?P<model_class>[\w\-]+)/$', views.HandleFunctionsList.as_view(), name="general_list"),

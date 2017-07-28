@@ -54,9 +54,15 @@ class AbstractResource(APIView):
     def initialize_context(self):
        pass
 
-    @abstractmethod  # Must be override
+    # todo
+    def path_request_is_ok(self, a_path):
+        return True
+
     def operations_with_parameters_type(self):
-        pass
+
+        dic = self.object_model.operations_with_parameters_type()
+
+        return dic
 
     def model_class(self):
         return self.serializer_class.Meta.model
@@ -256,8 +262,133 @@ class AbstractResource(APIView):
             return str(attributes_functions_str[-1])
         return str(attributes_functions_str[-2])
 
+    def response_resquest_with_attributes(self,  attributes_functions_name):
+        a_dict ={}
+        attributes = attributes_functions_name.strip().split(',')
+        #self.current_object = self.object_model
+        for attr_name in attributes:
+           obj = self._value_from_object(self.object_model, attr_name, [])
+           a_dict[attr_name] = obj
+
+        self.current_object_state = a_dict
+        return (a_dict, 'application/json', self.object_model, {'status': 200})
+    def all_parameters_converted(self, attribute_or_function_name, parameters):
+        parameters_converted = []
+        if self.is_operation_and_has_parameters(attribute_or_function_name):
+            parameters_type = self.operations_with_parameters_type()[attribute_or_function_name].parameters
+            for i in range(0, len(parameters)):
+               parameters_converted.append(parameters_type[i](parameters[i]))
+
+
+            return parameters_converted
+
+        return self.parametersConverted(parameters)
+
+    def _value_from_object(self, object, attribute_or_function_name, parameters):
+
+        attribute_or_function_name_striped = attribute_or_function_name.strip()
+        self.name_of_last_operation_executed = attribute_or_function_name_striped
+        if len(parameters):
+            params = self.all_parameters_converted(attribute_or_function_name_striped, parameters)
+            return getattr(object, attribute_or_function_name_striped)(*params)
+
+        return getattr(object, attribute_or_function_name_striped)
+
+    def parametersConverted(self, params_as_array):
+        paramsConveted = []
+
+        for value in params_as_array:
+            if value.lower() == 'true':
+                paramsConveted.append(True)
+                continue
+            elif value.lower() == 'false':
+                paramsConveted.append(False)
+                continue
+
+            try:
+                paramsConveted.append(int( value ) )
+                continue
+            except ValueError:
+                pass
+            try:
+               paramsConveted.append( float( value ) )
+               continue
+            except ValueError:
+                pass
+            try:
+               paramsConveted.append( GEOSGeometry( value ) )
+               continue
+            except ValueError:
+                pass
+            try:
+                http_str = (value[0:4]).lower()
+                if (http_str == 'http'):
+                    resp = requests.get(value)
+                    if 400 <= resp.status_code <= 599:
+                        raise HTTPError({resp.status_code: resp.reason})
+                    js = resp.json()
+
+                    if (js.get("type") and js["type"].lower() in ['feature', 'featurecollection']):
+                        a_geom = js["geometry"]
+                    else:
+                        a_geom = js
+                    paramsConveted.append(GEOSGeometry((json.dumps(a_geom))))
+            except (ConnectionError,  HTTPError) as err:
+                print('Error: '.format(err))
+                #paramsConveted.append (value)
+
+        return paramsConveted
+
 class NonSpatialResource(AbstractResource):
-    pass
+
+    def basic_get(self, request, *args, **kwargs):
+
+        self.object_model = self.get_object(kwargs)
+        self.current_object_state = self.object_model
+        self.set_basic_context_resource(request)
+        # self.request.query_params.
+        attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
+
+        if self.is_simple_path(attributes_functions_str):
+            serializer = self.serializer_class(self.object_model)
+            output = (serializer.data, 'application/json', self.object_model, {'status': 200})
+
+        elif self.path_has_only_attributes(attributes_functions_str):
+            output = self.response_resquest_with_attributes(attributes_functions_str.replace(" ", ""))
+            dict_attribute = output[0]
+            if len(attributes_functions_str.split(',')) > 1:
+                self._set_context_to_attributes(dict_attribute.keys())
+            else:
+                self._set_context_to_only_one_attribute(attributes_functions_str)
+        elif self.path_has_url(attributes_functions_str.lower()):
+            output = self.response_request_attributes_functions_str_with_url( attributes_functions_str)
+            self.context_resource.set_context_to_object(self.current_object_state, self.name_of_last_operation_executed)
+        else:
+            output = self.response_of_request(attributes_functions_str)
+            self._set_context_to_operation(self.name_of_last_operation_executed)
+
+        return output
+
+    def get(self, request, *args, **kwargs):
+
+        dict_for_response = self.basic_get(request, *args, **kwargs)
+        status = dict_for_response[3]['status']
+        if status in [400, 401,404]:
+            return Response({'Error ': 'The request has problem. Status:' + str(status)}, status=status)
+
+        if status in [500]:
+           return Response({'Error ': 'The server can not process this request. Status:' + str(status)}, status=status)
+
+        accept = request.META['HTTP_ACCEPT']
+
+
+        return Response(data=dict_for_response[0], content_type=dict_for_response[1])
+
+    def options(self, request, *args, **kwargs):
+        self.basic_get(request, *args, **kwargs)
+        #return self.context_resource.context()
+        return Response ( data=self.context_resource.context(), content_type='application/json' )
+
 
 class SpatialResource(AbstractResource):
 
@@ -561,6 +692,55 @@ class AbstractCollectionResource(AbstractResource):
         self.basic_get(request, *args, **kwargs)
         #return self.context_resource.context()
         return Response ( data=self.context_resource.context(), content_type='application/json' )
+
+class CollectionResource(AbstractCollectionResource):
+
+    def operations_with_parameters_type(self):
+        return collection_operations()
+
+
+    def get_objects_serialized(self):
+        objects = self.model_class().objects.all()
+        return self.serializer_class(objects, many=True).data
+
+    def get_objects_serialized_by_only_attributes(self, attribute_names_str):
+        arr = []
+        attribute_names_str_as_array = attribute_names_str.split(',')
+
+        values = self.model_class().objects.values(*attribute_names_str_as_array)
+        for dic in values:
+            a_dic = {}
+            for att_name in attribute_names_str_as_array:
+                a_dic[att_name] = dic[att_name]
+                arr.append(a_dic)
+        return arr
+
+    def get_objects_serialized_by_functions(self, attributes_functions_str):
+
+        objects = []
+        if self.path_has_filter_operation(attributes_functions_str):
+            objects = self.get_objects_from_filter_operation(attributes_functions_str)
+
+        return self.serializer_class(objects, many=True).data
+
+    def basic_get(self, request, *args, **kwargs):
+        self.object_model = self.model_class()()
+        self.set_basic_context_resource(request)
+        attributes_functions_str = self.kwargs.get("attributes_functions", None)
+
+        if self.is_simple_path(attributes_functions_str):  # to get query parameters
+            return {"data": self.get_objects_serialized(),"status": 200, "content_type": "application/json"}
+
+        elif self.path_has_only_attributes(attributes_functions_str):
+            return {"data": self.get_objects_serialized_by_only_attributes(attributes_functions_str),"status": 200, "content_type": "application/json"}
+
+
+        elif self.path_has_operations(attributes_functions_str) and self.path_request_is_ok(attributes_functions_str):
+            return {"data": self.get_objects_serialized_by_functions(attributes_functions_str),"status": 200, "content_type": "application/json"}
+
+        else:
+            return {"data": "This request has invalid attribute or operation","status": 400, "content_type": "application/json"}
+
 
 class SpatialCollectionResource(AbstractCollectionResource):
 

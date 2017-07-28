@@ -7,11 +7,11 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
 
+import datetime
 from django.contrib.gis.db import models
+from django.utils.translation import ugettext_lazy as _
 
-from hyper_resource.models import FeatureModel
-
-
+from hyper_resource.models import FeatureModel, BusinessModel
 
 
 class EdifPubMilitar(models.Model):
@@ -1501,3 +1501,45 @@ class ModeloTeste(FeatureModel):
     class Meta:
         managed = False
         db_table = 'modelo_teste'
+
+class Sprint(BusinessModel):
+    id_sprint = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, blank=True, default='')
+    description = models.TextField(blank=True, default='')
+    end = models.DateField(unique=True)
+
+    class Meta:
+        managed = False
+        db_table = 'sprint'
+
+    def __str__(self):
+        return self.name or _('Sprint ending %s') % self.end
+
+class Task(BusinessModel):
+    #Unit of work to be done for the sprint
+    STATUS_TODO = 1
+    STATUS_IN_PROGRESS = 2
+    STATUS_TESTING = 3
+    STATUS_DONE = 4
+    STATUS_CHOICES = (
+        (STATUS_TODO, _('Not Started')),
+        (STATUS_IN_PROGRESS, _('In Progress')),
+        (STATUS_TESTING, _('Testing')),
+        (STATUS_DONE, _('Done')),
+    )
+    id_task = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=300, blank=True, null=True)
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    status = models.CharField(max_length=20, blank=True, null=True)
+    order = models.IntegerField(blank=True, null=True)
+    started = models.DateField(blank=True, null=True,)
+    due = models.DateField(blank=True, null=True)
+    completed = models.DateField(blank=True, null=True)
+    sprint = models.ForeignKey(Sprint,  db_column='id_sprint', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'task'
+
+    def __str__(self):
+        return self.name

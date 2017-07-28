@@ -57,7 +57,7 @@ def generate_file(package_name, default_name= '\serializers.py'):
 
 if __name__ == "__main__":
     if (len(sys.argv)) != 3:
-        print('Usage: python viewer_generator.py django_project_name django_app_name')
+        print('Usage: python serializer_generator.py django_project_name django_app_name')
         exit()
     prj_name = sys.argv[1]
     app_name = sys.argv[2]

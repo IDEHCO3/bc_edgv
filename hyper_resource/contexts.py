@@ -49,6 +49,7 @@ def vocabularyDict():
     dic[AutoField]= 'http://schema.org/Integer'
     dic[int] = 'http://schema.org/Integer'
     dic[CharField] = 'http://schema.org/Text'
+    dic[TextField] = 'http://schema.org/Text'
     dic[str] = 'http://schema.org/Text'
     dic[DateField] = 'http://schema.org/Date'
     dic[date] = 'http://schema.org/Date'

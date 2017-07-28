@@ -524,7 +524,7 @@ class BusinessModel(models.Model):
         #return (attribute_name in dir(self) and not callable(getattr(self, attribute_name)))
 
     def operations_with_parameters_type(self):
-        pass
+        return {}
 
     class Meta:
         abstract = True

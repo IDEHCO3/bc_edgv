@@ -33,5 +33,15 @@ class MunicipioContext(FeatureContext):
 class AldeiaIndigenaContext(FeatureContext):
     pass
 
-class AldeiaIndigenaContext(FeatureContext):
+class AldeiaIndigenaListContext(FeatureContext):
+    pass
+
+class SprintContext(FeatureContext):
+    pass
+class TaskContext(FeatureContext):
+    pass
+
+class SprintListContext(FeatureContext):
+    pass
+class TaskListContext(FeatureContext):
     pass
