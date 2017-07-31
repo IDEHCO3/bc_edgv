@@ -3,6 +3,8 @@ from django.conf.urls import include,  url
 from rest_framework.urlpatterns import format_suffix_patterns
 from bcim import views
 
+
+
 urlpatterns = [
     url(r'^$', views.APIRoot.as_view(), name='api_root'),
 
@@ -358,8 +360,8 @@ urlpatterns = [
     url(r'^marcos-de-limite/(?P<id_objeto>[0-9]*)/(?P<attributes_functions>.*)/$', views.MarcoDeLimiteDetail.as_view(), name='marco_de_limite_detail_af'),
 
     #sprint
-    url(r'^' + views.SprintDetail.contextclassname +'/(?P<id_sprint>[0-9]+)/$', views.SprintDetail.as_view(), name='sprint_detail'),
-    url(r'^' + views.SprintDetail.contextclassname + '/(?P<id_sprint>[0-9]+)/(?P<attributes_functions>.*)/$', views.SprintDetail.as_view(), name='sprint_detail'),
+    url(r'^' + views.SprintDetail.contextclassname +'/(?P<id>[0-9]+)/$', views.SprintDetail.as_view(), name='sprint_detail'),
+    url(r'^' + views.SprintDetail.contextclassname + '/(?P<id>[0-9]+)/(?P<attributes_functions>.*)/$', views.SprintDetail.as_view(), name='sprint_detail'),
     #sprint collection
     url(r'^' + views.SprintList.contextclassname +'/$', views.SprintList.as_view(), name='sprint_list'),
     url(r'^' + views.SprintList.contextclassname +'/(?P<attributes_functions>.*)/$', views.SprintList.as_view(), name='sprint_list'),
@@ -369,6 +371,7 @@ urlpatterns = [
     #collection
     url(r'^' + views.TaskList.contextclassname + '/$', views.TaskList.as_view(), name='task_list'),
     url(r'^' + views.TaskList.contextclassname +'/(?P<attributes_functions>.*)/$', views.TaskList.as_view(), name='task_list'),
+
 
     # urls generalized
     url(r'^(?P<model_class>[\w\-]+)/$', views.HandleFunctionsList.as_view(), name="general_list"),

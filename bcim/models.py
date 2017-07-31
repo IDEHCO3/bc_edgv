@@ -29,6 +29,7 @@ class EdifPubMilitar(models.Model):
 
     iri_metadata = models.CharField(max_length=1000, blank=True, null=True)
     iri_style = models.CharField(max_length=1000, blank=True, null=True)
+    contextclassname = 'edificacoes-publica-militar'
     class Meta:
         managed = False
         db_table = 'adm_edif_pub_militar_p'
@@ -705,6 +706,7 @@ class UnidadeConservacaoNaoSnuc(models.Model):
 
 
 class UnidadeFederacao(FeatureModel):
+    contextclassname = 'unidades-federativas'
     id_objeto = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
@@ -719,7 +721,6 @@ class UnidadeFederacao(FeatureModel):
     class Meta:
         managed = False
         db_table = 'lim_unidade_federacao_a'
-
 
 class UnidadeProtecaoIntegral(models.Model):
     gid = models.AutoField(primary_key=True)
@@ -808,7 +809,7 @@ class AldeiaIndigena(FeatureModel):
 
 
 class AreaEdificada(models.Model):
-    id_objeto = models.IntegerField(primary_key=True)
+    id_objeto = models.IntegerField(primary_key=True, db_column='id_objeto')
     nome = models.CharField(max_length=100, blank=True, null=True)
     nomeabrev = models.CharField(max_length=50, blank=True, null=True)
     geometriaaproximada = models.CharField(max_length=3, blank=True, null=True)
@@ -1503,7 +1504,8 @@ class ModeloTeste(FeatureModel):
         db_table = 'modelo_teste'
 
 class Sprint(BusinessModel):
-    id_sprint = models.AutoField(primary_key=True)
+    contextclassname = 'sprints'
+    id = models.AutoField(primary_key=True, db_column='id_sprint')
     name = models.CharField(max_length=100, blank=True, default='')
     description = models.TextField(blank=True, default='')
     end = models.DateField(unique=True)
@@ -1516,6 +1518,7 @@ class Sprint(BusinessModel):
         return self.name or _('Sprint ending %s') % self.end
 
 class Task(BusinessModel):
+    contextclassname = 'tasks'
     #Unit of work to be done for the sprint
     STATUS_TODO = 1
     STATUS_IN_PROGRESS = 2

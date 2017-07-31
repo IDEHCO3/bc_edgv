@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+
+from bc_edgv.urls import basic_path, protocol, host_name
 from .models import *
 
 class UnidadeFederacaoSerializer(GeoFeatureModelSerializer):
@@ -612,21 +614,24 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
 
 
 class SprintSerializer(ModelSerializer):
+    def __init__(self, object_model, protocol='http', host_name='localhost'):
+        self.protocol = protocol
+        self.host_name = host_name
+        super(SprintSerializer, self).__init__(object_model)
     class Meta:
         model = Sprint
 
-        fields = ['id_sprint', 'name', 'description', 'end']
+        fields = ['id', 'name', 'description', 'end']
         # 'altitudeortometrica'
 
         identifiers = ['id_sprint']
         identifier = 'id_sprint'
 
 class TaskSerializer(ModelSerializer):
-    def __init__(self, object_model, protocol, host_name, base_path):
-        self.protocol= protocol
-        self.host_name = host_name
-        self.base_path = base_path
+    def __init__(self, object_model):
+
         super(TaskSerializer, self).__init__(object_model)
+
 
     sprint_iri = serializers.SerializerMethodField()
 
@@ -641,7 +646,8 @@ class TaskSerializer(ModelSerializer):
     def get_sprint_iri(self, obj):
 
         #basic_path = self._base_path(request.META['PATH_INFO'])
-        return self.protocol + '//' + self.host_name + self.base_path+ '/' + str(obj.sprint.id_sprint)
+
+        return  protocol + '://' + host_name + '/' + basic_path +  obj.sprint.contextclassname + '/' + str(obj.sprint.id)
 
 serializers_dict = {
     'outras-unidades-protegidas': {

@@ -156,7 +156,7 @@ class UnidadeFederacaoList(FeatureCollectionResource):
 
     #queryset = UnidadeFederacao.objects.all()
     serializer_class = UnidadeFederacaoSerializer
-    contextclassname = 'unidades-federativas'
+    contextclassname = UnidadeFederacao.contextclassname
     iri_metadata = 'http://www.metadados.geo.ibge.gov.br/geonetwork_ibge/srv/por/csw?request=GetRecordById&service=CSW&version=2.0.2&elementSetName=full&id=ff2d4215-9843-4137-bad9-c15f2a8caa9e'
     iri_style = 'http://styles.idehco4.tk/styles/unidade_federacao.sld'
 
@@ -948,7 +948,7 @@ class MarcoDeLimiteDetail(HandleFunctionDetail):
 
 class SprintList(CollectionResource):
     queryset = Sprint.objects.all()
-    contextclassname = 'sprints'
+    contextclassname = Sprint.contextclassname
     serializer_class = SprintSerializer
 
     def initialize_context(self):
@@ -960,7 +960,7 @@ class SprintDetail(NonSpatialResource):
 
     queryset = Sprint.objects.all()
     serializer_class = SprintSerializer
-    contextclassname = 'sprints'
+    contextclassname = Sprint.contextclassname
 
     def initialize_context(self):
         self.context_resource = SprintContext()
@@ -969,7 +969,7 @@ class SprintDetail(NonSpatialResource):
 class TaskList(CollectionResource):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    contextclassname = 'tasks'
+    contextclassname = Task.contextclassname
 
     def initialize_context(self):
         self.context_resource = TaskListContext()
@@ -979,7 +979,7 @@ class TaskDetail(NonSpatialResource):
 
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    contextclassname = 'tasks'
+    contextclassname = Task.contextclassname
 
     def initialize_context(self):
         self.context_resource = TaskContext()

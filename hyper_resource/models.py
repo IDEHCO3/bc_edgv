@@ -479,7 +479,8 @@ def dict_geometry_operations():
 
 class BusinessModel(models.Model):
 
-
+    def id(self):
+        return
     def model_class(self):
         return type(self)
 

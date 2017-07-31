@@ -353,7 +353,7 @@ class NonSpatialResource(AbstractResource):
 
         if self.is_simple_path(attributes_functions_str):
             proto = self.protocol(request)
-            serializer = self.serializer_class(self.object_model, proto, request.META['HTTP_HOST'], self._base_path(request.META['PATH_INFO']) )
+            serializer = self.serializer_class(self.object_model)
             output = (serializer.data, 'application/json', self.object_model, {'status': 200})
 
         elif self.path_has_only_attributes(attributes_functions_str):
