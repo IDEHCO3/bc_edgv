@@ -1530,7 +1530,7 @@ class Task(BusinessModel):
         (STATUS_TESTING, _('Testing')),
         (STATUS_DONE, _('Done')),
     )
-    id_task = models.AutoField(primary_key=True)
+    id= models.AutoField(primary_key=True, db_column='id_task' )
     name = models.CharField(max_length=300, blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
     status = models.CharField(max_length=20, blank=True, null=True)
@@ -1538,7 +1538,8 @@ class Task(BusinessModel):
     started = models.DateField(blank=True, null=True,)
     due = models.DateField(blank=True, null=True)
     completed = models.DateField(blank=True, null=True)
-    sprint = models.ForeignKey(Sprint,  db_column='id_sprint', blank=True, null=True)
+    sprint = models.ForeignKey(Sprint,  db_column='id_sprint',related_name='tasks' ,blank=True, null=True)
+
 
     class Meta:
         managed = False

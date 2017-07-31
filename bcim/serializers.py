@@ -614,40 +614,40 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
 
 
 class SprintSerializer(ModelSerializer):
-    def __init__(self, object_model, protocol='http', host_name='localhost'):
-        self.protocol = protocol
-        self.host_name = host_name
-        super(SprintSerializer, self).__init__(object_model)
+
+    tasks_iri = serializers.SerializerMethodField()
     class Meta:
         model = Sprint
 
-        fields = ['id', 'name', 'description', 'end']
+        fields = ['id', 'name', 'description', 'end', 'tasks_iri']
         # 'altitudeortometrica'
 
         identifiers = ['id_sprint']
         identifier = 'id_sprint'
 
+    #serializer_class(objects, many=True).data
+
+    def get_tasks_iri(self, a_sprint):
+
+        tasks = a_sprint.tasks.all()
+        return list(map((lambda task: (protocol + '://' + host_name + '/' + basic_path + task.contextclassname + '/' + str(task.id))), tasks))
+
+
+
 class TaskSerializer(ModelSerializer):
-    def __init__(self, object_model):
-
-        super(TaskSerializer, self).__init__(object_model)
-
-
     sprint_iri = serializers.SerializerMethodField()
 
     class Meta:
         model = Task
-        fields = ['id_task', 'name', 'description', 'sprint', 'sprint_iri', 'status', 'order', 'started', 'due', 'completed']
+        fields = ['id', 'name', 'description',  'sprint_iri', 'status', 'order', 'started', 'due', 'completed']
         # 'altitudeortometrica'
 
-        identifiers = ['id_task']
-        identifier = 'id_task'
+        identifiers = ['id']
+        identifier = 'id'
 
-    def get_sprint_iri(self, obj):
+    def get_sprint_iri(self, a_task):
 
-        #basic_path = self._base_path(request.META['PATH_INFO'])
-
-        return  protocol + '://' + host_name + '/' + basic_path +  obj.sprint.contextclassname + '/' + str(obj.sprint.id)
+        return  protocol + '://' + host_name + '/' + basic_path +  a_task.sprint.contextclassname + '/' + str(a_task.sprint.id)
 
 serializers_dict = {
     'outras-unidades-protegidas': {
