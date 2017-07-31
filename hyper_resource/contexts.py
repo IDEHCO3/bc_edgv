@@ -246,12 +246,15 @@ class ContextResource:
     def attribute_contextualized_dict_for(self, field):
         voc = vocabulary(field.name)
         res_voc = voc if voc is not None else vocabulary(type(field))
+        if res_voc is None:
+            res_voc  = "http://schema.org/Thing"
         return { "@id": res_voc, "@type": "@id"}
 
 
     def attributes_contextualized_dict(self):
         dic_field = {}
-        for field_model in self.resource.fields_to_web():
+        fields = self.resource.fields_to_web()
+        for field_model in fields:
             dic_field[field_model.name] = self.attribute_contextualized_dict_for(field_model)
         return dic_field
 
@@ -267,14 +270,18 @@ class ContextResource:
         return { "@id": res_voc, "@type": "@id"}
 
     def supportedProperties(self):
-        arr_dict = [];
+        arr_dict = []
         return arr_dict
 
-    def supportedOperations(self):
-        arr_dic = [
+    def supportedProperties(self):
+        arr_dict = []
+        if self.resource is None:
+            return []
+        fields = self.resource.fields_to_web()
+        for field in fields:
+            arr_dict.append(SupportedProperty(property_name=field.name, required=field.null, readable=True, writeable=True, is_unique=False, is_identifier=field.primary_key, is_external=False))
+        return [supportedAttribute.context() for supportedAttribute in arr_dict]
 
-        ]
-        return arr_dic
     def supportedOperationsFor(self, object):
         dict = initialize_dict()
         a_type = type(object)
@@ -288,9 +295,29 @@ class ContextResource:
 
         return [supportedOperation.context() for supportedOperation in arr]
 
+    def supportedOperations(self):
+
+        arr = []
+        if self.resource is None:
+            return []
+        for k, v_typed_called in self.resource.operations_with_parameters_type().iteritems():
+            exps = [] if v_typed_called.parameters is None else [vocabulary(param) for param in v_typed_called.parameters]
+            rets = (vocabulary(v_typed_called.return_type) if v_typed_called.return_type in vocabularyDict()  else ("NOT FOUND"))
+            link_id = vocabulary(v_typed_called.name)
+            arr.append( SupportedOperation(operation=v_typed_called.name, title=v_typed_called.name, method='GET', expects=exps, returns=rets, type='', link=link_id))
+
+        return [supportedOperation.context() for supportedOperation in arr]
 
     def iriTemplates(self):
-        return {}
+        iri_templates = []
+        dict = {}
+        dict["@type"] = "IriTemplate"
+        dict["template"] = self.host_with_path() + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
+        dict["mapping"] = [ {"@type": "iriTemplateMapping", "variable": "list*", "property": "hydra:property", "required": True}]
+
+        iri_templates.append(dict)
+
+        return {"iri_templates": iri_templates}
 
     def set_context_to_attributes(self, attributes_name):
         self.dict_context = {}
@@ -342,41 +369,10 @@ class ContextResource:
 class FeatureContext(ContextResource):
 
 
-    def supportedProperties(self):
-        arr_dict = []
-        if self.resource is None:
-            return []
-
-        for field in self.resource.fields_to_web():
-            arr_dict.append(SupportedProperty(property_name=field.attname, required=field.null, readable=True, writeable=True, is_unique=False, is_identifier=field.primary_key, is_external=False))
-        return [supportedAttribute.context() for supportedAttribute in arr_dict]
-
-    def supportedOperations(self):
-
-        arr = []
-        if self.resource is None:
-            return []
-        for k, v_typed_called in self.resource.operations_with_parameters_type().iteritems():
-            exps = [] if v_typed_called.parameters is None else [vocabulary(param) for param in v_typed_called.parameters]
-            rets = (vocabulary(v_typed_called.return_type) if v_typed_called.return_type in vocabularyDict()  else ("NOT FOUND"))
-            link_id = vocabulary(v_typed_called.name)
-            arr.append( SupportedOperation(operation=v_typed_called.name, title=v_typed_called.name, method='GET', expects=exps, returns=rets, type='', link=link_id))
-
-        return [supportedOperation.context() for supportedOperation in arr]
-
     def iri_template_contextualized_dict(self):
         pass
 
-    def iriTemplates(self):
-        iri_templates = []
-        dict = {}
-        dict["@type"] = "IriTemplate"
-        dict["template"] = self.host_with_path() + "{/list*}"  # Ex.: http://host/unidades-federativas/nome,sigla,geom
-        dict["mapping"] = [ {"@type": "iriTemplateMapping", "variable": "list*", "property": "hydra:property", "required": True}]
 
-        iri_templates.append(dict)
-
-        return {"iri_templates": iri_templates}
 
 class FeatureCollectionContext(FeatureContext):
     pass

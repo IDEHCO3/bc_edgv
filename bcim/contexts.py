@@ -1,4 +1,4 @@
-from hyper_resource.contexts import FeatureContext, FeatureCollectionContext
+from hyper_resource.contexts import ContextResource, FeatureContext, FeatureCollectionContext
 
 class UnidadeFederacaoContext(FeatureContext):
 
@@ -36,9 +36,9 @@ class AldeiaIndigenaContext(FeatureContext):
 class AldeiaIndigenaListContext(FeatureContext):
     pass
 
-class SprintContext(FeatureContext):
+class SprintContext(ContextResource):
     pass
-class TaskContext(FeatureContext):
+class TaskContext(ContextResource):
     pass
 
 class SprintListContext(FeatureContext):

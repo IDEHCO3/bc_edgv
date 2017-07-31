@@ -54,21 +54,17 @@ class AbstractResource(APIView):
     def initialize_context(self):
        pass
 
-    def protocol(self, request):
-        return 'http:' if request.META['SERVER_PROTOCOL'][4] == '/' else 'https:'
     # todo
     def path_request_is_ok(self, a_path):
         return True
 
     def operations_with_parameters_type(self):
-
         dic = self.object_model.operations_with_parameters_type()
-
         return dic
 
     def model_class(self):
-        return self.serializer_class.Meta.model
-        #return self.object_model.model_class()
+        return self.serializer_class.Meta.model #return self.object_model.model_class()
+
     def model_class_name(self):
         return self.model_class().__name__
 
@@ -77,8 +73,8 @@ class AbstractResource(APIView):
 
 
     def fields_to_web_for_attribute_names(self, attribute_names):
-
         fields_model = self.object_model.fields()
+        # Poderia ser ModelClass._meta.get_field(field_name) Obs: raise FieldDoesNotExist
         return [field for field in fields_model if field.name in attribute_names ]
 
     def fields_to_web(self):
@@ -352,7 +348,7 @@ class NonSpatialResource(AbstractResource):
         attributes_functions_str = kwargs.get(self.attributes_functions_name_template())
 
         if self.is_simple_path(attributes_functions_str):
-            proto = self.protocol(request)
+
             serializer = self.serializer_class(self.object_model)
             output = (serializer.data, 'application/json', self.object_model, {'status': 200})
 
