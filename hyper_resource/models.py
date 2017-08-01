@@ -24,6 +24,7 @@ from django.contrib.gis.db.models import MultiPointField
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.db.models import PolygonField
+from django.contrib.gis.db.models import ForeignKey
 from requests import ConnectionError
 from requests import HTTPError
 
@@ -152,6 +153,7 @@ class ConverterType():
         d[MultiPolygonField] = self.convert_to_geometry
         d[MultiLineString] = self.convert_to_geometry
         d[MultiPointField] = self.convert_to_geometry
+        d[ForeignKey] = self.convert_to_int
 
 
         return d[a_type]

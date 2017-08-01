@@ -697,7 +697,6 @@ class CollectionResource(AbstractCollectionResource):
     def operations_with_parameters_type(self):
         return collection_operations()
 
-
     def get_objects_serialized(self):
         objects = self.model_class().objects.all()
         return self.serializer_class(objects, many=True).data
