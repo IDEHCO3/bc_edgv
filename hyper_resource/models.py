@@ -1,7 +1,9 @@
+import importlib
 import json
 from datetime import date, datetime, time
 
 import requests
+import sys
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models import Q
 # Create your models here.
@@ -531,6 +533,17 @@ class BusinessModel(models.Model):
 
     def operations_with_parameters_type(self):
         return {}
+
+    def serializer_class(self, a_model_class_name):
+        return self.class_for_name('serializers', a_model_class_name + 'Serializer')
+
+    def class_for_name(self, module_name, class_name):
+        # load the module, will raise ImportError if module cannot be loaded
+        m = importlib.import_module(module_name)
+        # get the class, will raise AttributeError if class cannot be found
+        c = getattr(m, class_name)
+        return c
+
 
     class Meta:
         abstract = True

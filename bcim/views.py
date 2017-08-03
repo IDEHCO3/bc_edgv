@@ -11,7 +11,7 @@ from bcim.utils import *
 from rest_framework import permissions
 
 from rest_framework import generics
-from bcim.serializers import *
+from .serializers import *
 
 
 from context_api.views import *

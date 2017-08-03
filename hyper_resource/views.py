@@ -2,8 +2,10 @@ import ast
 import re
 import json
 import requests
+
 from django.contrib.gis.db.models.functions import AsGeoJSON
 from django.contrib.gis.gdal import SpatialReference
+from django.db.models.base import ModelBase
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
@@ -260,6 +262,8 @@ class AbstractResource(APIView):
             return str(attributes_functions_str[-1])
         return str(attributes_functions_str[-2])
 
+
+
     def response_resquest_with_attributes(self,  attributes_functions_name):
         a_dict ={}
         attributes = attributes_functions_name.strip().split(',')
@@ -270,6 +274,8 @@ class AbstractResource(APIView):
 
         self.current_object_state = a_dict
         return (a_dict, 'application/json', self.object_model, {'status': 200})
+
+
     def all_parameters_converted(self, attribute_or_function_name, parameters):
         parameters_converted = []
         if self.is_operation_and_has_parameters(attribute_or_function_name):
@@ -338,6 +344,26 @@ class AbstractResource(APIView):
         return paramsConveted
 
 class NonSpatialResource(AbstractResource):
+
+
+    def response_of_request(self,  attributes_functions_str):
+        att_funcs = attributes_functions_str.split('/')
+        if (not self.is_operation(att_funcs[0])) and self.is_attribute(att_funcs[0]):
+            att_funcs = att_funcs[1:]
+
+        self.current_object_state = self._execute_attribute_or_method(self.object_model, att_funcs[0], att_funcs[1:])
+
+        if hasattr(self.current_object_state, 'model') and issubclass(self.current_object_state.model, Model):
+            class_name = self.current_object_state.model.__name__ + 'Serializer'
+            serializer_cls = self.object_model.class_for_name(self.serializer_class.__module__, class_name)
+            if isinstance(self.current_object_state.field, OneToOneField):
+                self.current_object_state = serializer_cls(self.current_object_state).data
+            else:
+                self.current_object_state = serializer_cls(self.current_object_state, many=True).data
+
+        a_value = {self.name_of_last_operation_executed: self.current_object_state}
+
+        return (a_value, 'application/json', self.object_model, {'status': 200})
 
     def basic_get(self, request, *args, **kwargs):
 
