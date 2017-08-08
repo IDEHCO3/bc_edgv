@@ -357,9 +357,9 @@ class NonSpatialResource(AbstractResource):
             class_name = self.current_object_state.model.__name__ + 'Serializer'
             serializer_cls = self.object_model.class_for_name(self.serializer_class.__module__, class_name)
             if isinstance(self.current_object_state.field, OneToOneField):
-                self.current_object_state = serializer_cls(self.current_object_state).data
+                self.current_object_state = serializer_cls(self.current_object_state, context={'request': self.request}).data
             else:
-                self.current_object_state = serializer_cls(self.current_object_state, many=True).data
+                self.current_object_state = serializer_cls(self.current_object_state, many=True, context={'request': self.request}).data
 
         a_value = {self.name_of_last_operation_executed: self.current_object_state}
 
@@ -375,7 +375,7 @@ class NonSpatialResource(AbstractResource):
 
         if self.is_simple_path(attributes_functions_str):
 
-            serializer = self.serializer_class(self.object_model)
+            serializer = self.serializer_class(self.object_model, context={'request': self.request})
             output = (serializer.data, 'application/json', self.object_model, {'status': 200})
 
         elif self.path_has_only_attributes(attributes_functions_str):
@@ -725,7 +725,7 @@ class CollectionResource(AbstractCollectionResource):
 
     def get_objects_serialized(self):
         objects = self.model_class().objects.all()
-        return self.serializer_class(objects, many=True).data
+        return self.serializer_class(objects, many=True, context={'request': self.request}).data
 
     def get_objects_serialized_by_only_attributes(self, attribute_names_str):
         arr = []
@@ -745,7 +745,7 @@ class CollectionResource(AbstractCollectionResource):
         if self.path_has_filter_operation(attributes_functions_str):
             objects = self.get_objects_from_filter_operation(attributes_functions_str)
 
-        return self.serializer_class(objects, many=True).data
+        return self.serializer_class(objects, many=True, context={'request': self.request}).data
 
     def basic_get(self, request, *args, **kwargs):
         self.object_model = self.model_class()()

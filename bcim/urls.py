@@ -361,13 +361,13 @@ urlpatterns = [
 
     #sprint
     url(r'^' + views.SprintDetail.contextclassname +'/(?P<id>[0-9]+)/$', views.SprintDetail.as_view(), name='sprint_detail'),
-    url(r'^' + views.SprintDetail.contextclassname + '/(?P<id>[0-9]+)/(?P<attributes_functions>.*)/$', views.SprintDetail.as_view(), name='sprint_detail'),
+    url(r'^' + views.SprintDetail.contextclassname + '/(?P<id>[0-9]+)/(?P<attributes_functions>.*)/$', views.SprintDetail.as_view(), name='sprint_detail_function'),
     #sprint collection
     url(r'^' + views.SprintList.contextclassname +'/$', views.SprintList.as_view(), name='sprint_list'),
     url(r'^' + views.SprintList.contextclassname +'/(?P<attributes_functions>.*)/$', views.SprintList.as_view(), name='sprint_list'),
     #tasks
     url(r'^' + views.TaskDetail.contextclassname + '/(?P<id_task>[0-9]+)/$', views.TaskDetail.as_view(), name='task_detail'),
-    url(r'^' + views.TaskDetail.contextclassname + '/(?P<id_task>[0-9]+)/(?P<attributes_functions>.*)/$', views.TaskDetail.as_view(), name='task_detail'),
+    url(r'^' + views.TaskDetail.contextclassname + '/(?P<id_task>[0-9]+)/(?P<attributes_functions>.*)/$', views.TaskDetail.as_view(), name='task_detail_function'),
     #collection
     url(r'^' + views.TaskList.contextclassname + '/$', views.TaskList.as_view(), name='task_list'),
     url(r'^' + views.TaskList.contextclassname +'/(?P<attributes_functions>.*)/$', views.TaskList.as_view(), name='task_list'),

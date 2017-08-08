@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, HyperlinkedModelSerializer
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from rest_framework.reverse import reverse
 
 from bc_edgv.urls import basic_path, protocol, host_name
 from .models import *
@@ -614,20 +615,18 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
 
 
 class SprintSerializer(ModelSerializer):
+    tasks = serializers.HyperlinkedRelatedField(view_name='bcim_v1:task_detail', many=True, lookup_url_kwarg='id_task', read_only=True)
 
-    tasks = serializers.SerializerMethodField()
     class Meta:
         model = Sprint
         fields = ['id', 'name', 'description', 'end', 'tasks']
         identifiers = ['id']
         identifier = 'id'
 
-    def get_tasks(self, a_sprint):
-        tasks = a_sprint.tasks.all()
-        return list(map((lambda task: (protocol + '://' + host_name + '/' + basic_path + task.contextclassname + '/' + str(task.id))), tasks))
+
 
 class TaskSerializer(ModelSerializer):
-    sprint = serializers.SerializerMethodField()
+    sprint = serializers.HyperlinkedRelatedField(view_name='bcim_v1:sprint_detail', lookup_url_kwarg='id', many=False, read_only=True)
 
     class Meta:
         model = Task
@@ -635,8 +634,6 @@ class TaskSerializer(ModelSerializer):
         identifiers = ['id']
         identifier = 'id'
 
-    def get_sprint(self, a_task):
-        return  protocol + '://' + host_name + '/' + basic_path +  a_task.sprint.contextclassname + '/' + str(a_task.sprint.id)
 
 serializers_dict = {
     'outras-unidades-protegidas': {
