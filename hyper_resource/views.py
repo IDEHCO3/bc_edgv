@@ -40,6 +40,8 @@ class IgnoreClientContentNegotiation(BaseContentNegotiation):
 class AbstractResource(APIView):
     __metaclass__ = ABCMeta
 
+    serializer_class = None
+
     def __init__(self):
         super(AbstractResource, self).__init__()
         self.current_object_state = None
@@ -105,7 +107,7 @@ class AbstractResource(APIView):
         self.context_resource.host = request.META['HTTP_HOST']
         self.context_resource.basic_path = self._base_path(request.META['PATH_INFO'])
         if len(self.kwargs.values()):
-            self.context_resource.complement_path = self.kwargs.values()[0]
+            self.context_resource.complement_path = list(self.kwargs.values())[0]
         else:
             self.context_resource.complement_path = ''
 
@@ -122,6 +124,7 @@ class AbstractResource(APIView):
 
         return a_dict
 
+    '''
     def get_object(self, arr_of_term=[]):
         first_term = arr_of_term[0]
         if self.is_attribute(self, first_term):
@@ -131,7 +134,7 @@ class AbstractResource(APIView):
         for term in arr_of_term:
             self.current_object_state = getattr(self.current_object_state, term, None)
         return  self.current_object_state
-
+    '''
     def attributes_functions_name_template(self):
         return 'attributes_functions'
 
@@ -141,6 +144,21 @@ class AbstractResource(APIView):
         obj = get_object_or_404(queryset, **dicti)
         #self.check_object_permissions(self.request, obj)
         return obj
+
+    def put(self, request, *args, **kwargs):
+        obj = self.get_object(kwargs)
+        serializer = self.serializer_class(obj, data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            resp =  Response(status=status.HTTP_204_NO_CONTENT)
+            return resp
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object(kwargs)
+        obj.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def operation_names_model(self):
         return self.object_model.operation_names()
@@ -412,7 +430,7 @@ class NonSpatialResource(AbstractResource):
     def options(self, request, *args, **kwargs):
         self.basic_get(request, *args, **kwargs)
         #return self.context_resource.context()
-        return Response ( data=self.context_resource.context(), content_type='application/json' )
+        return Response ( data=self.context_resource.context(), content_type='application/ld+json' )
 
 
 class SpatialResource(AbstractResource):
@@ -641,7 +659,7 @@ class FeatureResource(SpatialResource):
     def options(self, request, *args, **kwargs):
         self.basic_get(request, *args, **kwargs)
         #return self.context_resource.context()
-        return Response ( data=self.context_resource.context(), content_type='application/json' )
+        return Response ( data=self.context_resource.context(), content_type='application/ld+json' )
 
 class AbstractCollectionResource(AbstractResource):
     def __init__(self):
@@ -716,7 +734,20 @@ class AbstractCollectionResource(AbstractResource):
     def options(self, request, *args, **kwargs):
         self.basic_get(request, *args, **kwargs)
         #return self.context_resource.context()
-        return Response ( data=self.context_resource.context(), content_type='application/json' )
+        return Response ( data=self.context_resource.context(), content_type='application/ld+json' )
+
+    def basic_response(self, request, model_object):
+        response =  Response(status=status.HTTP_201_CREATED, content_type='application/json')
+        response['Content-Location'] = request.path + str(model_object.id)
+        return response
+
+    def post(self, request, *args, **kwargs):
+        print(request.data)
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            obj =  serializer.save()
+            return self.basic_response(request, obj)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class CollectionResource(AbstractCollectionResource):
 
@@ -868,7 +899,10 @@ class FeatureCollectionResource(SpatialCollectionResource):
 
         return self.serializer_class(objects, many=True).data
 
-
+    def basic_response(self, request, model_object):
+        response = Response(status=status.HTTP_201_CREATED, content_type='application/geojson')
+        response['Content-Location'] = request.path + str(model_object.id)
+        return response
 
     def basic_get(self, request, *args, **kwargs):
         self.object_model = self.model_class()()

@@ -25,7 +25,7 @@ b.3) SpatialFunction
 7) <<servidor>>/ibge/bcim/aldeias-indigenas/587/within/<<servidor>>/ibge/bcim/unidades-federativas/ES/envelope
 8) <<servidor>>/ibge/bcim/unidades-federativas/RJ/boundary/
 9) <<servidor>>/ibge/bcim/unidades-federativas/RJ/transform/3857&True/area
-10) <<servidor>>/ibge/bcim/unidades-federativas/MG/contains/http://172.30.10.61:8000/ibge/bcim/unidades-federativas/MG/centroid/
+10) <<servidor>>/ibge/bcim/unidades-federativas/MG/contains/http://172.30.10.86:8000/instituicoes/ibge/bcim/unidades-federativas/MG/centroid/
 11) <<servidor>>/ibge/bcim/unidades-federativas/MG/transform/3005%26True/area/
 
 Mais testes

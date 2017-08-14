@@ -615,24 +615,48 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
 
 
 class SprintSerializer(ModelSerializer):
-    tasks = serializers.HyperlinkedRelatedField(view_name='bcim_v1:task_detail', many=True, lookup_url_kwarg='id_task', read_only=True)
+    tasks = serializers.HyperlinkedRelatedField(view_name='bcim_v1:task_detail', many=True, lookup_url_kwarg='id', read_only=True)
 
     class Meta:
         model = Sprint
         fields = ['id', 'name', 'description', 'end', 'tasks']
-        identifiers = ['id']
+        identifiers = ['id' ]
         identifier = 'id'
 
 
 
 class TaskSerializer(ModelSerializer):
-    sprint = serializers.HyperlinkedRelatedField(view_name='bcim_v1:sprint_detail', lookup_url_kwarg='id', many=False, read_only=True)
 
+    sprint = serializers.HyperlinkedRelatedField(view_name='bcim_v1:sprint_detail', lookup_url_kwarg='id', many=False, read_only=True)
+    #sprint = serializers.SerializerMethodField()
     class Meta:
         model = Task
         fields = ['id', 'name', 'description',  'sprint', 'status', 'order', 'started', 'due', 'completed']
         identifiers = ['id']
         identifier = 'id'
+
+
+    '''
+    def update(self, instance, validated_data):
+        a_sprint = self.initial_data['sprint']
+        instance.sprint_id = a_sprint
+        super(TaskSerializer, self).update( instance, validated_data)
+        return instance
+    '''
+
+    def create(self, validated_data):
+        a_sprint = self.initial_data['sprint']
+        validated_data['sprint_id'] = a_sprint
+        instance = super(TaskSerializer, self).create(validated_data)
+        instance.sprint_id = a_sprint
+        return instance
+
+    '''
+    def get_sprint(self, a_task):
+        if a_task.sprint is None:
+            return None
+        return  protocol + '://' + host_name + '/' + basic_path +  a_task.sprint.contextclassname + '/' + str(a_task.sprint.id)
+    '''
 
 
 serializers_dict = {

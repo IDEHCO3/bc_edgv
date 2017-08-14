@@ -261,7 +261,7 @@ class ContextResource:
 
     def selectedAttributeContextualized_dict(self, attribute_name_array):
 
-        return {k: v for k, v in self.attributes_contextualized_dict().iteritems() if k in attribute_name_array}
+        return {k: v for k, v in list(self.attributes_contextualized_dict().items()) if k in attribute_name_array}
 
 
     def supportedPropertyFor(self, field):
@@ -300,7 +300,7 @@ class ContextResource:
         arr = []
         if self.resource is None:
             return []
-        for k, v_typed_called in self.resource.operations_with_parameters_type().iteritems():
+        for k, v_typed_called in self.resource.operations_with_parameters_type().items():
             exps = [] if v_typed_called.parameters is None else [vocabulary(param) for param in v_typed_called.parameters]
             rets = (vocabulary(v_typed_called.return_type) if v_typed_called.return_type in vocabularyDict()  else ("NOT FOUND"))
             link_id = vocabulary(v_typed_called.name)

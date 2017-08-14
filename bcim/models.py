@@ -1508,7 +1508,7 @@ class Sprint(BusinessModel):
     id = models.AutoField(primary_key=True, db_column='id_sprint')
     name = models.CharField(max_length=100, blank=True, default='')
     description = models.TextField(blank=True, default='')
-    end = models.DateField(unique=True)
+    end = models.DateField(unique=True, blank=True,default=datetime.date.today)
 
     class Meta:
         managed = False
