@@ -14,7 +14,8 @@ def detect_primary_key_field(fields_of_model_class):
 def generate_snippets_to_url(model_class_name, model_class):
 
     context_name = convert_camel_case_to_hifen(model_class_name) + '-list'
-    primary_key_name = detect_primary_key_field(model_class._meta.get_fields()).name
+    #primary_key_name = detect_primary_key_field(model_class._meta.get_fields()).name
+    primary_key_name = 'pk'
     arr = []
     arr.append((' ' * 4) + 'url(r' +"'"+  context_name +'/(?P<'+ primary_key_name +'>[0-9]+)/$' +"'"+ ', views.' +
                model_class_name + 'Detail.as_view(), name=' + "'" + model_class_name +'_detail' +"'" + '),\n')

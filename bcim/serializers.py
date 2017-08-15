@@ -615,19 +615,19 @@ class MarcoDeLimiteSerializer(GeoFeatureModelSerializer):
 
 
 class SprintSerializer(ModelSerializer):
-    tasks = serializers.HyperlinkedRelatedField(view_name='bcim_v1:task_detail', many=True, lookup_url_kwarg='id', read_only=True)
+    tasks = serializers.HyperlinkedRelatedField(view_name='bcim_v1:task_detail', many=True, read_only=True)
 
     class Meta:
         model = Sprint
-        fields = ['id', 'name', 'description', 'end', 'tasks']
-        identifiers = ['id' ]
-        identifier = 'id'
+        fields = ['pk', 'name', 'description', 'end', 'tasks']
+        identifiers = ['pk' ]
+        identifier = 'pk'
 
 
 
 class TaskSerializer(ModelSerializer):
 
-    sprint = serializers.HyperlinkedRelatedField(view_name='bcim_v1:sprint_detail', lookup_url_kwarg='id', many=False, read_only=True)
+    sprint = serializers.HyperlinkedRelatedField(view_name='bcim_v1:sprint_detail', many=False, read_only=True)
     #sprint = serializers.SerializerMethodField()
     class Meta:
         model = Task

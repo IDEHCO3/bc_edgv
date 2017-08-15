@@ -88,19 +88,24 @@ WSGI_APPLICATION = 'bc_edgv.wsgi.application'
 
 
 if not 'IP_SGBD' in os.environ:
-    os.environ['IP_SGBD'] = '10.0.0.93'
+    #os.environ['IP_SGBD'] = '10.0.0.93'
+    os.environ['IP_SGBD'] = '172.30.10.86'
 
 if not 'PORT_SGBD' in os.environ:
-    os.environ['PORT_SGBD'] = '2345'
+    #os.environ['PORT_SGBD'] = '2345'
+    os.environ['PORT_SGBD'] = '54322'
 
 if not 'DB_NAME' in os.environ:
-    os.environ['DB_NAME'] = 'idehco3'
+    #os.environ['DB_NAME'] = 'idehco3'
+    os.environ['DB_NAME'] = 'gis'
 
 if not 'DB_USERNAME' in os.environ:
-    os.environ['DB_USERNAME'] = 'idehco3'
+    #os.environ['DB_USERNAME'] = 'idehco3'
+    os.environ['DB_USERNAME'] = 'ccar_prod'
 
 if not 'DB_PASSWORD' in os.environ:
-    os.environ['DB_PASSWORD'] = 'idehco3'
+    #os.environ['DB_PASSWORD'] = 'idehco3'
+    os.environ['DB_PASSWORD'] = 'ccar_prod'
 
 ip_sgbd = os.environ['IP_SGBD']
 port_sgbd = os.environ['PORT_SGBD']
@@ -112,7 +117,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'OPTIONS': {
-            'options': '-c search_path=public,bcim,idehco3,anp',
+            'options': '-c search_path=bcim,public,idehco3,anp',
         },
 
         'HOST': ip_sgbd,
@@ -137,6 +142,7 @@ USE_L10N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -145,3 +151,4 @@ STATIC_URL = '/instituicoes/ibge/static/'
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',)
 }
+

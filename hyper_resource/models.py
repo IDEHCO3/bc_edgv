@@ -484,7 +484,7 @@ def dict_geometry_operations():
 class BusinessModel(models.Model):
 
     def id(self):
-        return getattr(self, self.attribute_primary_ley(), None)
+        return self.pk
 
     def attribute_primary_ley(self):
         return self.serializer_class.Meta.identifier
