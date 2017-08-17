@@ -287,7 +287,7 @@ class ContextResource:
         a_type = type(object)
         dict_operations = dict[a_type] if a_type in dict else {}
         arr = []
-        for k, v_typed_called in dict_operations.iteritems():
+        for k, v_typed_called in dict_operations.items():
             exps = [] if v_typed_called.parameters is None else [vocabulary(param) for param in v_typed_called.parameters]
             rets = (vocabulary(v_typed_called.return_type) if v_typed_called.return_type in vocabularyDict()  else ("NOT FOUND"))
             link_id = vocabulary(v_typed_called.name)

@@ -196,29 +196,6 @@ class MunicipioList(FeatureCollectionResource):
         self.context_resource = MunicipioContext()
         self.context_resource.resource = self
 
-class MunicipioFiltered(HandleFunctionsList):
-
-    serializer_class = MunicipioSerializer
-    contextclassname = 'municipios'
-
-
-
-
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
-
-    def get_queryset(self):
-
-        nome_municipio = self.kwargs.get("nome")
-
-        #sigla_uf = self.request.query_params.get('sigla', None)
-
-        if nome_municipio is not None:
-
-            return self.queryset.filter(nome=nome_municipio)
-
-
-        return self.queryset
-
 class MunicipioDetail(FeatureResource):
 
     queryset = Municipio.objects.all()

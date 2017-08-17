@@ -21,7 +21,8 @@ from django.contrib.gis.db import models
 from abc import ABCMeta, abstractmethod
 
 
-from hyper_resource.models import feature_collection_operations, FactoryComplexQuery, collection_operations
+from hyper_resource.models import feature_collection_operations, FactoryComplexQuery, collection_operations, \
+    OperationController, BusinessModel, ConverterType
 
 
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
@@ -252,27 +253,23 @@ class AbstractResource(APIView):
                or (attributes_functions_str_url.find('www.') > -1)
 
     def _execute_attribute_or_method(self, object, attribute_or_method_name, array_of_attribute_or_method_name):
-
         dic = {}
         parameters = []
-        arr_attrib_method_name = array_of_attribute_or_method_name
-        att_or_method_name = attribute_or_method_name
-
-        if self.is_operation_and_has_parameters(att_or_method_name):
-            parameters = arr_attrib_method_name[0].split('&')
-            arr_attrib_method_name = arr_attrib_method_name[1:]
-
-        obj = self._value_from_object(object, att_or_method_name, parameters)
-
-        if len(arr_attrib_method_name) == 0:
+        if OperationController().is_operation(object, attribute_or_method_name):
+            if OperationController().operation_has_parameters(object, attribute_or_method_name):
+                parameters = array_of_attribute_or_method_name[0].split('&')
+                array_of_attribute_or_method_name = array_of_attribute_or_method_name[1:]
+        obj = self._value_from_object(object, attribute_or_method_name, parameters)
+        if len(array_of_attribute_or_method_name) == 0:
             return obj
 
-        return self._execute_attribute_or_method(obj, arr_attrib_method_name[0], arr_attrib_method_name[1:])
+        return self._execute_attribute_or_method(obj, array_of_attribute_or_method_name[0], array_of_attribute_or_method_name[1:])
 
     def is_operation_and_has_parameters(self, attribute_or_method_name):
         dic = self.operations_with_parameters_type()
-
         return (attribute_or_method_name in dic) and len(dic[attribute_or_method_name].parameters)
+
+
 
     def function_name(self, attributes_functions_str):
         functions_dic = self.operations_with_parameters_type()
@@ -306,15 +303,24 @@ class AbstractResource(APIView):
 
         return self.parametersConverted(parameters)
 
+    def is_attribute_for(self, object, attribute_or_function_name):
+        return  hasattr(object, attribute_or_function_name) and not callable(getattr(object, attribute_or_function_name))
+
     def _value_from_object(self, object, attribute_or_function_name, parameters):
 
         attribute_or_function_name_striped = attribute_or_function_name.strip()
         self.name_of_last_operation_executed = attribute_or_function_name_striped
-        if len(parameters):
-            params = self.all_parameters_converted(attribute_or_function_name_striped, parameters)
+        if self.is_attribute_for(object, attribute_or_function_name):
+            return getattr(object, attribute_or_function_name_striped)
+
+        if len(parameters)> 0:
+            if (isinstance(object, BusinessModel) or isinstance(object, GEOSGeometry)):
+                params = self.all_parameters_converted(attribute_or_function_name_striped, parameters)
+            else:
+                params = ConverterType().convert_parameters(type(object), attribute_or_function_name, parameters)
             return getattr(object, attribute_or_function_name_striped)(*params)
 
-        return getattr(object, attribute_or_function_name_striped)
+        return getattr(object, attribute_or_function_name_striped)()
 
     def parametersConverted(self, params_as_array):
         paramsConveted = []
@@ -478,7 +484,7 @@ class SpatialResource(AbstractResource):
 
         return self.parametersConverted(parameters)
 
-    def _value_from_object(self, object, attribute_or_function_name, parameters):
+    def _value_from_objectOLD(self, object, attribute_or_function_name, parameters):
 
         attribute_or_function_name_striped = attribute_or_function_name.strip()
         self.name_of_last_operation_executed = attribute_or_function_name_striped
@@ -567,12 +573,12 @@ class SpatialResource(AbstractResource):
     def response_of_request(self,  attributes_functions_str):
         att_funcs = attributes_functions_str.split('/')
 
-        obj = self.get_geometry_object(self.object_model)
+        #obj = self.get_geometry_object(self.object_model)
 
-        if (not self.is_operation(att_funcs[0])) and self.is_attribute(att_funcs[0]):
-            att_funcs = att_funcs[1:]
+       # if (not self.is_operation(att_funcs[0])) and self.is_attribute(att_funcs[0]):
+        #    att_funcs = att_funcs[1:]
 
-        self.current_object_state = self._execute_attribute_or_method(obj, att_funcs[0], att_funcs[1:])
+        self.current_object_state = self._execute_attribute_or_method(self.object_model, att_funcs[0], att_funcs[1:])
         a_value = self.current_object_state
         if isinstance(a_value, GEOSGeometry):
             geom = a_value
@@ -845,7 +851,7 @@ class FeatureCollectionResource(SpatialCollectionResource):
         objects = self.model_class().objects.all()
         return self.serializer_class(objects, many=True).data
 
-    def get_objects_from_from_spatial_operation(self, array_of_terms):
+    def get_objects_from_spatial_operation(self, array_of_terms):
         q_object = self.q_object_for_filter_array_of_terms(array_of_terms)
         return self.model_class().objects.filter(q_object)
 
@@ -874,7 +880,7 @@ class FeatureCollectionResource(SpatialCollectionResource):
             if self.path_has_url(attributes_functions_str):
                 arr = self.transform_path_with_url_as_array(att_func_arr)
             arr = self.inject_geometry_attribute_in_spatial_operation_for_path(arr)
-        objects = self.get_objects_from_from_spatial_operation(arr)
+        objects = self.get_objects_from_spatial_operation(arr)
         return self.serializer_class(objects, many=True).data
 
     def get_objects_serialized_by_only_attributes(self, attribute_names_str):

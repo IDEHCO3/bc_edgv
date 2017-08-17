@@ -4,7 +4,7 @@ import sys, inspect
 def main(argv):
     is_spatial = True
     if (len(argv)) < 3:
-        print('Usage: python generator_files.py django_project_name django_app_name')
+        print('Usage: python generator_files.py django_project_name django_app_name [nospatial/spatial]')
         exit()
     else:
         print('-------------------------------------------------------------------------------------------------------')

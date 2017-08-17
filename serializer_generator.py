@@ -4,7 +4,7 @@ import django
 
 from django.contrib.gis.db.models.fields import GeometryField
 
-def is_spatial(model_class):
+def has_geometry_field(model_class):
 
     for field in model_class._meta.get_fields():
         if isinstance(field, GeometryField):
@@ -13,7 +13,7 @@ def is_spatial(model_class):
     return False
 def generate_snippets_to_serializer(model_class_name, model_class):
     arr = []
-    if is_spatial(model_class):
+    if has_geometry_field(model_class):
         class_name = 'Serializer(GeoFeatureModelSerializer)'
     else:
         class_name = 'Serializer(ModelSerializer)'
@@ -41,14 +41,13 @@ def generate_snippets_to_serializer(model_class_name, model_class):
     return arr
 
 def generate_file(package_name, default_name= '\serializers.py'):
-    classes_from = filter(lambda x: not hasattr(x[1], 'Meta') or not x[1].Meta.abstract, inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass))
-    classes_from = filter(lambda x: x[0] != 'BusinessModel' and x[0] != 'FeatureModel', inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass))
-    print "tamanho" + str(len(classes_from))
-
+    classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
     with open(default_name, 'w+') as sr:
         sr.write("from "+package_name+".models import *\n")
-        sr.write("from rest_framework_gis.serializers import GeoFeatureModelSerializer\n\n")
-        sr.write("from rest_framework.serializers import ModelSerializer\n\n")
+        if has_geometry_field(classes_from[0][1]):
+            sr.write("from rest_framework_gis.serializers import GeoFeatureModelSerializer\n\n")
+        else:
+            sr.write("from rest_framework.serializers import ModelSerializer\n\n")
         for model_class_arr in classes_from:
             for snippet in generate_snippets_to_serializer(model_class_arr[0], model_class_arr[1]):
                 sr.write(snippet)
