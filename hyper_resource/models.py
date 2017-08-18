@@ -431,6 +431,8 @@ class OperationController:
     def date_operations_dict(self):
         d = {}
         return d
+    def unicode_operations_dict(self):
+        return self.string_operations_dict()
 
     def string_operations_dict(self):
         d = {}
@@ -518,6 +520,7 @@ class OperationController:
         d[float]= self.float_operations_dict()
         d[date]= self.date_operations_dict()
         d[str]= self.string_operations_dict()
+        d[unicode] = self.string_operations_dict()
         return d
 
     def dict_all_operation_dict(self):
@@ -538,8 +541,8 @@ class OperationController:
         arr_tuple_method = inspect.getmembers(type(an_object), predicate=inspect.ismethod)
         for tup_name_and_operation in arr_tuple_method:
             if tup_name_and_operation[0] == att_or_method_name:
-              sig = inspect.signature(tup_name_and_operation[1])
-              return len(sig.parameters) > 0
+              sig = inspect.getargspec(tup_name_and_operation[1])
+              return len(sig.args) > 1
         return False
 
     def operation_has_parameters(self, an_object, att_or_method_name):
@@ -651,6 +654,8 @@ def polygon_operations():
     def description(self):
         param = self.parameters or []
         return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
+
+
 
 def string_operations():
     d = {}

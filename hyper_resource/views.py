@@ -185,7 +185,7 @@ class AbstractResource(APIView):
         return method_name in self.operation_names_model()
 
     def is_simple_path(self, attributes_functions_str):
-        return attributes_functions_str is None
+        return attributes_functions_str is None or len(attributes_functions_str) == 0
 
     def path_has_operations(self, attributes_functions_name):
         attrs_functs = attributes_functions_name.split('/')
@@ -468,14 +468,19 @@ class SpatialResource(AbstractResource):
             parameters_type = self.operations_with_parameters_type()[attribute_or_function_name].parameters
             for i in range(0, len(parameters)):
                 if GEOSGeometry == parameters_type[i]:
-                    geometry_dict = json.loads(parameters[i])
-                    if isinstance(geometry_dict, dict) and geometry_dict['type'].lower() == 'feature':
-                        parameters_converted.append(parameters_type[i](json.dumps(geometry_dict['geometry'])))
-                    elif isinstance(geometry_dict, dict) and geometry_dict['type'].lower() == 'featurecollection':
-                        geometry_collection = self.make_geometrycollection_from_featurecollection(parameters[i])
-                        parameters_converted.append(parameters_type[i](geometry_collection))
+                    if not (parameters[i][0] == '{' or parameters[i][0] == '['):
+                        parameters_converted.append(GEOSGeometry(parameters[i]))
+
                     else:
-                        parameters_converted.append(parameters_type[i](parameters[i]))
+                        geometry_dict = json.loads(parameters[i])
+
+                        if isinstance(geometry_dict, dict) and geometry_dict['type'].lower() == 'feature':
+                            parameters_converted.append(parameters_type[i](json.dumps(geometry_dict['geometry'])))
+                        elif isinstance(geometry_dict, dict) and geometry_dict['type'].lower() == 'featurecollection':
+                            geometry_collection = self.make_geometrycollection_from_featurecollection(parameters[i])
+                            parameters_converted.append(parameters_type[i](geometry_collection))
+                        else:
+                            parameters_converted.append(parameters_type[i](parameters[i]))
                 else:
                     parameters_converted.append(parameters_type[i](parameters[i]))
 
@@ -632,7 +637,10 @@ class FeatureResource(SpatialResource):
             output = self.response_request_attributes_functions_str_with_url( attributes_functions_str)
             self.context_resource.set_context_to_object(self.current_object_state, self.name_of_last_operation_executed)
         else:
-            output = self.response_of_request(attributes_functions_str)
+            s = str(attributes_functions_str)
+            if s[-1] == '/':
+               s = s[:-1]
+            output = self.response_of_request(s)
             self._set_context_to_operation(self.name_of_last_operation_executed)
 
         return output
