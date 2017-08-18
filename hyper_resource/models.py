@@ -431,6 +431,7 @@ class OperationController:
     def date_operations_dict(self):
         d = {}
         return d
+
     def unicode_operations_dict(self):
         return self.string_operations_dict()
 
@@ -462,7 +463,7 @@ class OperationController:
         return dic
 
     def spatial_collection_operations_dict(self):
-        d = self.collection_operations()
+        d = self.collection_operations_dict()
         d['bbcontains'] = Type_Called('bbcontains', [GEOSGeometry], bool)
         d['bboverlaps'] = Type_Called('bbcontains', [GEOSGeometry], bool)
         d['contained']  = Type_Called('contained', [GEOSGeometry], bool)
@@ -499,7 +500,7 @@ class OperationController:
 
     def feature_collection_operations_dict(self):
 
-        return dict(self.collection_operations(), **self.spatial_collection_operations())
+        return dict(self.collection_operations_dict(), **self.spatial_collection_operations_dict())
 
     def dict_by_type_geometry_operations_dict(self):
         dicti = {}
@@ -520,7 +521,7 @@ class OperationController:
         d[float]= self.float_operations_dict()
         d[date]= self.date_operations_dict()
         d[str]= self.string_operations_dict()
-        d[unicode] = self.string_operations_dict()
+
         return d
 
     def dict_all_operation_dict(self):
@@ -530,24 +531,16 @@ class OperationController:
 
     def is_operation(self, an_object, name):
         if isinstance(an_object, BusinessModel):
-            return hasattr(an_object, name) and callable(getattr(an_object, name))
+            return an_object.is_operation(name)#return hasattr(an_object, name) and callable(getattr(an_object, name))
         a_type=type(an_object)
         if a_type not in self.dict_all_operation_dict():
             return False
         operation_dict = self.dict_all_operation_dict()[a_type]
         return name in operation_dict
 
-    def operation_of_business_model_has_parameters(self, an_object, att_or_method_name):
-        arr_tuple_method = inspect.getmembers(type(an_object), predicate=inspect.ismethod)
-        for tup_name_and_operation in arr_tuple_method:
-            if tup_name_and_operation[0] == att_or_method_name:
-              sig = inspect.getargspec(tup_name_and_operation[1])
-              return len(sig.args) > 1
-        return False
-
     def operation_has_parameters(self, an_object, att_or_method_name):
         if isinstance(an_object, BusinessModel):
-           return self.operation_of_business_model_has_parameters(an_object, att_or_method_name)
+           return an_object.operation_has_parameters(att_or_method_name)
         a_type=type(an_object)
         if a_type not in self.dict_all_operation_dict():
             return False
@@ -556,199 +549,6 @@ class OperationController:
             type_called = operation_dict[att_or_method_name]
             return len(type_called.parameters) > 0
         return False
-def geometry_operations():
-    dic = {}
-    if len(dic) == 0:
-        dic['area'] = Type_Called('area', [], float)
-        dic['boundary'] = Type_Called('boundary', [], float)
-        dic['buffer'] = Type_Called('buffer', [float], GEOSGeometry)
-        dic['centroid'] = Type_Called('centroid', [], Point)
-        dic['contains'] = Type_Called('contains', [GEOSGeometry], bool)
-        dic['convex_hull'] = Type_Called('convex_hull', [], Polygon)
-        dic['coord_seq'] = Type_Called('coord_seq', [], tuple)
-        dic['coords'] = Type_Called('coords', [], tuple)
-        dic['count'] = Type_Called('count', [], int)
-        dic['crosses'] = Type_Called('crosses', [GEOSGeometry], bool)
-        from django.contrib.gis.gdal import SpatialReference
-
-        dic['crs'] = Type_Called('crs', [], SpatialReference)
-        dic['difference'] = Type_Called('difference', [GEOSGeometry], GEOSGeometry)
-        dic['dims'] = Type_Called('dims', [], int)
-        dic['disjoint'] = Type_Called('disjoint', [GEOSGeometry], bool)
-        dic['distance'] = Type_Called('distance', [GEOSGeometry], float)
-        dic['empty'] = Type_Called('empty', [], bool)
-        dic['envelope'] = Type_Called('envelope', [], GEOSGeometry)
-        dic['equals'] = Type_Called('equals', [GEOSGeometry], bool)
-        dic['equals_exact'] = Type_Called('equals_exact', [GEOSGeometry, float], bool)
-        dic['ewkb'] = Type_Called('ewkb', [], str)
-        dic['ewkt'] = Type_Called('ewkt', [], str)
-        dic['extend'] = Type_Called('extend', [], tuple)
-        dic['extent'] = Type_Called('extent', [], tuple)
-        dic['geojson'] = Type_Called('geojson', [], str)
-        dic['geom_type'] = Type_Called('geom_type', [], str)
-        dic['geom_typeid'] = Type_Called('geom_typeid', [], int)
-        dic['get_coords'] = Type_Called('get_coords', [], tuple)
-        dic['get_srid'] = Type_Called('get_srid', [], str)
-        dic['get_x'] = Type_Called('get_x', [], str)
-        dic['get_y'] = Type_Called('get_y', [], str)
-        dic['get_z'] = Type_Called('get_z', [], str)
-        dic['has_cs'] = Type_Called('has_cs', [], bool)
-        dic['hasz'] = Type_Called('hasz', [], bool)
-        dic['hex'] = Type_Called('hex', [], str)
-        dic['hexewkb'] = Type_Called('hexewkb', [], str)
-        dic['index'] = Type_Called('index', [], int)
-        dic['intersection'] = Type_Called('intersection', [GEOSGeometry], GEOSGeometry)
-        dic['intersects'] = Type_Called('intersects', [GEOSGeometry], bool)
-        dic['interpolate'] = Type_Called('interpolate', [float], Point)
-        dic['json'] = Type_Called('json', [], str)
-        dic['kml'] = Type_Called('kml', [], str)
-        dic['length'] = Type_Called('length', [], float)
-        dic['normalize'] = Type_Called('normalize', [float], Point)
-        dic['num_coords'] = Type_Called('num_coords', [], int)
-        dic['num_geom'] = Type_Called('num_geom', [], int)
-        dic['num_points'] = Type_Called('num_points', [], int)
-        dic['ogr'] = Type_Called('ogr', [], OGRGeometry)
-        dic['overlaps'] = Type_Called('overlaps', [GEOSGeometry], bool)
-        dic['point_on_surface'] = Type_Called('point_on_surface', [], Point)
-        # dic['pop'] = Type_Called('pop', [], tuple)
-        # dic['prepared'] = Type_Called('prepared', [], PreparedGeometry)
-        dic['relate'] = Type_Called('relate', [GEOSGeometry], str)
-        dic['relate_pattern'] = Type_Called('relate_pattern', [GEOSGeometry, str], str)
-        dic['ring'] = Type_Called('ring', [], bool)
-        dic['set_coords'] = Type_Called('set_coords', [tuple], None)
-        dic['set_srid'] = Type_Called('set_srid', [str], None)
-        dic['set_x'] = Type_Called('set_x', [float], None)
-        dic['set_y'] = Type_Called('set_y', [float], None)
-        dic['set_z'] = Type_Called('set_z', [float], None)
-        dic['simple'] = Type_Called('simple', [], bool)
-        dic['simplify'] = Type_Called('simplify', [float, bool], GEOSGeometry)
-        dic['srid'] = Type_Called('srid', [], int)
-        dic['srs'] = Type_Called('srs', [], SpatialReference)
-        dic['sym_difference'] = Type_Called('sym_difference', [GEOSGeometry], GEOSGeometry)
-        dic['touches'] = Type_Called('touches', [GEOSGeometry], bool)
-        dic['transform'] = Type_Called('transform', [int, bool], GEOSGeometry)
-        # dic['tuple'] = Type_Called('tuple', [], tuple)
-        dic['union'] = Type_Called('union', [GEOSGeometry], GEOSGeometry)
-        dic['valid'] = Type_Called('valid', [GEOSGeometry], bool)
-        dic['valid_reason'] = Type_Called('valid_reason', [GEOSGeometry], str)
-        dic['within'] = Type_Called('within', [GEOSGeometry], bool)
-        dic['wkb'] = Type_Called('wkb', [], str)
-        dic['wkt'] = Type_Called('wkt', [], str)
-        dic['x'] = Type_Called('x', [], float)
-        dic['y'] = Type_Called('y', [], float)
-        dic['z'] = Type_Called('z', [], float)
-        return dic
-
-def point_operations():
-    dict = geometry_operations()
-    return dict
-
-def line_operations():
-    dict = geometry_operations()
-    return dict
-
-def polygon_operations():
-    dict = geometry_operations()
-    return dict
-
-    def description(self):
-        param = self.parameters or []
-        return "operation name:" + self.name + " " + "parameters:" + ",".join(param) + " " + "returned value:" + self.return_type
-
-
-
-def string_operations():
-    d = {}
-    d['capitalize'] = Type_Called('capitalize', [], str)
-    d['center'] = Type_Called('center', [int, str], str)
-    d['count'] = Type_Called('count', [str], str)
-    d['endswith'] = Type_Called('endswith', [str], bool)
-    d['find'] = Type_Called('find', [str], int)
-    d['index'] = Type_Called('index', [str], int)
-    d['isdigit'] = Type_Called('isdigit', [str], int)
-    d['isalnum'] = Type_Called('isalnum', [], bool)
-    d['isalpha'] = Type_Called('isalpha', [], bool)
-    d['islower'] = Type_Called('islower', [], bool)
-    d['isupper'] = Type_Called('isupper', [], bool)
-    d['lower'] = Type_Called('lower', [], str)
-    d['join'] = Type_Called('join', [[str]], bool)
-    d['startswith'] = Type_Called('startswith', [str], bool)
-    d['split'] = Type_Called('split', [str], [str])
-    d['upper'] = Type_Called('upper', [], str)
-    return d
-def collection_operations():
-    dic = {}
-    dic['filter'] = Type_Called('filter', [Q], object)
-    dic['map'] = Type_Called('map', [Q], object)
-    dic['annotate'] = Type_Called('annotate', [Q], object)
-    return dic
-
-def spatial_collection_operations():
-    d = collection_operations()
-    d['bbcontains'] = Type_Called('bbcontains', [GEOSGeometry], bool)
-    d['bboverlaps'] = Type_Called('bbcontains', [GEOSGeometry], bool)
-    d['contained']  = Type_Called('contained', [GEOSGeometry], bool)
-    d['contains']  = Type_Called('contains', [GEOSGeometry], bool)
-    d['contains_properly'] = Type_Called('contains_properly', [GEOSGeometry], bool)
-    d['coveredby'] = Type_Called('coveredby', [GEOSGeometry], bool)
-    d['covers']= Type_Called('covers', [GEOSGeometry], bool)
-    d['crosses'] = Type_Called('crosses', [GEOSGeometry], bool)
-    d['disjoint']= Type_Called('disjoint', [GEOSGeometry], bool)
-    d['equals'] = Type_Called('equals', [GEOSGeometry], bool)
-    d['exact'] = Type_Called('exact', [GEOSGeometry], bool)
-    d['same_as'] = Type_Called('same_as', [GEOSGeometry], bool)
-    d['intersects']  = Type_Called('intersects', [GEOSGeometry], bool)
-    d['isvalid']  = Type_Called('isvalid', [GEOSGeometry], bool)
-    d['overlaps'] = Type_Called('overlaps', [GEOSGeometry], bool)
-    d['relate'] = Type_Called('relate', [tuple], bool)
-    d['touches'] = Type_Called('touches', [GEOSGeometry], bool)
-    d['within'] = Type_Called('within', [GEOSGeometry], bool)
-    d['left'] = Type_Called('left', [GEOSGeometry], bool)
-    d['right'] = Type_Called('right', [GEOSGeometry], bool)
-    d['overlaps_left']  = Type_Called('overlaps_left', [GEOSGeometry], bool)
-    d['overlaps_right'] = Type_Called('overlaps_right', [GEOSGeometry], bool)
-    d['overlaps_above'] = Type_Called('overlaps_above', [GEOSGeometry], bool)
-    d['overlaps_below'] = Type_Called('overlaps_below', [GEOSGeometry], bool)
-    d['strictly_above'] = Type_Called('strictly_above', [GEOSGeometry], bool)
-    d['strictly_below'] = Type_Called('strictly_below', [GEOSGeometry], bool)
-    d['distance_gt'] = Type_Called('distance_gt', [GEOSGeometry], bool)
-    d['distance_gte'] = Type_Called('distance_gte', [GEOSGeometry], bool)
-    d['distance_lt'] = Type_Called('distance_lt', [GEOSGeometry], bool)
-    d['distance_lte'] = Type_Called('distance_lte', [GEOSGeometry], bool)
-    d['dwithin'] = Type_Called('dwithin', [GEOSGeometry], bool)
-
-    return d
-
-def feature_collection_operations():
-
-    return dict(collection_operations(), **spatial_collection_operations())
-
-def dict_geometry_operations():
-    dict = {}
-    dict[GEOSGeometry] = geometry_operations()
-    dict[Point] = point_operations()
-    dict[Polygon] = polygon_operations()
-    dict[LineString] = line_operations()
-    dict[MultiPoint] = point_operations()
-    dict[MultiPolygon] = polygon_operations()
-    dict[MultiLineString] = line_operations()
-    dict[GeometryCollection] = geometry_operations()
-
-    return dict
-
-def dict_string_operations():
-    dict = {}
-    dict[str] = string_operations()
-    return dict
-
-def dict_all_operation():
-    a_dict = dict(dict_string_operations(), **dict_geometry_operations())
-
-
-def is_operation(an_object, name):
-    a_type=type(an_object)
-    operation_dict = dict_all_operation()[a_type]
-    return name in operation_dict
 
 class BusinessModel(models.Model):
 
@@ -772,10 +572,23 @@ class BusinessModel(models.Model):
 
         return a_dict
 
+    def all_operation_name_and_value(self):
+        return inspect.getmembers(self, inspect.ismethod)
+
+    def all_operation_name_and_args_length(self):
+        return [(name, len( inspect.getargspec(method).args)) for name, method in self.all_operation_name_and_value()]
+
+    def public_operations_name_and_value(self):
+        return [(name, value) for name, value in self.all_operation_name_and_value() if not name.startwith('_')]
+
     def operation_names(self):
-        method_names = dir(self)
-        method_names.remove('objects')  # with objects the system breaks
-        return [method_name for method_name in method_names if self.is_not_private(method_name) and callable(getattr(self, method_name)) ]
+        return [ name for name, value in self.all_operation_name_and_value() ]
+
+    def public_operation_names(self):
+        return [ name for name, value in self.public_operations_name_and_value() ]
+
+    def operation_has_parameters(self, att_or_method_name):
+         return next((True for name, len_args in self.all_operation_name_and_args_length() if name == att_or_method_name and len_args > 1), False)
 
     def attribute_names(self):
         return [ attribute for attribute in dir(self) if not callable(getattr(self, attribute)) and self.is_not_private(attribute)]
@@ -794,6 +607,9 @@ class BusinessModel(models.Model):
 
     def is_operation(self, operation_name):
         return operation_name in self.operation_names()
+
+    def is_public_operations(self, operation_name):
+        return operation_name in self.public_operation_names()
 
     def is_attribute(self, attribute_name):
         return attribute_name in self.field_names()
@@ -846,7 +662,7 @@ class FeatureModel(BusinessModel):
         return geoType if geoType is not None else dict_map_geo_field_geometry()[type(self.geo_field())]
 
     def operations_with_parameters_type(self):
-        return dict_geometry_operations()[self.get_geometry_type()]
+        return OperationController().geometry_operations_dict()[self.get_geometry_type()]
 
     def centroid(self):
         return self.get_geometry_object().centroid

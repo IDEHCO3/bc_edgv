@@ -15,7 +15,7 @@ from time import *
 from django.contrib.gis.geos.prepared import PreparedGeometry
 from django.db.models import *
 
-from hyper_resource.models import geometry_operations, point_operations, polygon_operations, line_operations
+from hyper_resource.models import *
 
 
 class Reflection:
@@ -177,9 +177,6 @@ def vocabulary(a_key):
 
     return vocabularyDict()[a_key] if a_key in vocabularyDict() else None
 
-
-
-
 class SupportedProperty():
     def __init__(self, property_name='', required=False, readable=True, writeable=True, is_unique=False, is_identifier=False, is_external=False ):
         self.property_name = property_name
@@ -211,14 +208,15 @@ class SupportedOperation():
 
 def initialize_dict():
         dict = {}
-        dict[GEOSGeometry] = geometry_operations()
-        dict[Point] = point_operations()
-        dict[Polygon] = polygon_operations()
-        dict[LineString] = line_operations()
-        dict[MultiPoint] = point_operations()
-        dict[MultiPolygon] = polygon_operations()
-        dict[MultiLineString] = line_operations()
-        dict[GeometryCollection] = geometry_operations()
+        oc = OperationController()
+        dict[GEOSGeometry] = oc.geometry_operations_dict()
+        dict[Point] = oc.point_operations_dict()
+        dict[Polygon] = oc.polygon_operations_dict()
+        dict[LineString] = oc.line_operations_dict()
+        dict[MultiPoint] = oc.point_operations_dict()
+        dict[MultiPolygon] = oc.polygon_operations_dict()
+        dict[MultiLineString] = oc.line_operations_dict()
+        dict[GeometryCollection] = oc.geometry_operations_dict()
         return dict
 
 

@@ -21,9 +21,7 @@ from django.contrib.gis.db import models
 from abc import ABCMeta, abstractmethod
 
 
-from hyper_resource.models import feature_collection_operations, FactoryComplexQuery, collection_operations, \
-    OperationController, BusinessModel, ConverterType
-
+from hyper_resource.models import  FactoryComplexQuery, OperationController, BusinessModel, ConverterType
 
 class IgnoreClientContentNegotiation(BaseContentNegotiation):
     def select_parser(self, request, parsers):
@@ -51,6 +49,7 @@ class AbstractResource(APIView):
         self.context_resource = None
         self.initialize_context()
         self.iri_metadata = None
+        self.operation_controller = OperationController()
 
 
     content_negotiation_class = IgnoreClientContentNegotiation
@@ -703,7 +702,7 @@ class AbstractCollectionResource(AbstractResource):
 
         arr_str = attributes_functions_str.split('/')[1:]
 
-        geom_ops = geometry_operations()
+        geom_ops = self.operation_controller.geometry_operations_dict()
 
         for str in arr_str:
             if self.is_spatial_attribute(str):
@@ -734,7 +733,7 @@ class AbstractCollectionResource(AbstractResource):
         return self.model_class().objects.filter(q_object)
 
     def operation_names_model(self):
-        return collection_operations().keys()
+        return self.operation_controller.collection_operations_dict()
 
     @abstractmethod  # Must be override
     def basic_get(request, *args, **kwargs):
@@ -766,7 +765,7 @@ class AbstractCollectionResource(AbstractResource):
 class CollectionResource(AbstractCollectionResource):
 
     def operations_with_parameters_type(self):
-        return collection_operations()
+        return self.operation_controller.collection_operations_dict()
 
     def get_objects_serialized(self):
         objects = self.model_class().objects.all()
@@ -821,13 +820,12 @@ class SpatialCollectionResource(AbstractCollectionResource):
         return self.serializer_class.Meta.geo_field
 
     def operation_names_model(self):
-        return feature_collection_operations().keys()
+        return self.operation_controller.feature_collection_operations_dict().keys()
 
 class FeatureCollectionResource(SpatialCollectionResource):
 
-
     def geometry_operations(self):
-        return geometry_operations()
+        return self.operation_controller.geometry_operations_dict()
 
     def geometry_field_name(self):
         return self.serializer_class.Meta.geo_field
@@ -853,7 +851,7 @@ class FeatureCollectionResource(SpatialCollectionResource):
         return (len(att_funcs) > 1 and (att_funcs[0].lower() in self.geometry_operations().keys())) or self.attributes_functions_str_is_filter_with_spatial_operation(attributes_functions_str)
 
     def operations_with_parameters_type(self):
-        return feature_collection_operations()
+        return self.operation_controller.feature_collection_operations_dict()
 
     def get_objects_serialized(self):
         objects = self.model_class().objects.all()
