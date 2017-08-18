@@ -14,7 +14,8 @@ def detect_primary_key_field(fields_of_model_class):
 def generate_snippets_to_url(model_class_name, model_class):
 
     context_name = convert_camel_case_to_hifen(model_class_name) + '-list'
-    primary_key_name = detect_primary_key_field(model_class._meta.get_fields()).name
+    #primary_key_name = detect_primary_key_field(model_class._meta.get_fields()).name
+    primary_key_name = 'pk'
     arr = []
     arr.append((' ' * 4) + 'url(r' +"'"+  context_name +'/(?P<'+ primary_key_name +'>[0-9]+)/$' +"'"+ ', views.' +
                model_class_name + 'Detail.as_view(), name=' + "'" + model_class_name +'_detail' +"'" + '),\n')
@@ -36,7 +37,7 @@ def imports_str_as_array(a_name):
     return arr
 
 def generate_file(package_name, default_name='urls.py'):
-    classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
+    classes_from = [(name, method) for name, method in  inspect.getmembers(sys.modules[package_name + '.models'],inspect.isclass)  if (name != 'BusinessModel' and name != 'FeatureModel') ]
     with open(default_name, 'w+') as sr:
         for import_str in imports_str_as_array(package_name):
             sr.write(import_str)

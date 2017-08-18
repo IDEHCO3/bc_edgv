@@ -662,7 +662,8 @@ class FeatureModel(BusinessModel):
         return geoType if geoType is not None else dict_map_geo_field_geometry()[type(self.geo_field())]
 
     def operations_with_parameters_type(self):
-        return OperationController().geometry_operations_dict()[self.get_geometry_type()]
+        oc = OperationController()
+        return oc.dict_by_type_geometry_operations_dict()[self.get_geometry_type()]
 
     def centroid(self):
         return self.get_geometry_object().centroid
@@ -849,7 +850,6 @@ class FeatureModel(BusinessModel):
         return self.get_geometry_object().count
 
     def num_points(self):
-        print("entrei")
         return self.get_geometry_object().num_points
 
     def within(self, other_GEOSGeometry):

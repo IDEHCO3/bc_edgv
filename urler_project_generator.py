@@ -8,10 +8,11 @@ def generate_snippets_to_url(a_name, context_name = 'include'):
     arr = []
     arr.append((' ' * 4) + 'url(r' + "'" + '^'+ a_name +'-list/'+ "'" +',' + context_name +'(' +"'" +a_name+'.urls'+"'" +
                ',namespace='+"'"+ a_name+'_v1'+"'" +')),\n')
+    '''
     arr.append((' ' * 4) + 'url(r' + "'" + '^'+ a_name +'-list/contexts/' + "'" +','+ context_name + '(' + "'"+ 'context_api.urls' +"'"+
               ', namespace =' +"'" + 'context'+"'" + ')),\n')
     arr.append((' ' * 4) + 'getHydraVocabURLPatterns(r' + "'" + "^" + a_name + '-list/hydra/' + "'" + '),\n')
-
+    '''
     return arr
 
 
@@ -19,7 +20,7 @@ def imports_str_as_array(a_name):
 
     arr = []
     arr.append("from django.conf.urls import include, url\n")
-    arr.append("from hydra.urls import getHydraVocabURLPatterns\n\n")
+    #arr.append("from hydra.urls import getHydraVocabURLPatterns\n\n")
 
     return arr
 

@@ -4,7 +4,7 @@ import sys, inspect
 def main(argv):
     is_spatial = True
     if (len(argv)) < 3:
-        print('Usage: python generator_files.py django_project_name django_app_name [nospatial/spatial]')
+        print('Usage: python generator_files.py django_project_name django_app_name')
         exit()
     else:
         print('-------------------------------------------------------------------------------------------------------')
@@ -41,7 +41,7 @@ def main(argv):
     gf_serializer(app_name, default_name=file_serializer_app)
 
     file_contexter_app = app_name + '/contexts.py'
-    gf_serializer(app_name, default_name=file_contexter_app)
+    gf_contexter(app_name, default_name=file_contexter_app)
 
     print('views.py, urls.py, serialzers.py and contexts.py have been generated')
 

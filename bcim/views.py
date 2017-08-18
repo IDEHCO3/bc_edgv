@@ -2,17 +2,16 @@ from collections import OrderedDict
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework import generics
 from rest_framework import status
 
 from bcim.contexts import UnidadeFederacaoContext, MunicipioContext, AldeiaIndigenaContext, UnidadeFederacaoListContext, \
     SprintContext, TaskContext, SprintListContext, TaskListContext, AldeiaIndigenaListContext
 from bcim.utils import *
 
-from rest_framework import permissions
 
-from rest_framework import generics
 from .serializers import *
-
 
 from context_api.views import *
 from hyper_resource.views import *

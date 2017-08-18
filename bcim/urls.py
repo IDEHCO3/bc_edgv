@@ -32,6 +32,7 @@ urlpatterns = [
     #collection
     url(r'^aldeias-indigenas/?$', views.AldeiaIndigenaList.as_view(), name='aldeia_indigena_list'),
     url(r'^aldeias-indigenas/(?P<attributes_functions>.*)/?$', views.AldeiaIndigenaList.as_view(), name='aldeia_indigena_list_filtered'),
+
     url(r'^capitais/?$', views.CapitalList.as_view(), name='capital_list'),
     url(r'^capitais/(?P<attributes_functions>[A-Za-z]+)/(?P<geom>.*)/?$', views.CapitalList.as_view(), name='capital_list_fn'),
     url(r'^capitais/(?P<id_objeto>[0-9]*)/?$', views.CapitalDetail.as_view(), name='capital_detail_id_objeto'),

@@ -2,6 +2,8 @@ import os
 import sys, inspect
 import django
 import re
+from django.contrib.gis.db.models import GeometryField
+
 
 def generate_get_root_response(a_name_space, model_class_name):
 
@@ -26,6 +28,9 @@ def generate_snippets_to_view(model_class_name, is_spatial):
     arr.append((' ' * 4) + 'queryset = ' + model_class_name + '.objects.all()' + '\n')
     arr.append(serializer_class_snippet)
     arr.append(context)
+    arr.append((' ' * 4) + 'def initialize_context(self):\n')
+    arr.append((' ' * 8) + 'self.context_resource = ' + model_class_name + 'Context()\n')
+    arr.append((' ' * 8) + 'self.context_resource.resource = self\n')
     arr.append('\n')
     arr.append('class ' + model_class_name + 'Detail(' + super_class_name +'):\n')
     arr.append(serializer_class_snippet)
@@ -36,24 +41,43 @@ def generate_snippets_to_view(model_class_name, is_spatial):
 
     return arr
 
+# TODO develop is_spatial
+def is_spatial(model_class):
+
+    for field in model_class._meta.get_fields():
+        if isinstance(field, GeometryField):
+            return True
+
+    return False
+
 def imports_str_as_array(a_name):
     arr = []
     arr.append("from collections import OrderedDict\n")
-    arr.append("from " + a_name + ".utils import *\n")
+
+    arr.append("from rest_framework.response import Response\n")
+    arr.append("from rest_framework.reverse import reverse\n")
+    arr.append("from rest_framework.views import APIView\n")
+    arr.append("from rest_framework import permissions\n")
+    arr.append("from rest_framework import generics\n")
+    arr.append("from rest_framework import status\n")
+    arr.append("from hyper_resource.views import *\n")
     arr.append("from " + a_name + ".models import *\n")
-    arr.append("from " + a_name + ".serializers import *\n\n")
+    arr.append("from " + a_name + ".serializers import *\n")
+    arr.append("from " + a_name + ".contexts import *\n\n")
+
     return arr
 
-def generate_file(package_name, default_name='views.py', is_spatial=True):
-    classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
+
+def generate_file(package_name, default_name='views.py'):
+    arr_tuple_name_and_class = [(name, method) for name, method in  inspect.getmembers(sys.modules[package_name + '.models'],inspect.isclass)  if (name != 'BusinessModel' and name != 'FeatureModel') ]
     with open(default_name, 'w+') as sr:
         for import_str in imports_str_as_array(package_name):
             sr.write(import_str)
         sr.write('def get_root_response(request):\n')
         sr.write((' ' * 4) + 'format = None\n')
         sr.write((' ' * 4) + 'root_links = {\n\n')
-        for model_class_arr in classes_from:
-            get_root_str = generate_get_root_response(package_name ,model_class_arr[0])
+        for tuple_name_and_class in arr_tuple_name_and_class:
+            get_root_str = generate_get_root_response(package_name ,tuple_name_and_class[0])
             sr.write((' ' * 6) + get_root_str)
         sr.write((' ' * 4) + '}\n\n')
         sr.write((' ' * 4) + 'ordered_dict_of_link = OrderedDict(sorted(root_links.items(), key=lambda t: t[0]))\n')
@@ -73,8 +97,9 @@ def generate_file(package_name, default_name='views.py', is_spatial=True):
         sr.write((' ' * 8) +'root_links = get_root_response(request)\n')
         sr.write((' ' * 8) +'response = Response(root_links)\n')
         sr.write((' ' * 8) +'return self.base_context.addContext(request, response)\n\n')
-        for model_class_arr in classes_from:
-            for str in generate_snippets_to_view(model_class_arr[0], is_spatial):
+        for tuple_name_and_class in arr_tuple_name_and_class:
+
+            for str in generate_snippets_to_view(tuple_name_and_class[0], is_spatial(tuple_name_and_class[1])):
                 sr.write(str)
             sr.write('\n')
         sr.close()
