@@ -16,7 +16,7 @@ def main(argv):
     if len(argv) == 4:
         is_spatial = False if argv[3].lower().strip() == 'nospatial' else True
 
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", prj_name  + ".settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", prj_name + ".settings")
 
     import django
     from urler_project_generator import generate_file as gf_prj_urler

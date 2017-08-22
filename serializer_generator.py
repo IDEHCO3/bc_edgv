@@ -30,7 +30,7 @@ def generate_snippets_to_serializer(model_class_name, model_class):
             arr.append(',')
         else:
             arr.append(']\n')
-        if field.primary_key:
+        if hasattr(field, 'primary_key') and field.primary_key:
             identifier = field.name
         if isinstance(field, GeometryField):
             geom = field.name

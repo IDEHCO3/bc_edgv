@@ -3,43 +3,36 @@ import os
 import re
 import django
 
+from django.contrib.gis.db.models.fields import GeometryField
 
-def convert_camel_case_to_hifen(camel_case_string):
-    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', camel_case_string)
-    return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
 
-def detect_primary_key_field(fields_of_model_class):
-    return next((field for field in fields_of_model_class if field.primary_key), [None])
+def is_spatial(model_class):
+    for field in model_class._meta.get_fields():
+        if isinstance(field, GeometryField):
+            return True
+    return False
 
-def generate_snippets_to_url(model_class_name, model_class):
-
-    #class MunicipioContext(FeatureContext):
-    #   pass
-
-    arr = []
-    arr.append('class ' + model_class_name + 'Context(FeatureContext)' + '\n')
-    arr.append((' ' * 4) + 'pass\n')
-    arr.append('class ' + model_class_name + 'CollectionContext(FeatureCollectionContext)' + '\n')
-    arr.append((' ' * 4) + 'pass\n')
-    return arr
-
-def imports_str_as_array():
-    arr = []
-    arr.append("from hyper_resource.contexts import FeatureContext, FeatureCollectionContext\n")
-    return arr
-
-def generate_file(package_name, default_name='contexts.py'):
+def generate_file(package_name, default_name='models.py'):
     classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
-    with open(default_name, 'w+') as sr:
-        for import_str in imports_str_as_array():
-            sr.write(import_str)
-
-        for model_class_arr in classes_from:
-            for str in generate_snippets_to_url(model_class_arr[0], model_class_arr[1]):
-                sr.write(str)
-            sr.write('\n')
-
+    geo_classes = map(lambda x: x[0], filter(lambda x: is_spatial(x[1]), classes_from))
+    old_model = package_name+'/'+default_name
+    new_model = default_name+'.new'
+    with open(old_model, 'r') as sr:
+        with open(new_model, 'w+') as nm:
+            nm.write('from hyper_resource.models import FeatureModel, BusinessModel\n')
+            for line in sr.readlines():
+                regex_obj = re.search(r'class\s*(?P<class_model>.*)\(', line)
+                class_name_in_line = regex_obj if regex_obj is None else regex_obj.group(1)
+                if class_name_in_line in geo_classes:
+                    line = line.replace('models.Model', 'FeatureModel')
+                elif class_name_in_line is not None:
+                    line = line.replace('models.Model', 'BusinessModel')
+                nm.write(line)
+            nm.close()
         sr.close()
+    os.remove(old_model)
+    os.rename(new_model, old_model)
+
 
 if __name__ == "__main__":
     if (len( sys.argv))!= 3:
