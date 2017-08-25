@@ -632,8 +632,8 @@ class TaskSerializer(ModelSerializer):
     class Meta:
         model = Task
         fields = ['id', 'name', 'description',  'sprint', 'status', 'order', 'started', 'due', 'completed']
-        identifiers = ['id']
-        identifier = 'id'
+        identifiers = ['pk']
+        identifier = 'pk'
 
 
     '''
