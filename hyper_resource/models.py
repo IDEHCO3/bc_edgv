@@ -32,24 +32,6 @@ from requests import ConnectionError
 from requests import HTTPError
 
 
-def dict_field_to_type():
-    d = {}
-    d[models.CharField] = str
-    d[models.TextField] = str
-    d[models.IntegerField] = int
-    d[models.FloatField] = float
-    d[models.TimeField] = time
-    d[models.DateTimeField] = datetime
-    d[models.DateField] = date
-    d[GeometryField] = GEOSGeometry
-    d[LineStringField] = LineString
-    d[MultiLineStringField] = MultiLineString
-    d[MultiPointField] = MultiPoint
-    d[MultiPolygonField] = MultiPolygon
-    d[PointField] = Point
-    d[PolygonField] = Polygon
-
-    return d
 def dict_map_geo_field_geometry():
     dic = {}
     dic[GeometryField] = GEOSGeometry

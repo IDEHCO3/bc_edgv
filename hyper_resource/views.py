@@ -543,20 +543,29 @@ class SpatialResource(AbstractResource):
 
         return paramsConveted
 
+    def dict_as_geojson(self, a_dict):
+        d = {}
+        d["type"] = "Feature"
+        d["geometry"] = a_dict[self.geometry_field_name()]
+        a_dict.pop(self.geometry_field_name(), None)
+        d["properties"] = a_dict
+        return d
+
     def response_resquest_with_attributes(self,  attributes_functions_name):
         a_dict ={}
         attributes = attributes_functions_name.strip().split(',')
+
         #self.current_object = self.object_model
         for attr_name in attributes:
            obj = self._value_from_object(self.object_model, attr_name, [])
-
            if isinstance(obj, GEOSGeometry):
                geom = obj
                obj = json.loads(obj.geojson)
                if len(attributes) == 1:
                    return (obj, 'application/vnd.geo+json', geom, {'status': 200})
-
            a_dict[attr_name] = obj
+        if self.geometry_field_name() in attributes:
+            a_dict = self.dict_as_geojson(a_dict)
         self.current_object_state = a_dict
 
         return (a_dict, 'application/json', self.object_model, {'status': 200})
