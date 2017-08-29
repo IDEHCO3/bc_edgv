@@ -20,8 +20,11 @@ def generate_file(package_name, default_name='models.py'):
     new_model = default_name+'.new'
     with open(old_model, 'r') as sr:
         with open(new_model, 'w+') as nm:
+            nm.write('from __future__ import unicode_literals\n')
             nm.write('from hyper_resource.models import FeatureModel, BusinessModel\n')
             for line in sr.readlines():
+                if line == 'from __future__ import unicode_literals\n':
+                    continue
                 regex_obj = re.search(r'class\s*(?P<class_model>.*)\(', line)
                 class_name_in_line = regex_obj if regex_obj is None else regex_obj.group(1)
                 if class_name_in_line in geo_classes:
