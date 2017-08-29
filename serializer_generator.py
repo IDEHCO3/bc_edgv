@@ -19,11 +19,11 @@ def generate_snippets_to_serializer(model_class_name, model_class):
     else:
         class_name = 'Serializer(ModelSerializer)'
     arr.append('class ' +model_class_name + class_name+':\n')
-    # for attr_name in dir(model_class):
-    #     attr = getattr(model_class, attr_name)
-    #     if hasattr(attr, 'field') and isinstance(attr.field, ForeignKey):
-    #         view_name = attr.field.related_model.__name__ + "_detail"
-    #         arr.append((' ' * 4) + attr_name+" = HyperlinkedRelatedField(view_name='"+view_name+"', many=False, read_only=True)\n")
+    for attr_name in dir(model_class):
+        attr = getattr(model_class, attr_name)
+        if hasattr(attr, 'field') and isinstance(attr.field, ForeignKey) and hasattr(attr.field.related_model, '__name__'):
+            view_name = attr.field.related_model.__name__ + "_detail"
+            arr.append((' ' * 4) + attr_name+" = HyperlinkedRelatedField(view_name='"+view_name+"', many=False, read_only=True)\n")
     arr.append((' ' * 4) + 'class Meta:\n')
     arr.append((' ' * 8) + 'model = ' +model_class_name + '\n')
     identifier = None
@@ -53,7 +53,7 @@ def generate_file(package_name, default_name= '\serializers.py'):
     with open(default_name, 'w+') as sr:
         sr.write("from "+package_name+".models import *\n")
         sr.write("from rest_framework_gis.serializers import GeoFeatureModelSerializer\n\n")
-        sr.write("from rest_framework.serializers import ModelSerializer\n\n")
+        sr.write("from rest_framework.serializers import ModelSerializer, HyperlinkedRelatedField\n\n")
         for model_class_arr in classes_from:
             for snippet in generate_snippets_to_serializer(model_class_arr[0], model_class_arr[1]):
                 sr.write(snippet)
