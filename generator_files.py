@@ -24,9 +24,13 @@ def main(argv):
     from urler_generator import generate_file as gf_urler
     from serializer_generator import generate_file as gf_serializer
     from contexter_generator import generate_file as gf_contexter
+    from modeler_generator import generate_file as gf_modeler
     from django.contrib.gis.db.models.fields import GeometryField
     from django.conf import settings
     django.setup()
+
+    file_model_app = app_name + '/models.py'
+    gf_modeler(app_name, default_name=file_model_app)
 
     file_url_prj = prj_name + '/urls.py'
     gf_prj_urler(app_name, default_name=file_url_prj)

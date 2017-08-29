@@ -13,9 +13,10 @@ def is_spatial(model_class):
     return False
 
 def generate_file(package_name, default_name='models.py'):
+    os.system("python manage.py inspectdb > "+default_name)
     classes_from = inspect.getmembers(sys.modules[package_name + '.models'], inspect.isclass)
     geo_classes = map(lambda x: x[0], filter(lambda x: is_spatial(x[1]), classes_from))
-    old_model = package_name+'/'+default_name
+    old_model = default_name
     new_model = default_name+'.new'
     with open(old_model, 'r') as sr:
         with open(new_model, 'w+') as nm:
