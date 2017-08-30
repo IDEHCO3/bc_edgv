@@ -36,6 +36,85 @@ class IgnoreClientContentNegotiation(BaseContentNegotiation):
         """
         return (renderers[0], renderers[0].media_type)
 
+class BaseContext(object):
+
+    def __init__(self, contextclassname, serializer_object=None):
+        self.serializer_object = serializer_object
+        self.contextclassname = contextclassname
+
+    def options(self, request):
+        response = Response(self.getContextData(request), status=status.HTTP_200_OK, content_type="application/ld+json")
+        response = self.createLinkOfContext(request, response)
+        return response
+
+    def addContext(self, request, response):
+        return self.createLinkOfContext(request, response)
+
+    def createLinkOfContext(self, request, response, properties=None):
+        # if properties is None:
+        #     url = reverse('context:detail', args=[self.contextclassname], request=request)
+        # else:
+        #     url = reverse('context:detail-property', args=[self.contextclassname, ",".join(properties)], request=request)
+        url = request.build_absolute_uri()
+        url = url if url[-1] != '/' else url[:-1]
+        url = url + ".jsonld"
+
+        context_link = ' <'+url+'>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\" '
+        if "Link" not in response:
+            response['Link'] = context_link
+        else:
+            response['Link'] += "," + context_link
+
+        return response
+
+    def getHydraData(self, request):
+        #classobject = Class.objects.get(name=self.contextclassname)
+        #serializerHydra = HydraSerializer(classobject, request)
+        return {}
+
+    def addIriTamplate(self, context, request, serializer_object):
+        url = request.build_absolute_uri()
+        iriTemplate = {
+            "@context": "http://www.w3.org/ns/hydra/context.jsonld",
+            "@type": "IriTemplate",
+            "template": url if url[-1] != '/' else url[:-1] +"{/attribute}",
+            "variableRepresentation": "BasicRepresentation",
+            "mapping": []
+        }
+        if serializer_object is not None:
+            for attr in serializer_object.Meta.identifiers:
+                iriTemplate['mapping'].append({
+                    "@type": "IriTemplateMapping",
+                    "variable": "attribute",
+                    "property": attr,
+                    "required": True
+                })
+        else:
+            iriTemplate['mapping'].append({
+                "@type": "IriTemplateMapping",
+                "variable": "attribute",
+                "property": "hydra:supportedProperties",
+                "required": True
+            })
+
+        context['iriTemplate'] = iriTemplate
+        return context
+
+    def getContextData(self, request):
+        try:
+            classobject = None #Class.objects.get(name=self.contextclassname)
+        except:
+            return ""
+        serializer = None #ContextSerializer(classobject)
+        contextdata = serializer.data
+        hydradata = self.getHydraData(request)
+        if "@context" in hydradata:
+            hydradata["@context"].update(contextdata["@context"])
+        contextdata.update(hydradata)
+        contextdata = self.addIriTamplate(contextdata, request, self.serializer_object)
+        return contextdata
+
+
 class AbstractResource(APIView):
     __metaclass__ = ABCMeta
 
