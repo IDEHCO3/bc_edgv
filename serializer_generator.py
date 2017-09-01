@@ -1,15 +1,20 @@
 import os
 import sys, inspect
 import django
-from django.db.models import ForeignKey
+from django.contrib.gis.db import models
+from django.contrib.gis.db.models import GeometryField
+from django.db.models import ForeignKey, ManyToOneRel
 
 from django.contrib.gis.db.models.fields import GeometryField
 
-def is_spatial(model_class):
+from hyper_resource.models import FeatureModel
 
-    for field in model_class._meta.get_fields():
-        if isinstance(field, GeometryField):
-            return True
+
+def is_spatial(model_class):
+    if isinstance(model_class, models.Model) or isinstance(model_class, FeatureModel):
+        for field in model_class._meta.get_fields():
+            if isinstance(field, GeometryField):
+                return True
 
     return False
 def generate_snippets_to_serializer(model_class_name, model_class):
@@ -19,11 +24,14 @@ def generate_snippets_to_serializer(model_class_name, model_class):
     else:
         class_name = 'Serializer(ModelSerializer)'
     arr.append('class ' +model_class_name + class_name+':\n')
-    for attr_name in dir(model_class):
-        attr = getattr(model_class, attr_name)
-        if hasattr(attr, 'field') and isinstance(attr.field, ForeignKey) and hasattr(attr.field.related_model, '__name__'):
-            view_name = attr.field.related_model.__name__ + "_detail"
-            arr.append((' ' * 4) + attr_name+" = HyperlinkedRelatedField(view_name='"+view_name+"', many=False, read_only=True)\n")
+    for field in model_class._meta.get_fields():
+        if isinstance(field, ForeignKey):
+            view_name = field.name + "_detail"
+            arr.append((' ' * 4) + field.name+" = HyperlinkedRelatedField(view_name='"+view_name+"', many=False, read_only=True)\n")
+        elif isinstance(field, ManyToOneRel) and field.related_name is not None:
+            view_name = field.name + "_detail"
+            arr.append((
+                       ' ' * 4) + field.name + " = HyperlinkedRelatedField(view_name='" + view_name + "', many=True, read_only=True)\n")
     arr.append((' ' * 4) + 'class Meta:\n')
     arr.append((' ' * 8) + 'model = ' +model_class_name + '\n')
     identifier = None
@@ -48,7 +56,7 @@ def generate_snippets_to_serializer(model_class_name, model_class):
 
 def generate_file(package_name, default_name= '\serializers.py'):
 
-    classes_from = [(name, method) for name, method in  inspect.getmembers(sys.modules[package_name + '.models'],inspect.isclass)  if (name != 'BusinessModel' and name != 'FeatureModel') ]
+    classes_from = [(name, method) for name, method in  inspect.getmembers(sys.modules[package_name + '.models'],inspect.isclass)  if (name != 'BusinessModel' and name != 'FeatureModel' and isinstance(method, django.db.models.base.ModelBase)) ]
 
     with open(default_name, 'w+') as sr:
         sr.write("from "+package_name+".models import *\n")

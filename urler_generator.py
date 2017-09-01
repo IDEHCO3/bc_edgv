@@ -17,14 +17,14 @@ def generate_snippets_to_url(model_class_name, model_class):
     #primary_key_name = detect_primary_key_field(model_class._meta.get_fields()).name
     primary_key_name = 'pk'
     arr = []
-    arr.append((' ' * 4) + 'url(r' +"'"+  context_name +'/(?P<'+ primary_key_name +'>[0-9]+)/$' +"'"+ ', views.' +
+    arr.append((' ' * 4) + 'url(r' +"'^"+  context_name +'/(?P<'+ primary_key_name +'>[0-9]+)/$' +"'"+ ', views.' +
                model_class_name + 'Detail.as_view(), name=' + "'" + model_class_name +'_detail' +"'" + '),\n')
-    arr.append((' ' * 4) + 'url(r' + "'" + context_name + '/(?P<' + primary_key_name +
+    arr.append((' ' * 4) + 'url(r' + "'^" + context_name + '/(?P<' + primary_key_name +
                '>[0-9]+)/(?P<attributes_functions>.*)/$' + "'" + ', views.' +
                model_class_name + 'Detail.as_view(), name=' + "'" + model_class_name + '_detail_af' + "'" + '),\n')
-    arr.append((' ' * 4) + 'url(r' + "'" + context_name + '/$' + "'" + ', views.' +
+    arr.append((' ' * 4) + 'url(r' + "'^" + context_name + '/$' + "'" + ', views.' +
                model_class_name + 'List.as_view(), name=' + "'" + model_class_name + '_list' + "'" + '),\n')
-    arr.append((' ' * 4) + 'url(r' + "'" + context_name + '/(?P<attributes_functions>.*)/?$' +
+    arr.append((' ' * 4) + 'url(r' + "'^" + context_name + '/(?P<attributes_functions>.*)/?$' +
                "'" + ', views.' + model_class_name + 'List.as_view(), name=' + "'" + model_class_name + '_list_af' +
                "'" + '),\n')
     return arr
@@ -37,7 +37,7 @@ def imports_str_as_array(a_name):
     return arr
 
 def generate_file(package_name, default_name='urls.py'):
-    classes_from = [(name, method) for name, method in  inspect.getmembers(sys.modules[package_name + '.models'],inspect.isclass)  if (name != 'BusinessModel' and name != 'FeatureModel') ]
+    classes_from = [(name, method) for name, method in  inspect.getmembers(sys.modules[package_name + '.models'],inspect.isclass)  if (name != 'BusinessModel' and name != 'FeatureModel' and isinstance(method, django.db.models.base.ModelBase)) ]
     with open(default_name, 'w+') as sr:
         for import_str in imports_str_as_array(package_name):
             sr.write(import_str)
